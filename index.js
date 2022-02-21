@@ -49,6 +49,8 @@ if (args.query) {
   });
 
   console.log(
-    clc.blue.bold(`${result.length} snippet${result.length > 1 ? "s" : ""}`)
+    clc.blue.bold(
+      `${result.length} snippet${result.length === 1 ? "" : "s"} found`
+    )
   );
 }
