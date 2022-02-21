@@ -1,0 +1,17 @@
+{
+  "name": "pet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": "index.js",
+  "keywords": [],
+  "author": "filipkrw",
+  "license": "ISC",
+  "dependencies": {
+    "cli-color": "^2.0.1",
+    "command-line-args": "^5.2.1",
+    "dree": "^3.3.5",
+    "fuse.js": "^6.5.3",
+    "tree-flatten": "^1.0.0"
+  }
+}
