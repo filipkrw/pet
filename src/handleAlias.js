@@ -26,14 +26,30 @@ function handleAlias(args, basePath) {
   }
 
   const snippet = getSnippet(path.join(basePath, snippetPath));
-  const aliasEntry = `alias ${alias}="${snippet}"\n`;
+  const aliasEntry = `alias ${alias}="${parseSnippetToCommand(
+    snippet,
+    "$"
+  )}"\n`;
   fs.writeFileSync(dotPetAliasesPath, aliasEntry, { flag: "a+" }, (error) => {
     if (error) throw new Error(error);
   });
 
   const aliasBatFilePath = path.join(dotPetBatchPath, `${alias}.bat`);
-  fs.writeFileSync(aliasBatFilePath, snippet, { flag: "wx" }, (error) => {
-    if (error) throw new Error(error);
+  fs.writeFileSync(
+    aliasBatFilePath,
+    parseSnippetToCommand(snippet, "%"),
+    { flag: "wx" },
+    (error) => {
+      if (error) throw new Error(error);
+    }
+  );
+}
+
+function parseSnippetToCommand(snippet, varSignifier) {
+  let i = 0;
+  return snippet.replace(/(<[^>]*>)/g, () => {
+    i++;
+    return `${varSignifier}${i}`;
   });
 }
 
