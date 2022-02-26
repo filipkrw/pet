@@ -1,4 +1,5 @@
 const fs = require("fs");
+const CommandError = require("../util/CommandError");
 const createFileIfNotExists = require("./util/createFileIfNotExists");
 const removeDuplicates = require("./util/removeDuplicates");
 
@@ -10,6 +11,10 @@ class AliasesConfig {
 
   getAliases() {
     return this.config.aliases || [];
+  }
+
+  getShells() {
+    return this.config.shells || [];
   }
 
   addShell(shell) {
@@ -30,7 +35,7 @@ class AliasesConfig {
       delete aliases[alias];
       this.writeConfig({ ...this.config, aliases });
     } else {
-      throw new AliasNotFoundError(`Alias "${alias}" doesn't exist.`);
+      throw new CommandError(`Alias "${alias}" doesn't exist.`);
     }
   }
 
@@ -46,12 +51,4 @@ class AliasesConfig {
   }
 }
 
-class AliasNotFoundError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = this.constructor.name;
-    Error.captureStackTrace(this, this.constructor);
-  }
-}
-
-module.exports = { AliasesConfig, AliasNotFoundError };
+module.exports = { AliasesConfig };

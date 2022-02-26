@@ -1,41 +1,9 @@
 const path = require("path");
 const fs = require("fs");
-const { AliasesConfig, AliasNotFoundError } = require("../AliasesConfig");
-const createFileIfNotExists = require("../util/createFileIfNotExists");
 const util = require("util");
-const removeDuplicates = require("../util/removeDuplicates");
 const exec = util.promisify(require("child_process").exec);
-const { config, updateConfig } = require("../../config.js");
-
-async function init() {
-  updateConfig({
-    path: {
-      aliases: {
-        powershell: path.join(config.path.aliases.base, "powershell.ps1"),
-      },
-    },
-  });
-  createFileIfNotExists(config.path.aliases.powershell);
-
-  await injectAliasesPathToPowershellProfile();
-
-  const aliasesConfig = new AliasesConfig(config.path.aliases.config);
-  aliasesConfig.addShell("powershell");
-
-  const aliases = aliasesConfig.getAliases();
-  writeAliasesPowershell(aliases);
-
-  // try {
-  //   config.removeAlias("test");
-  // } catch (e) {
-  //   if (e instanceof AliasNotFoundError) {
-  //     console.log(e.message);
-  //     return;
-  //   } else {
-  //     throw e;
-  //   }
-  // }
-}
+const { config } = require("../../../config.js");
+const removeDuplicates = require("../../util/removeDuplicates.js");
 
 function writeAliasesPowershell(aliases) {
   const powershellFuncs = [];
@@ -100,6 +68,7 @@ function aliasToPowershell(alias, snippet) {
 }
 
 module.exports = {
-  init,
+  writeAliasesPowershell,
+  injectAliasesPathToPowershellProfile,
   aliasToPowershell,
 };

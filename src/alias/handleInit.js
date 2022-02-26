@@ -4,11 +4,15 @@ const os = require("os");
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 const clc = require("cli-color");
-const { init } = require("./powershell");
-const { config, updateConfig } = require("../../config");
+const initPowershell = require("./shells/powershell/init");
+const { config, updateConfig } = require("../config");
 
 module.exports = function handleInit() {
-  init();
+  if (config.platform === "win32") {
+    initPowershell();
+  } else {
+    console.log("OS not supported.");
+  }
 
   // if (platform === "linux") {
   //   const bashrcPath = path.join(os.homedir(), ".bashrc");
