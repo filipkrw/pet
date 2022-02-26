@@ -4,12 +4,12 @@ const os = require("os");
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 const clc = require("cli-color");
-const { powershellInit } = require("./shellInit");
+const { init } = require("./powershell");
 
 module.exports = function handleInit(dotPetAliasesPath, dotPetPath) {
   const platform = os.platform();
 
-  powershellInit(dotPetPath);
+  init(dotPetPath);
 
   // if (platform === "linux") {
   //   const bashrcPath = path.join(os.homedir(), ".bashrc");

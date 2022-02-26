@@ -1,4 +1,5 @@
 const fs = require("fs");
+const createFileIfNotExists = require("./util/createFileIfNotExists");
 const removeDuplicates = require("./util/removeDuplicates");
 
 class AliasesConfig {
@@ -30,7 +31,7 @@ class AliasesConfig {
   }
 
   readConfig() {
-    this.createConfigFileIfNotExists();
+    createFileIfNotExists(this.path);
     const configJson = fs.readFileSync(this.path, { encoding: "utf8" }) || "{}";
     this.config = JSON.parse(configJson);
   }
@@ -38,12 +39,6 @@ class AliasesConfig {
   writeConfig(config) {
     fs.writeFileSync(this.path, JSON.stringify(config, null, 2), { flag: "w" });
     this.config = config;
-  }
-
-  createConfigFileIfNotExists() {
-    if (!fs.existsSync(this.path)) {
-      fs.openSync(this.path, "a");
-    }
   }
 }
 
