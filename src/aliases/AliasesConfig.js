@@ -8,6 +8,10 @@ class AliasesConfig {
     this.readConfig();
   }
 
+  getAliases() {
+    return this.config.aliases || [];
+  }
+
   addShell(shell) {
     const shells = this.config.shells || [];
     const newShells = [...shells, shell].filter(removeDuplicates);

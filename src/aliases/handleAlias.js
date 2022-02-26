@@ -12,7 +12,7 @@ function handleAlias(args, basePath) {
   const dotPetBatchPath = path.join(dotPetPath, "batch_files");
 
   if (args.alias.length > 0 && args.alias[0] === "init") {
-    handleInit(dotPetAliasesPath, dotPetPath);
+    handleInit(dotPetAliasesPath, dotPetPath, basePath);
     return;
   }
 

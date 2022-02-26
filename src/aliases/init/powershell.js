@@ -3,19 +3,22 @@ const fs = require("fs");
 const { AliasesConfig, AliasNotFoundError } = require("../AliasesConfig");
 const createFileIfNotExists = require("../util/createFileIfNotExists");
 const util = require("util");
+const removeDuplicates = require("../util/removeDuplicates");
 const exec = util.promisify(require("child_process").exec);
 
-async function init(dotPetPath) {
+async function init(basePath, dotPetPath) {
   const aliasesPath = path.join(dotPetPath, "aliases", "powershell.ps1");
-  await injectAliasesPathToPowershellProfile(aliasesPath);
   createFileIfNotExists(aliasesPath);
 
-  // if any aliases in config, transform them
+  await injectAliasesPathToPowershellProfile(aliasesPath);
 
-  // const aliasesPath = path.join(dotPetPath, "aliases", "powershell.ps1");
-  // createFileIfNotExists(aliasesPath);
-  // const configPath = path.join(dotPetPath, "aliases", "config.json");
-  // const config = new AliasesConfig(configPath);
+  const configPath = path.join(dotPetPath, "aliases", "config.json");
+  const config = new AliasesConfig(configPath);
+  config.addShell("powershell");
+
+  const aliases = config.getAliases();
+  writeAliasesPowershell(basePath, aliases, aliasesPath);
+
   // try {
   //   config.removeAlias("test");
   // } catch (e) {
@@ -26,6 +29,22 @@ async function init(dotPetPath) {
   //     throw e;
   //   }
   // }
+}
+
+function writeAliasesPowershell(basePath, aliases, aliasesPath) {
+  const powershellFuncs = [];
+
+  for (const [alias, source] of Object.entries(aliases)) {
+    try {
+      const snippetPath = path.join(basePath, source.snippet);
+      const snippet = fs.readFileSync(snippetPath).toString();
+      powershellFuncs.push(aliasToPowershell(alias, snippet));
+    } catch (e) {
+      continue;
+    }
+  }
+
+  fs.writeFileSync(aliasesPath, powershellFuncs.join("\n\n"));
 }
 
 async function injectAliasesPathToPowershellProfile(aliasesPath) {
@@ -55,6 +74,22 @@ async function injectAliasesPathToPowershellProfile(aliasesPath) {
   }
 }
 
+function aliasToPowershell(alias, snippet) {
+  const params = [];
+  let funcBody = snippet.replace(/(<[^>]*\*>)/g, "$args");
+  funcBody = funcBody.replace(/(<[^>]*>)/g, (match) => {
+    const param = `$${match.substr(1, match.length - 2).replace("-", "_")}`;
+    params.push(param);
+    return param;
+  });
+  const funcParams = params.filter(removeDuplicates).join(", ");
+  const template = `function ${alias}(${funcParams}) {
+			${funcBody}
+	}`;
+  return template;
+}
+
 module.exports = {
   init,
+  aliasToPowershell,
 };

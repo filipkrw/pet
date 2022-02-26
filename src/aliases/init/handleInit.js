@@ -6,10 +6,10 @@ const exec = util.promisify(require("child_process").exec);
 const clc = require("cli-color");
 const { init } = require("./powershell");
 
-module.exports = function handleInit(dotPetAliasesPath, dotPetPath) {
+module.exports = function handleInit(dotPetAliasesPath, dotPetPath, basePath) {
   const platform = os.platform();
 
-  init(dotPetPath);
+  init(basePath, dotPetPath);
 
   // if (platform === "linux") {
   //   const bashrcPath = path.join(os.homedir(), ".bashrc");
