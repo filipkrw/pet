@@ -6,7 +6,7 @@ const config = require("../config.js");
 const flatten = require("tree-flatten");
 const Fuse = require("fuse.js");
 const os = require("os");
-const handleAlias = require("./handleAlias.js");
+const handleAlias = require("./aliases/handleAlias.js");
 const handleQuery = require("./handleQuery.js");
 const handleRun = require("./handleRun.js");
 
