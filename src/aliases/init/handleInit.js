@@ -5,11 +5,10 @@ const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 const clc = require("cli-color");
 const { init } = require("./powershell");
+const { config, updateConfig } = require("../../config");
 
-module.exports = function handleInit(dotPetAliasesPath, dotPetPath, basePath) {
-  const platform = os.platform();
-
-  init(basePath, dotPetPath);
+module.exports = function handleInit() {
+  init();
 
   // if (platform === "linux") {
   //   const bashrcPath = path.join(os.homedir(), ".bashrc");
@@ -24,8 +23,8 @@ module.exports = function handleInit(dotPetAliasesPath, dotPetPath, basePath) {
   // }
 };
 
-async function handleWindowsInit(dotPetPath) {
-  const dotPetBatchPath = path.join(dotPetPath, "batch_files");
+async function handleWindowsInit() {
+  const dotPetBatchPath = path.join(config.path.dotPet, "batch_files");
   const addEnvScriptPath = path.join(
     path.dirname(require.main.filename),
     "os",

@@ -5,19 +5,25 @@ const createFileIfNotExists = require("../util/createFileIfNotExists");
 const util = require("util");
 const removeDuplicates = require("../util/removeDuplicates");
 const exec = util.promisify(require("child_process").exec);
+const { config, updateConfig } = require("../../config.js");
 
-async function init(basePath, dotPetPath) {
-  const aliasesPath = path.join(dotPetPath, "aliases", "powershell.ps1");
-  createFileIfNotExists(aliasesPath);
+async function init() {
+  updateConfig({
+    path: {
+      aliases: {
+        powershell: path.join(config.path.aliases.base, "powershell.ps1"),
+      },
+    },
+  });
+  createFileIfNotExists(config.path.aliases.powershell);
 
-  await injectAliasesPathToPowershellProfile(aliasesPath);
+  await injectAliasesPathToPowershellProfile();
 
-  const configPath = path.join(dotPetPath, "aliases", "config.json");
-  const config = new AliasesConfig(configPath);
-  config.addShell("powershell");
+  const aliasesConfig = new AliasesConfig(config.path.aliases.config);
+  aliasesConfig.addShell("powershell");
 
-  const aliases = config.getAliases();
-  writeAliasesPowershell(basePath, aliases, aliasesPath);
+  const aliases = aliasesConfig.getAliases();
+  writeAliasesPowershell(aliases);
 
   // try {
   //   config.removeAlias("test");
@@ -31,12 +37,12 @@ async function init(basePath, dotPetPath) {
   // }
 }
 
-function writeAliasesPowershell(basePath, aliases, aliasesPath) {
+function writeAliasesPowershell(aliases) {
   const powershellFuncs = [];
 
   for (const [alias, source] of Object.entries(aliases)) {
     try {
-      const snippetPath = path.join(basePath, source.snippet);
+      const snippetPath = path.join(config.path.base, source.snippet);
       const snippet = fs.readFileSync(snippetPath).toString();
       powershellFuncs.push(aliasToPowershell(alias, snippet));
     } catch (e) {
@@ -44,10 +50,13 @@ function writeAliasesPowershell(basePath, aliases, aliasesPath) {
     }
   }
 
-  fs.writeFileSync(aliasesPath, powershellFuncs.join("\n\n"));
+  fs.writeFileSync(
+    config.path.aliases.powershell,
+    powershellFuncs.join("\n\n")
+  );
 }
 
-async function injectAliasesPathToPowershellProfile(aliasesPath) {
+async function injectAliasesPathToPowershellProfile() {
   const command = `
 		if (!(Test-Path $Profile)) {
 				New-Item -Type file -Path $Profile -Force
@@ -63,7 +72,7 @@ async function injectAliasesPathToPowershellProfile(aliasesPath) {
 
     // Inject aliases path if not there already
     const profile = fs.readFileSync(profilePath);
-    const toInject = `\n. ${aliasesPath}\n`;
+    const toInject = `\n. ${config.path.aliases.powershell}\n`;
     if (profile.indexOf(toInject) === -1) {
       fs.writeFileSync(profilePath.trim(), toInject, {
         flag: "a+",
