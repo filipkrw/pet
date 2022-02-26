@@ -1,6 +1,6 @@
-const { AliasesConfig } = require("./AliasesConfig");
-const { config } = require("../config");
-const { writeAliasesPowershell } = require("./shells/powershell/powershell");
+const { AliasesConfig } = require("../AliasesConfig");
+const { config } = require("../../config");
+const { writeAliasesPowershell } = require("../shells/powershell/powershell");
 
 function handleRemove(alias) {
   const aliasesConfig = new AliasesConfig(config.path.aliases.config);
