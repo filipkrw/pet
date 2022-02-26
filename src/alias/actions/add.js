@@ -2,31 +2,19 @@ const { AliasesConfig } = require("../AliasesConfig");
 const { config } = require("../../config");
 const path = require("path");
 const fs = require("fs");
-const { writeAliasesPowershell } = require("../shells/powershell/powershell");
 const CommandError = require("../../util/CommandError");
+const shellsBulkWrite = require("../shells/shellsBulkWrite");
 
 function handleAdd([alias, snippetPath]) {
-  const aliasesConfig = new AliasesConfig(config.path.aliases.config);
-
   const snippetFullPath = path.join(config.path.base, snippetPath);
   if (!fs.existsSync(snippetFullPath)) {
     throw new CommandError(`Snippet "${snippetPath}" doesn't exist.`);
   }
 
+  const aliasesConfig = new AliasesConfig(config.path.aliases.config);
   aliasesConfig.addAlias(alias, snippetPath);
-  propagate(aliasesConfig);
+  shellsBulkWrite(aliasesConfig.getShells());
   console.log(`Alias "${alias}" added.`);
-}
-
-function propagate(aliasesConfig) {
-  const funcs = {
-    powershell: writeAliasesPowershell,
-  };
-  for (const shell of aliasesConfig.getShells()) {
-    const func = funcs[shell];
-    if (!func) continue;
-    func(aliasesConfig.getAliases());
-  }
 }
 
 module.exports = handleAdd;

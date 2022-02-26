@@ -4,12 +4,13 @@ const os = require("os");
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 const clc = require("cli-color");
-const initPowershell = require("../shells/powershell/init");
 const { config, updateConfig } = require("../../config");
+const PowerShell = require("../shells/PowerShell");
 
 function handleInit() {
   if (config.platform === "win32") {
-    initPowershell();
+    const powerShell = new PowerShell();
+    powerShell.init();
   } else {
     console.log("OS not supported.");
   }

@@ -1,29 +1,34 @@
-const { aliasToPowershell } = require("./powershell");
+const PowerShell = require("./PowerShell");
 
-const tabsSpacesRegex = new RegExp("\t|  ", "g");
+const powerShell = new PowerShell();
 
-test("transform alias to powershell function", () => {
-  const result = aliasToPowershell(
+function normalise(script) {
+  return script.replace(new RegExp("\t|  ", "g"), "");
+}
+
+test("transform alias to powerShell function", () => {
+  const result = powerShell.transform(
     "com",
     "command <option> <another_option> -x <option> <rest*>"
   );
-  expect(result).toEqual(`function com($option, $another_option) {
-			$expr = "command $($option) $($another_option) -x $($option) $($args)"
-      Invoke-Expression $expr
-	}`);
+  expect(normalise(result)).toEqual(
+    normalise(`function com($option, $another_option) {
+    $expr = "command $($option) $($another_option) -x $($option) $($args)"
+    Invoke-Expression $expr
+}`)
+  );
 });
 
-test("transform alias to powershell function (multiline)", () => {
-  const result = aliasToPowershell(
+test("transform alias to powerShell function (multiline)", () => {
+  const result = powerShell.transform(
     "com",
     "command <option> <another-option> -x <option> <rest*>\necho <rest*>"
   );
-  const shouldBe = `function com($option, $another_option) {
-    $expr = "command $($option) $($another_option) -x $($option) $($args)
-    echo $($args)"
-    Invoke-Expression $expr
-  }`;
-  expect(result.replace(tabsSpacesRegex, "")).toEqual(
-    shouldBe.replace(tabsSpacesRegex, "")
+  expect(normalise(result)).toEqual(
+    normalise(`function com($option, $another_option) {
+      $expr = "command $($option) $($another_option) -x $($option) $($args)
+      echo $($args)"
+      Invoke-Expression $expr
+    }`)
   );
 });
