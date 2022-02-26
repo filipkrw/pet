@@ -76,15 +76,16 @@ async function injectAliasesPathToPowershellProfile(aliasesPath) {
 
 function aliasToPowershell(alias, snippet) {
   const params = [];
-  let funcBody = snippet.replace(/(<[^>]*\*>)/g, "$args");
+  let funcBody = snippet.replace(/(<[^>]*\*>)/g, "$($args)");
   funcBody = funcBody.replace(/(<[^>]*>)/g, (match) => {
     const param = `$${match.substr(1, match.length - 2).replace("-", "_")}`;
     params.push(param);
-    return param;
+    return `$(${param})`;
   });
   const funcParams = params.filter(removeDuplicates).join(", ");
   const template = `function ${alias}(${funcParams}) {
-			${funcBody}
+			$expr = "${funcBody}"
+      Invoke-Expression $expr
 	}`;
   return template;
 }
