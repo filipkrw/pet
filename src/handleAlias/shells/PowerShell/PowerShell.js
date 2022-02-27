@@ -4,35 +4,16 @@ const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 const { config, updateConfig } = require("../../../config.js");
 const removeDuplicates = require("../../util/removeDuplicates.js");
-const { AliasesConfig } = require("../../AliasesConfig");
 const createFileIfNotExists = require("../../util/createFileIfNotExists");
+const Shell = require("../Shell.js");
 
-class PowerShell {
-  constructor() {
-    updateConfig({
-      path: {
-        aliases: {
-          config: path.join(config.path.dotPet, "aliases", "config.json"),
-          powerShell: path.join(
-            config.path.dotPet,
-            "aliases",
-            "transformed",
-            "powershell"
-          ),
-        },
-      },
-    });
-    this.aliasesConfig = new AliasesConfig(config.path.aliases.config);
-  }
-
-  async init() {
-    await this.mount();
-    this.write();
-    this.aliasesConfig.addShell("powerShell");
+class PowerShell extends Shell {
+  constructor(aliasesConfig) {
+    super("powershell", "PowerShell-Aliases.ps1", aliasesConfig);
   }
 
   async mount() {
-    createFileIfNotExists(config.path.aliases.powerShell);
+    createFileIfNotExists(config.path.aliases[this.name]);
 
     const command = `
       if (!(Test-Path $Profile)) {
@@ -49,7 +30,7 @@ class PowerShell {
 
       // Inject aliases path if not there already
       const profile = fs.readFileSync(profilePath);
-      const toInject = `\n. ${config.path.aliases.powerShell}\n`;
+      const toInject = `\n. ${config.path.aliases[this.name]}\n`;
       if (profile.indexOf(toInject) === -1) {
         fs.writeFileSync(profilePath.trim(), toInject, {
           flag: "a+",
@@ -58,25 +39,6 @@ class PowerShell {
     } catch (e) {
       console.log(e.stderr || e);
     }
-  }
-
-  write() {
-    const aliases = this.aliasesConfig.getAliases();
-    const powerShellFuncs = [];
-
-    for (const [alias, source] of Object.entries(aliases)) {
-      try {
-        const snippetPath = path.join(config.path.base, source.snippet);
-        const snippet = fs.readFileSync(snippetPath).toString();
-        powerShellFuncs.push(this.transform(alias, snippet));
-      } catch (e) {
-        continue;
-      }
-    }
-    fs.writeFileSync(
-      config.path.aliases.powerShell,
-      powerShellFuncs.join("\n\n")
-    );
   }
 
   transform(alias, snippet) {

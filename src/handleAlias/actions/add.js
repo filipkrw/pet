@@ -13,7 +13,7 @@ function handleAdd([alias, snippetPath]) {
 
   const aliasesConfig = new AliasesConfig(config.path.aliases.config);
   aliasesConfig.addAlias(alias, snippetPath);
-  shellsBulkWrite(aliasesConfig.getShells());
+  shellsBulkWrite(aliasesConfig);
   console.log(`Alias "${alias}" added.`);
 }
 

@@ -5,7 +5,7 @@ const shellsBulkWrite = require("../shells/shellsBulkWrite");
 function handleRemove(alias) {
   const aliasesConfig = new AliasesConfig(config.path.aliases.config);
   aliasesConfig.removeAlias(alias);
-  shellsBulkWrite(aliasesConfig.getShells());
+  shellsBulkWrite(aliasesConfig);
   console.log(`Alias "${alias}" removed.`);
 }
 

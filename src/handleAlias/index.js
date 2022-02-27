@@ -16,7 +16,6 @@ function handleAlias(args) {
       aliases: {
         base: path.join(config.path.dotPet, "aliases"),
         config: path.join(config.path.dotPet, "aliases", "config.json"),
-        powerShell: path.join(config.path.dotPet, "aliases", "powerShell.ps1"),
       },
     },
   });

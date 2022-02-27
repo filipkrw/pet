@@ -7,24 +7,11 @@ const { config, updateConfig } = require("../../../config.js");
 const removeDuplicates = require("../../util/removeDuplicates.js");
 const { AliasesConfig } = require("../../AliasesConfig");
 const createFileIfNotExists = require("../../util/createFileIfNotExists");
+const Shell = require("../Shell.js");
 
-class Bash {
-  constructor() {
-    updateConfig({
-      path: {
-        aliases: {
-          config: path.join(config.path.dotPet, "aliases", "config.json"),
-          bash: path.join(config.path.dotPet, "aliases", "transformed", "bash"),
-        },
-      },
-    });
-    this.aliasesConfig = new AliasesConfig(config.path.aliases.config);
-  }
-
-  async init() {
-    await this.mount();
-    this.write();
-    this.aliasesConfig.addShell("bash");
+class Bash extends Shell {
+  constructor(aliasesConfig) {
+    super("bash", "bash_aliases", aliasesConfig);
   }
 
   async mount() {
@@ -45,22 +32,6 @@ class Bash {
     } catch (e) {
       console.log(e.stderr || e);
     }
-  }
-
-  write() {
-    const aliases = this.aliasesConfig.getAliases();
-    const bashFuncs = [];
-
-    for (const [alias, source] of Object.entries(aliases)) {
-      try {
-        const snippetPath = path.join(config.path.base, source.snippet);
-        const snippet = fs.readFileSync(snippetPath).toString();
-        bashFuncs.push(this.transform(alias, snippet));
-      } catch (e) {
-        continue;
-      }
-    }
-    fs.writeFileSync(config.path.aliases.bash, bashFuncs.join("\n\n"));
   }
 
   transform(alias, snippet) {
