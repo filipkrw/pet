@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 const commandLineArgs = require("command-line-args");
-const handleAlias = require("./alias");
+const handleAlias = require("./handleAlias");
 const handleQuery = require("./handleQuery");
 const handleRun = require("./handleRun");
-const CommandError = require("./alias/CommandError");
+const CommandError = require("./handleAlias/CommandError");
 
 const args = commandLineArgs([
   { name: "query", type: String, defaultOption: true, multiple: true },
@@ -11,6 +11,8 @@ const args = commandLineArgs([
   { name: "alias", alias: "a", type: String, multiple: true },
   { name: "remove", alias: "r", type: Boolean },
   { name: "exec", alias: "e", type: String, multiple: true },
+  { name: "list", alias: "l", type: Boolean },
+  { name: "verbose", alias: "v", type: Boolean },
 ]);
 
 try {

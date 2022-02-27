@@ -8,6 +8,7 @@ const handleInit = require("./actions/init");
 const { config, updateConfig } = require("../config.js");
 const handleRemove = require("./actions/remove");
 const handleAdd = require("./actions/add");
+const handleList = require("./actions/list");
 
 function handleAlias(args) {
   updateConfig({
@@ -25,6 +26,8 @@ function handleAlias(args) {
       throw new Error("You must specify name of the snippet to remove.");
     }
     handleRemove(args.query[0]);
+  } else if (args.list) {
+    handleList(args);
   } else if (args.alias.length === 1) {
     const action = args.alias[0];
     if (action === "init") handleInit();
