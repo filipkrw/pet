@@ -7,6 +7,7 @@ function initConfig() {
   let config = {
     path: generatePaths(),
     platform: os.platform(),
+    shell: process.env.SHELL,
   };
 
   function generatePaths() {

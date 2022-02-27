@@ -5,19 +5,19 @@ const { config } = require("../../../config.js");
 const createFileIfNotExists = require("../../util/createFileIfNotExists");
 const Shell = require("../Shell.js");
 
-class Bash extends Shell {
+class Zsh extends Shell {
   constructor(aliasesConfig) {
-    super("bash", "bash_aliases", aliasesConfig);
+    super("zsh", "zsh_aliases", aliasesConfig);
   }
 
   async mount() {
     createFileIfNotExists(config.path.aliases[this.name]);
 
     try {
-      const bashrcPath = path.join(os.homedir(), ".bashrc");
+      const bashrcPath = path.join(os.homedir(), ".zshrc");
       const bashrc = fs.readFileSync(bashrcPath);
       const toInject = fs
-        .readFileSync(path.join(__dirname, ".bashrc_template"))
+        .readFileSync(path.join(__dirname, ".zshrc_template"))
         .toString()
         .replace(/{{aliasesPath}}/g, config.path.aliases[this.name]);
       if (bashrc.indexOf(toInject) === -1) {
@@ -50,4 +50,4 @@ ${alias}() {
   }
 }
 
-module.exports = Bash;
+module.exports = Zsh;

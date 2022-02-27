@@ -1,30 +1,30 @@
-const path = require("path");
 const fs = require("fs");
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
-const { config, updateConfig } = require("../../../config.js");
+const { config } = require("../../../config.js");
 const removeDuplicates = require("../../util/removeDuplicates.js");
 const createFileIfNotExists = require("../../util/createFileIfNotExists");
 const Shell = require("../Shell.js");
 
 class PowerShell extends Shell {
   constructor(aliasesConfig) {
-    super("powershell", "PowerShell-Aliases.ps1", aliasesConfig);
+    super("powershell", "PowerShell_aliases.ps1", aliasesConfig);
   }
 
   async mount() {
     createFileIfNotExists(config.path.aliases[this.name]);
 
-    const command = `
-      if (!(Test-Path $Profile)) {
-          New-Item -Type file -Path $Profile -Force
-      }
-      $Profile
-    `;
-
     try {
-      // Get path of powerShell profile file
+      // Get path of PowerShell profile file
       // https://www.red-gate.com/simple-talk/sysadmin/powerShell/persistent-powerShell-the-powerShell-profile/
+
+      const command = `
+        if (!(Test-Path $Profile)) {
+            New-Item -Type file -Path $Profile -Force
+        }
+        $Profile
+      `;
+
       const { stdout } = await exec(command, { shell: "powerShell" });
       const profilePath = stdout.trim();
 
