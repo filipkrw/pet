@@ -16,12 +16,12 @@ class PowerShell {
           powerShell: path.join(
             config.path.dotPet,
             "aliases",
-            "powerShell.ps1"
+            "transformed",
+            "powershell"
           ),
         },
       },
     });
-
     this.aliasesConfig = new AliasesConfig(config.path.aliases.config);
   }
 

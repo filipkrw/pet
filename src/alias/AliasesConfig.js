@@ -1,5 +1,5 @@
 const fs = require("fs");
-const CommandError = require("../util/CommandError");
+const CommandError = require("./CommandError");
 const createFileIfNotExists = require("./util/createFileIfNotExists");
 const removeDuplicates = require("./util/removeDuplicates");
 

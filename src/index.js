@@ -3,7 +3,7 @@ const commandLineArgs = require("command-line-args");
 const handleAlias = require("./alias");
 const handleQuery = require("./handleQuery");
 const handleRun = require("./handleRun");
-const CommandError = require("./util/CommandError");
+const CommandError = require("./alias/CommandError");
 
 const args = commandLineArgs([
   { name: "query", type: String, defaultOption: true, multiple: true },

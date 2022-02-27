@@ -1,0 +1,8 @@
+
+
+# PET ALIASES START
+if [ -f "{{bashAliasesPath}}" ]; then
+    . "{{bashAliasesPath}}"
+fi
+# PET ALIASES END
+
