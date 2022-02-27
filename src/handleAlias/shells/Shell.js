@@ -38,10 +38,6 @@ class Shell {
     }
     fs.writeFileSync(config.path.aliases[this.name], transformed.join("\n\n"));
   }
-
-  // To be implemented by children
-  async mount() {}
-  transform(alias, snippet) {}
 }
 
 module.exports = Shell;
