@@ -75,36 +75,12 @@ class Bash {
       return `$${params.length}`;
     });
     funcBody = funcBody.replace(/(<[^>]*\*>)/g, `$\{@:${params.length + 1}}`);
-    const template = `${alias}() {
-			${funcBody}
-		}`;
-    return template;
+    const template = `
+${alias}() {
+	${funcBody}
+}`;
+    return template.trim();
   }
 }
 
 module.exports = Bash;
-
-// function handleAdd([alias, snippetPath]) {
-//   if (!fs.existsSync(dotPetBatchPath)) {
-//     fs.mkdirSync(dotPetBatchPath, { recursive: true });
-//   }
-
-//   const snippet = getSnippet(path.join(basePath, snippetPath));
-//   const aliasEntry = `alias ${alias}="${parseSnippetToCommand(
-//     snippet,
-//     "$"
-//   )}"\n`;
-//   fs.writeFileSync(dotPetAliasesPath, aliasEntry, { flag: "a+" }, (error) => {
-//     if (error) throw new Error(error);
-//   });
-
-//   const aliasBatFilePath = path.join(dotPetBatchPath, `${alias}.bat`);
-//   fs.writeFileSync(
-//     aliasBatFilePath,
-//     parseSnippetToCommand(snippet, "%"),
-//     { flag: "wx" },
-//     (error) => {
-//       if (error) throw new Error(error);
-//     }
-//   );
-// }

@@ -88,11 +88,12 @@ class PowerShell {
       return `$(${param})`;
     });
     const funcParams = params.filter(removeDuplicates).join(", ");
-    const template = `function ${alias}(${funcParams}) {
-        $expr = "${funcBody}"
-        Invoke-Expression $expr
-    }`;
-    return template;
+    const template = `
+function ${alias}(${funcParams}) {
+  $expr = "${funcBody}"
+  Invoke-Expression $expr
+}`;
+    return template.trim();
   }
 }
 
