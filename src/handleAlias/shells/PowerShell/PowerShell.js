@@ -17,7 +17,6 @@ class PowerShell extends Shell {
     try {
       // Get path of PowerShell profile file
       // https://www.red-gate.com/simple-talk/sysadmin/powerShell/persistent-powerShell-the-powerShell-profile/
-
       const command = `
         if (!(Test-Path $Profile)) {
             New-Item -Type file -Path $Profile -Force
@@ -27,6 +26,7 @@ class PowerShell extends Shell {
 
       const { stdout } = await exec(command, { shell: "powerShell" });
       const profilePath = stdout.trim();
+      createFileIfNotExists(profilePath);
 
       // Inject aliases path if not there already
       const profile = fs.readFileSync(profilePath);

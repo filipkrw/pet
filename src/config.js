@@ -3,7 +3,7 @@ const path = require("path");
 const userConfig = require("../userConfig");
 const mergeDeep = require("./util/mergeDeep");
 
-function initConfig() {
+function initConfig(initValues) {
   let config = {
     path: generatePaths(),
     platform: os.platform(),

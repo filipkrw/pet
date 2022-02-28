@@ -8,7 +8,8 @@
   "author": "filipkrw",
   "license": "ISC",
   "scripts": {
-    "test": "jest --testPathIgnorePatterns extension"
+    "test": "jest",
+    "test:cli": "jest --testPathIgnorePatterns extension"
   },
   "dependencies": {
     "cli-color": "^2.0.1",

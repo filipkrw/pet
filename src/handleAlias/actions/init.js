@@ -1,22 +1,16 @@
-const fs = require("fs");
-const path = require("path");
-const os = require("os");
-const util = require("util");
-const exec = util.promisify(require("child_process").exec);
-const clc = require("cli-color");
-const { config, updateConfig } = require("../../config");
+const { config } = require("../../config");
 const PowerShell = require("../shells/PowerShell");
 const Bash = require("../shells/Bash");
+const Zsh = require("../shells/Zsh/Zsh");
 const { AliasesConfig } = require("../AliasesConfig");
 const CommandError = require("../CommandError");
-const Zsh = require("../shells/Zsh/Zsh");
 
-function handleInit() {
+async function handleInit() {
   const aliasesConfig = new AliasesConfig(config.path.aliases.config);
 
   if (config.platform === "win32") {
     const powerShell = new PowerShell(aliasesConfig);
-    powerShell.init();
+    await powerShell.init();
   } else if (["linux", "darwin"].includes(config.platform)) {
     if (config.shell.indexOf("bash") > -1) {
       const bash = new Bash(aliasesConfig);
