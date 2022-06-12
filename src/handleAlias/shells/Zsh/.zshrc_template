@@ -1,0 +1,8 @@
+
+
+# PET ALIASES START
+if [ -f "{{aliasesPath}}" ]; then
+    . "{{aliasesPath}}"
+fi
+# PET ALIASES END
+
