@@ -1,29 +1,19 @@
 const fs = require("fs");
 const path = require("path");
+const mockConfig = require("../../util/mockConfig");
 const handleInit = require("./init");
+const { updateConfig } = require("../../config");
 
-jest.mock("../../config", () => {
-  const path = require("path");
-  const mergeDeep = require("../../util/mergeDeep");
-
-  const base = ".tmp";
-  const dotPet = path.join(base, ".pet");
-  let config = {
-    path: {
-      base,
-      dotPet,
-      aliases: {
-        base: path.join(dotPet, "aliases"),
-        config: path.join(dotPet, "aliases", "config.json"),
-      },
-    },
-    platform: "win32",
-  };
-  return {
-    config,
-    updateConfig: (parameters) => (config = mergeDeep(config, parameters)),
-  };
+afterEach(() => {
+  return fs.rmSync(".tmp", {
+    recursive: true,
+    force: true,
+  });
 });
+
+const aliasesConfigPath = path.normalize(
+  path.join(".tmp", ".pet", "aliases", "config.json")
+);
 
 jest.mock("child_process", () => {
   const path = require("path");
@@ -46,18 +36,22 @@ jest.mock("child_process", () => {
   };
 });
 
-afterAll(() => {
-  return fs.rmSync(".tmp", {
-    recursive: true,
-    force: true,
-  });
-});
-
 test("alias init (windows)", async () => {
+  const base = ".tmp";
+  const dotPet = path.join(base, ".pet");
+  updateConfig({
+    path: {
+      base,
+      dotPet,
+      aliases: {
+        base: path.join(dotPet, "aliases"),
+        config: path.join(dotPet, "aliases", "config.json"),
+      },
+    },
+    platform: "win32",
+  });
+
   await handleInit();
-  const aliasesConfigPath = path.normalize(
-    path.join(".tmp", ".pet", "aliases", "config.json")
-  );
   const aliasesConfig = JSON.parse(
     fs.readFileSync(aliasesConfigPath).toString()
   );
@@ -76,3 +70,31 @@ test("alias init (windows)", async () => {
     )}`
   );
 });
+
+// test("alias init (bash)", async () => {
+//   os.homedir.mockImplementation(() => path.join(".tmp", "bash"));
+//   await handleInit();
+//   const aliasesConfig = JSON.parse(
+//     fs.readFileSync(aliasesConfigPath).toString()
+//   );
+//   expect(aliasesConfig).toEqual({ shells: ["bash"] });
+//   const bashrcPath = path.normalize(path.join(".tmp", "bash", ".bashrc"));
+//   const bashrc = fs.readFileSync(bashrcPath).toString();
+
+//   const aliasesPath = path.join(
+//     ".tmp",
+//     ".pet",
+//     "aliases",
+//     "transformed",
+//     "bash_aliases"
+//   );
+//   expect(bashrc.trim()).toEqual(
+//     `
+// # PET ALIASES START
+// if [ -f "${aliasesPath}" ]; then
+//     . "${aliasesPath}"
+// fi
+// # PET ALIASES END
+//     `.trim()
+//   );
+// });

@@ -2,8 +2,9 @@ const os = require("os");
 const path = require("path");
 const userConfig = require("../userConfig");
 const mergeDeep = require("./util/mergeDeep");
+const CommandError = require("./handleAlias/CommandError");
 
-function initConfig(initValues) {
+function initConfig() {
   let config = {
     path: generatePaths(),
     platform: os.platform(),
@@ -16,8 +17,8 @@ function initConfig(initValues) {
     return { base, dotPet };
   }
 
-  function updateConfig(parameters) {
-    config = mergeDeep(config, parameters);
+  function updateConfig(params) {
+    config = mergeDeep(config, params);
   }
 
   return {
@@ -34,7 +35,7 @@ function parseBasePath(basePath) {
   if (platform in basePath) {
     return basePath[platform];
   }
-  throw new Error(
+  throw new CommandError(
     `No basePath specified for the operating system: ${platform}`
   );
 }

@@ -15,6 +15,7 @@ class Bash extends Shell {
 
     try {
       const bashrcPath = path.join(os.homedir(), ".bashrc");
+      createFileIfNotExists(bashrcPath);
       const bashrc = fs.readFileSync(bashrcPath);
       const toInject = fs
         .readFileSync(path.join(__dirname, ".bashrc_template"))
