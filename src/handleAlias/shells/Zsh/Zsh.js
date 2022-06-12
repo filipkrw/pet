@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const os = require("os");
 const { config } = require("../../../config.js");
-const createFileIfNotExists = require("../../util/createFileIfNotExists");
+const createFileIfNotExists = require("../../../util/createFileIfNotExists");
 const Shell = require("../Shell.js");
 
 class Zsh extends Shell {
