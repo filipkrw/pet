@@ -4,7 +4,6 @@ const handleAlias = require("./handleAlias");
 const handleQuery = require("./handleQuery");
 const handleRun = require("./handleRun");
 const CommandError = require("./handleAlias/CommandError");
-const PowerShell = require("./handleAlias/shells/PowerShell");
 
 const args = commandLineArgs([
   { name: "query", type: String, defaultOption: true, multiple: true },
