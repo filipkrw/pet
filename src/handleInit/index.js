@@ -59,14 +59,22 @@ async function handleInit() {
 }
 
 async function handleConfig(args) {
-  // if (args.set) {
-  //   console.log("Set new config path.");
-  //   const cwd = process.cwd().replace(/\\/g, "/");
-  //   const basePath = await promptUser(clc.white("Config Path:\t"), cwd);
-  //   writePetConfig(basePath);
-  //   writeUserConfig(basePath);
-  //   console.log(clc.green("Done!"));
-  // }
+  if (args.get) {
+    const petConfigPath = getPetConfigPath();
+    const petConfig = require(petConfigPath);
+    for (const [key, value] of Object.entries(petConfig)) {
+      console.log(`${clc.white(`${camelCaseToCapitalized(key)}:`)}\t${value}`);
+    }
+  }
+  if (args.set) {
+    handleInit();
+  }
 }
 
-module.exports = { handleInit, handleConfig, isInitialized };
+function camelCaseToCapitalized(str) {
+  return str.replace(/([A-Z])/g, " $1").replace(/^./, function (str) {
+    return str.toUpperCase();
+  });
+}
+
+module.exports = { handleInit, handleConfig, isInitialized, getPetConfigPath };

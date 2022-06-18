@@ -1,6 +1,8 @@
 module.exports = {
-  bases: {
-    root: "..",
-    include: ["*"],
-  },
+  sources: [
+    {
+      root: "..",
+      include: ["*"],
+    },
+  ],
 };

@@ -2,10 +2,10 @@
 const { isInitialized, handleInit, handleConfig } = require("./handleInit");
 
 async function pet() {
-  // if (!isInitialized()) {
-  await handleInit();
-  return;
-  // }
+  if (!isInitialized()) {
+    await handleInit();
+    return;
+  }
 
   const commandLineArgs = require("command-line-args");
   const handleAlias = require("./handleAlias");
@@ -23,6 +23,7 @@ async function pet() {
     { name: "verbose", alias: "v", type: Boolean },
     { name: "config", alias: "c", type: Boolean },
     { name: "set", alias: "s", type: String, multiple: true },
+    { name: "get", alias: "g", type: Boolean },
   ]);
 
   try {
