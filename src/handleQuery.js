@@ -7,18 +7,20 @@ const { config } = require("./config");
 const path = require("path");
 const escapeRegex = require("./util/escapeRegex");
 
-const defaultExclude = [".pet", ".git"];
-
-function getSources() {
-  const sources = [];
-  for (const source of config.userConfig.sources) {
-    const sourcePath = path.resolve(config.path.dotPet, source.root);
-    if (source.exclude) {
-      sources.push({ ...source, path: sourcePath });
-    } else {
-      sources.push({ ...source, path: sourcePath, exclude: defaultExclude });
-    }
-  }
+function getSources(includeSources) {
+  const sources = config.userConfig.sources
+    .filter((source) => {
+      if (!includeSources) return true;
+      const name =
+        source.name ||
+        path.basename(source.relativePath || source.absoluteName);
+      return includeSources.includes(name);
+    })
+    .map((source) => ({
+      ...source,
+      absolutePath: path.resolve(config.path.dotPet, source.relativePath),
+      exclude: source.exclude || config.defaultExclude,
+    }));
   return sources;
 }
 
@@ -27,10 +29,10 @@ function constructOrRegex(strings) {
   return new RegExp(excludeStr);
 }
 
-function prepareSourceFiles() {
-  return getSources()
+function prepareSourceFiles(includeSources) {
+  return getSources(includeSources)
     .map((source) =>
-      dree.scan(source.path, {
+      dree.scan(source.absolutePath, {
         normalize: true,
         exclude: constructOrRegex(source.exclude),
       })
@@ -84,7 +86,8 @@ function searchSourceFiles(query, sourceFiles) {
 
 function printResults(results, args) {
   for (const result of results) {
-    console.log(clc.green.bold(`${result.source}/${result.item.relativePath}`));
+    const sourcePrefix = args.hideSource ? "" : `${result.source}/`;
+    console.log(clc.green.bold(`${sourcePrefix}${result.item.relativePath}`));
     if (!args.namesOnly) {
       console.log(result.item.content.trimEnd());
       console.log();
@@ -96,8 +99,9 @@ function printResults(results, args) {
 }
 
 function handleQuery(args) {
-  const sourceFiles = prepareSourceFiles();
   const query = args.query.join(" ");
+  const includeSources = args.set;
+  const sourceFiles = prepareSourceFiles(includeSources);
   const results = searchSourceFiles(query, sourceFiles);
   printResults(results, args);
 }

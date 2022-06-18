@@ -9,6 +9,7 @@ function initConfig() {
     userConfig: getUserConfig(),
     platform: os.platform(),
     shell: process.env.SHELL,
+    defaultExclude: [".pet", ".git"],
   };
 
   function generatePaths() {

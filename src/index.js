@@ -24,6 +24,7 @@ async function pet() {
     { name: "config", alias: "c", type: Boolean },
     { name: "set", alias: "s", type: String, multiple: true },
     { name: "get", alias: "g", type: Boolean },
+    { name: "hideSource", alias: "h", type: Boolean },
   ]);
 
   try {
