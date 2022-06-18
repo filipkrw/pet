@@ -45,7 +45,7 @@ class PowerShell extends Shell {
     const params = [];
     let funcBody = snippet.replace(/(<[^>]*\*>)/g, "$($args)");
     funcBody = funcBody.replace(/(<[^>]*>)/g, (match) => {
-      const param = `$${match.substr(1, match.length - 2).replace("-", "_")}`;
+      const param = `$${match.substr(1, match.length - 2).replace(/-/g, "_")}`;
       params.push(param);
       return `$(${param})`;
     });
