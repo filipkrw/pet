@@ -1,6 +1,6 @@
 const fs = require("fs");
 const CommandError = require("./CommandError");
-const createFileIfNotExists = require("../util/createFileIfNotExists");
+const { createFileIfNotExists } = require("../util/files");
 const removeDuplicates = require("../util/removeDuplicates");
 
 class AliasesConfig {
