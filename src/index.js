@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const { isInitialized, handleInit } = require("./handleInit");
+const { isInitialized, handleInit, handleConfig } = require("./handleInit");
 
 async function pet() {
   if (!isInitialized()) {
@@ -21,12 +21,17 @@ async function pet() {
     { name: "exec", alias: "e", type: String, multiple: true },
     { name: "list", alias: "l", type: Boolean },
     { name: "verbose", alias: "v", type: Boolean },
+    { name: "config", alias: "c", type: Boolean },
+    { name: "set", alias: "s", type: String, multiple: true },
+    { name: "get", alias: "g", type: Boolean },
+    { name: "hideSource", alias: "h", type: Boolean },
   ]);
 
   try {
     if (args.exec) handleRun(args);
     else if (args.alias) handleAlias(args);
     else if (args.query) handleQuery(args);
+    else if (args.config) handleConfig(args);
   } catch (e) {
     if (e instanceof CommandError) {
       console.log(e.message);

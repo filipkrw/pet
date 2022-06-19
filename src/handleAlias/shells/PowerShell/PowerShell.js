@@ -3,7 +3,7 @@ const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 const { config } = require("../../../config.js");
 const removeDuplicates = require("../../../util/removeDuplicates.js");
-const createFileIfNotExists = require("../../../util/createFileIfNotExists");
+const { createFileIfNotExists } = require("../../../util/files");
 const Shell = require("../Shell.js");
 
 class PowerShell extends Shell {
