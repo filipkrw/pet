@@ -9,6 +9,7 @@ const {
   fileExists,
 } = require("../util/files");
 const writeFromTemplate = require("../util/writeFromTemplate");
+const getCwd = require("../util/getCwd");
 
 function isInitialized() {
   const configFilePath = getPetConfigPath();
@@ -51,8 +52,7 @@ async function handleInit() {
     ".pet"
   )} config directory stored.\nIf you already have it, simply point to it. (It won't be deleted).`;
   console.log(initMessage);
-  const cwd = process.cwd().replace(/\\/g, "/");
-  const basePath = await promptUser(clc.white("Config Path:\t"), cwd);
+  const basePath = await promptUser(clc.white("Config Path:\t"), getCwd());
   writePetConfig(basePath);
   writeUserConfig(basePath);
   console.log(clc.bold.green("Done!"));

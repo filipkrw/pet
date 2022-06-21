@@ -15,12 +15,43 @@ function createDirectoryIfNotExists(dirPath) {
   }
 }
 
+function deleteEmptyInFilePath(filePath) {
+  if (isFileEmpty(filePath)) {
+    fs.rmSync(filePath);
+  }
+  let dirPath = path.dirname(filePath);
+
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    if (isDirEmpty(dirPath)) {
+      fs.rmdirSync(dirPath);
+      dirPath = path.dirname(dirPath);
+    } else {
+      break;
+    }
+  }
+}
+
 function fileExists(filePath) {
   return fs.existsSync(filePath);
+}
+
+function isFileEmpty(filePath) {
+  const stat = fs.statSync(filePath);
+  return stat.size === 0;
+}
+
+function isDirEmpty(dirPath) {
+  const dirFiles = fs.readdirSync(dirPath);
+  console.log(dirFiles);
+  return dirFiles.length === 0;
 }
 
 module.exports = {
   createFileIfNotExists,
   createDirectoryIfNotExists,
+  deleteEmptyInFilePath,
   fileExists,
+  isFileEmpty,
+  isDirEmpty,
 };

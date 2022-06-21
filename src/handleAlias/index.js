@@ -1,9 +1,4 @@
-const fs = require("fs");
 const path = require("path");
-const os = require("os");
-const util = require("util");
-const exec = util.promisify(require("child_process").exec);
-const clc = require("cli-color");
 const handleInit = require("./actions/init");
 const { config, updateConfig } = require("../config.js");
 const handleRemove = require("./actions/remove");

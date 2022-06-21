@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const handleCreate = require("./handleCreate/handleCreate");
 const { isInitialized, handleInit, handleConfig } = require("./handleInit");
 
 async function pet() {
@@ -25,6 +26,7 @@ async function pet() {
     { name: "set", alias: "s", type: String, multiple: true },
     { name: "get", alias: "g", type: Boolean },
     { name: "hideSource", alias: "h", type: Boolean },
+    { name: "newSnippet", alias: "x", type: Boolean },
   ]);
 
   try {
@@ -32,6 +34,7 @@ async function pet() {
     else if (args.alias) handleAlias(args);
     else if (args.query) handleQuery(args);
     else if (args.config) handleConfig(args);
+    else if (args.newSnippet) handleCreate(args);
   } catch (e) {
     if (e instanceof CommandError) {
       console.log(e.message);

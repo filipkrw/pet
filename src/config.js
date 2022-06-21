@@ -21,7 +21,18 @@ function initConfig() {
   function getUserConfig() {
     const basePath = petConfig.basePath;
     const userConfig = require(path.join(basePath, ".pet", "config.js"));
-    return userConfig;
+    const sources = (userConfig.sources || []).map(resolveSourceConfig);
+    // TODO deal with duplicates
+    // TODO get absolutePath and exlude paths here
+    return { ...userConfig, sources };
+  }
+
+  function resolveSourceConfig(source) {
+    if (source.name) {
+      return source;
+    }
+    const name = path.basename(source.relativePath || source.absolutePath);
+    return { ...source, name };
   }
 
   function updateConfig(params) {
