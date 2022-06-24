@@ -3,12 +3,12 @@ const flatten = require("tree-flatten");
 const clc = require("cli-color");
 const dree = require("dree");
 const fs = require("fs");
-const { config } = require("./config");
 const path = require("path");
 const escapeRegex = require("./util/escapeRegex");
+const commandLineArgs = require("command-line-args");
 
-function getSources(includeSources) {
-  const sources = config.userConfig.sources
+function getSources({ includeSources, config: argConfig }) {
+  const sources = argConfig.userConfig.sources
     .filter((source) => {
       if (!includeSources) return true;
       const name =
@@ -18,10 +18,10 @@ function getSources(includeSources) {
     })
     .map((source) => ({
       ...source,
-      absolutePath: path.resolve(config.path.dotPet, source.relativePath),
-      exclude: source.exclude || config.defaultExclude,
+      absolutePath: path.resolve(argConfig.path.dotPet, source.relativePath),
+      exclude: source.exclude || argConfig.defaultExclude,
     }));
-  return sources;
+  return { sources };
 }
 
 function constructOrRegex(strings) {
@@ -29,8 +29,8 @@ function constructOrRegex(strings) {
   return new RegExp(excludeStr);
 }
 
-function prepareSourceFiles(includeSources) {
-  return getSources(includeSources)
+function getSourceFiles({ sources }) {
+  const files = sources
     .map((source) =>
       dree.scan(source.absolutePath, {
         normalize: true,
@@ -55,6 +55,7 @@ function prepareSourceFiles(includeSources) {
           }
         }),
     }));
+  return { files };
 }
 
 function search(query, nodes, keys = ["name", "relativePath", "content"]) {
@@ -67,28 +68,28 @@ function search(query, nodes, keys = ["name", "relativePath", "content"]) {
   return fuse.search(query);
 }
 
-function sortResults(results) {
+function sortResults({ results }) {
   const resultsFlat = results
     .map(({ source, files }) => [...files.map((file) => ({ ...file, source }))])
     .flat();
   const resultsSorted = resultsFlat.sort((a, b) => b.score - a.score);
-  return resultsSorted;
+  return { results: resultsSorted };
 }
 
-function searchSourceFiles(query, sourceFiles) {
-  const results = sourceFiles.map(({ source, nodes }) => ({
+function searchSourceFiles({ query, files }) {
+  const results = files.map(({ source, nodes }) => ({
     source,
     nodes,
     files: search(query, nodes),
   }));
-  return sortResults(results);
+  return { results };
 }
 
-function printResults(results, args) {
+function printResults({ results, printOptions }) {
   for (const result of results) {
-    const sourcePrefix = args.hideSource ? "" : `${result.source}/`;
+    const sourcePrefix = printOptions.hideSource ? "" : `${result.source}/`;
     console.log(clc.green.bold(`${sourcePrefix}${result.item.relativePath}`));
-    if (!args.namesOnly) {
+    if (!printOptions.namesOnly) {
       console.log(result.item.content.trimEnd());
       console.log();
     }
@@ -98,12 +99,33 @@ function printResults(results, args) {
   );
 }
 
-function handleQuery(args) {
-  const query = args.query.join(" ");
-  const includeSources = args.set;
-  const sourceFiles = prepareSourceFiles(includeSources);
-  const results = searchSourceFiles(query, sourceFiles);
-  printResults(results, args);
+function parseArgv({ argv }) {
+  const options = commandLineArgs(
+    [
+      { name: "query", defaultOption: true, multiple: true },
+      { name: "sources", alias: "s", multiple: true },
+      { name: "hideSource", alias: "h", type: Boolean },
+      { name: "namesOnly", alias: "n", type: Boolean },
+    ],
+    { argv }
+  );
+  const { sources, query, hideSource, namesOnly } = options;
+  return {
+    includeSources: sources,
+    query: query.join(" "),
+    printOptions: { hideSource, namesOnly },
+  };
 }
 
-module.exports = handleQuery;
+const flow = {
+  modules: [
+    parseArgv,
+    getSources,
+    getSourceFiles,
+    searchSourceFiles,
+    sortResults,
+    printResults,
+  ],
+};
+
+module.exports = { flow };
