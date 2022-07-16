@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-const handleCreate = require("./handleCreate/handleCreate");
 const { isInitialized, handleInit, handleConfig } = require("./handleInit");
 
 async function pet() {
@@ -12,6 +11,7 @@ async function pet() {
   const handleAlias = require("./handleAlias");
   const handleQuery = require("./handleQuery");
   const handleRun = require("./handleRun");
+  const handleCreate = require("./handleCreate");
   const CommandError = require("./handleAlias/CommandError");
 
   const args = commandLineArgs([

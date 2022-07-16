@@ -1,3 +1,3 @@
-const handleCreate = require("handleCreate");
+const handleCreate = require("./handleCreate");
 
 module.exports = handleCreate;
