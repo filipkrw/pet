@@ -1,21 +1,10 @@
-const path = require("path");
 const handleInit = require("./actions/init");
-const { config, updateConfig } = require("../config.js");
 const handleRemove = require("./actions/remove");
 const handleAdd = require("./actions/add");
 const handleList = require("./actions/list");
 const CommandError = require("./CommandError");
 
 async function handleAlias(args) {
-  updateConfig({
-    path: {
-      aliases: {
-        base: path.join(config.path.dotPet, "aliases"),
-        config: path.join(config.path.dotPet, "aliases", "config.json"),
-      },
-    },
-  });
-
   if (args.remove) {
     if (args.query.length !== 1) {
       throw new Error("You must specify name of the snippet to remove.");

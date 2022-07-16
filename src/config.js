@@ -7,13 +7,20 @@ const getRootPath = require("./util/getRootPath");
 function initConfig() {
   let config = {
     path: generatePaths(),
-    userConfig: getUserConfig(),
     localConfig: getLocalConfig(),
     platform: os.platform(),
     shell: process.env.SHELL,
     textEditor: process.env.EDITOR || "nano",
     defaultExclude: [".pet", ".git"],
   };
+
+  updateConfig({
+    userConfig: getUserConfig(),
+  });
+
+  function updateConfig(params) {
+    config = deepMerge(config, params);
+  }
 
   function generatePaths() {
     const base = path.normalize(petConfig.basePath);
@@ -25,9 +32,19 @@ function initConfig() {
     const basePath = petConfig.basePath;
     const userConfig = require(path.join(basePath, ".pet", "config.js"));
     const sources = (userConfig.sources || []).map(resolveSourceConfig);
+
     // TODO deal with duplicates
-    // TODO get absolutePath and exlude paths here
     return { ...userConfig, sources };
+  }
+
+  function resolveSourceConfig(source) {
+    const name =
+      source.name || path.basename(source.relativePath || source.absolutePath);
+    const absolutePath =
+      source.absolutePath ||
+      path.resolve(config.path.dotPet, source.relativePath);
+    const exclude = source.exclude || config.defaultExclude;
+    return { ...source, name, absolutePath, exclude };
   }
 
   /**
@@ -39,21 +56,30 @@ function initConfig() {
     };
   }
 
-  function resolveSourceConfig(source) {
-    if (source.name) {
-      return source;
-    }
-    const name = path.basename(source.relativePath || source.absolutePath);
-    return { ...source, name };
+  function getFileSource(filePath) {
+    // TODO perhaps handle nested sources
+    return config.userConfig.sources.find((source) => {
+      return filePath.startsWith(source.name);
+    });
   }
 
-  function updateConfig(params) {
-    config = deepMerge(config, params);
+  function getFileDetails(filePath) {
+    const source = getFileSource(filePath);
+    const filePathNoSource = filePath.replace(
+      new RegExp(`^${source.name}/`),
+      ""
+    );
+    return {
+      source,
+      relativePath: filePathNoSource,
+      absolutePath: path.join(source.absolutePath, filePathNoSource),
+    };
   }
 
   return {
     config,
     updateConfig,
+    getFileDetails,
   };
 }
 

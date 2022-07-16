@@ -8,19 +8,12 @@ const path = require("path");
 const escapeRegex = require("./util/escapeRegex");
 
 function getSources(includeSources) {
-  const sources = config.userConfig.sources
-    .filter((source) => {
-      if (!includeSources) return true;
-      const name =
-        source.name ||
-        path.basename(source.relativePath || source.absoluteName);
-      return includeSources.includes(name);
-    })
-    .map((source) => ({
-      ...source,
-      absolutePath: path.resolve(config.path.dotPet, source.relativePath),
-      exclude: source.exclude || config.defaultExclude,
-    }));
+  const sources = config.userConfig.sources.filter((source) => {
+    if (!includeSources) return true;
+    const name =
+      source.name || path.basename(source.relativePath || source.absoluteName);
+    return includeSources.includes(name);
+  });
   return sources;
 }
 

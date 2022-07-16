@@ -28,11 +28,11 @@ class Shell {
 
     for (const [alias, source] of Object.entries(aliases)) {
       try {
-        const snippetPath = path.join(config.path.base, source.snippet);
+        const snippetPath = path.join(config.path.base, source.relativePath);
         const snippet = fs.readFileSync(snippetPath).toString();
         transformed.push(this.transform(alias, snippet));
       } catch (e) {
-        console.log(`Error reading "${source.snippet}", skipping...`);
+        console.log(`Error reading "${source.relativePath}", skipping...`);
         continue;
       }
     }

@@ -23,9 +23,9 @@ class AliasesConfig {
     this.writeConfig({ ...this.config, shells: newShells });
   }
 
-  addAlias(alias, snippet) {
+  addAlias(alias, relativePath) {
     const aliases = this.config.aliases || {};
-    const newAliases = { ...aliases, [alias]: { snippet } };
+    const newAliases = { ...aliases, [alias]: { relativePath } };
     this.writeConfig({ ...this.config, aliases: newAliases });
   }
 

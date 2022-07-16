@@ -1,18 +1,22 @@
 const { AliasesConfig } = require("../AliasesConfig");
-const { config } = require("../../config");
+const { getFileDetails } = require("../../config");
 const path = require("path");
 const fs = require("fs");
 const CommandError = require("../CommandError");
 const shellsBulkWrite = require("../shells/shellsBulkWrite");
 
 function handleAdd([alias, snippetPath]) {
-  const snippetFullPath = path.join(config.path.base, snippetPath);
-  if (!fs.existsSync(snippetFullPath)) {
+  const { source, relativePath, absolutePath } = getFileDetails(snippetPath);
+  if (!fs.existsSync(absolutePath)) {
     throw new CommandError(`Snippet "${snippetPath}" doesn't exist.`);
   }
-
-  const aliasesConfig = new AliasesConfig(config.path.aliases.config);
-  aliasesConfig.addAlias(alias, snippetPath);
+  const aliasesConfigPath = path.join(
+    source.absolutePath,
+    ".pet",
+    "aliases.json"
+  );
+  const aliasesConfig = new AliasesConfig(aliasesConfigPath);
+  aliasesConfig.addAlias(alias, relativePath);
   shellsBulkWrite(aliasesConfig);
   console.log(`Alias "${alias}" added.`);
 }
