@@ -1,12 +1,14 @@
 const os = require("os");
 const path = require("path");
-const petConfig = require("../petConfig");
+const petConfig = require("../localConfig/petConfig");
 const deepMerge = require("./util/deepMerge");
+const getRootPath = require("./util/getRootPath");
 
 function initConfig() {
   let config = {
     path: generatePaths(),
     userConfig: getUserConfig(),
+    localConfig: getLocalConfig(),
     platform: os.platform(),
     shell: process.env.SHELL,
     textEditor: process.env.EDITOR || "nano",
@@ -26,6 +28,15 @@ function initConfig() {
     // TODO deal with duplicates
     // TODO get absolutePath and exlude paths here
     return { ...userConfig, sources };
+  }
+
+  /**
+   * Config local to the user's machine.
+   */
+  function getLocalConfig() {
+    return {
+      path: path.normalize(path.join(getRootPath(), "localConfig")),
+    };
   }
 
   function resolveSourceConfig(source) {

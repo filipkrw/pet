@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
-const util = require("util");
 const { config, updateConfig } = require("../../config.js");
+const { createFileIfNotExists } = require("../../util/files.js");
 
 class Shell {
   constructor(name, file, aliasesConfig) {
@@ -36,7 +36,14 @@ class Shell {
         continue;
       }
     }
-    fs.writeFileSync(config.path.aliases[this.name], transformed.join("\n\n"));
+
+    const transformedPath = path.join(
+      config.localConfig.path,
+      "transformedAliases",
+      this.name
+    );
+    createFileIfNotExists(transformedPath);
+    fs.writeFileSync(transformedPath, transformed.join("\n\n"));
   }
 }
 
