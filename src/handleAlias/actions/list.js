@@ -1,28 +1,46 @@
 const { AliasesConfig } = require("../AliasesConfig");
-const { config } = require("../../config");
+const { config, resolve, configFlat } = require("../../sourceConfig");
 const clc = require("cli-color");
 const fs = require("fs");
 const path = require("path");
+const objToModuleExportsStr = require("../../util/objToModuleExportsStr");
+const { log } = require("console");
+
+function resolveAlias(alias, source) {
+  const absolutePath = path.join(source.absolutePath, alias.relativePath);
+  const content = fs.readFileSync(absolutePath, "utf8");
+  return { ...alias, absolutePath, content };
+}
+
+function resolveAliases(source) {
+  if (!source.aliases) {
+    return source;
+  }
+  const aliases = source.aliases.map((alias) => resolveAlias(alias, source));
+  return { ...source, aliases };
+}
 
 function handleList(args) {
-  const aliasesConfig = new AliasesConfig(config.path.aliases.config);
-  const aliases = Object.entries(aliasesConfig.getAliases());
-  for (const [alias, source] of aliases) {
-    console.log(`${clc.green.bold(alias)} ${clc.green(`(${source.snippet})`)}`);
-    if (args.verbose) {
-      const content = fs.readFileSync(
-        path.join(config.path.base, source.snippet),
-        "utf8"
+  const resolvedConfigFlat = resolve(resolveAliases);
+  const sourcesWithAliases = resolvedConfigFlat
+    .flatMap((source) => source)
+    .filter((source) => source.aliases);
+  for (const source of sourcesWithAliases) {
+    for (const alias of source.aliases) {
+      console.log(
+        `${clc.green.bold(alias.alias)} ${clc.green(`(${alias.relativePath})`)}`
       );
-      console.log(content.trim());
-      console.log();
+      if (args.verbose) {
+        console.log(alias.content.trim());
+        console.log();
+      }
     }
   }
-  console.log(
-    clc.blue.bold(
-      `${aliases.length} alias${aliases.length === 1 ? "" : "es"} found`
-    )
-  );
+  // console.log(
+  //   clc.blue.bold(
+  //     `${aliases.length} alias${aliases.length === 1 ? "" : "es"} found`
+  //   )
+  // );
 }
 
 module.exports = handleList;
