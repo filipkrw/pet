@@ -2,10 +2,20 @@ const path = require("path");
 const { config: globalConfig } = require("./config");
 const flatten = require("tree-flatten");
 
-function init() {
+function initSourceConfig() {
   const rootSourceConfig = { absolutePath: globalConfig.path.base };
-  let config = resolveConfig(rootSourceConfig, initResolve);
+  let config = resolveConfig(rootSourceConfig, initResolver);
   let configFlat = flatten(config, "sources");
+
+  function initResolver(sourceConfig, parentConfig) {
+    let c = {
+      ...sourceConfig,
+      absolutePath: resolveSourceAbsolutePath(sourceConfig, parentConfig),
+    };
+    c = { ...c, name: resolveSourceName(c) };
+    c = { ...c, ...loadConfigFile(c.absolutePath) };
+    return c;
+  }
 
   function setConfig(newConfig) {
     config = newConfig;
@@ -23,7 +33,7 @@ function init() {
     return resolvedSource;
   }
 
-  function requireConfig(sourceAbsolutePath) {
+  function loadConfigFile(sourceAbsolutePath) {
     const rootConfigPath = path.join(sourceAbsolutePath, ".pet", "config.js");
     try {
       return require(rootConfigPath);
@@ -33,7 +43,7 @@ function init() {
     }
   }
 
-  function resolveAbsolutePath(sourceConfig, parentConfig) {
+  function resolveSourceAbsolutePath(sourceConfig, parentConfig) {
     return (
       sourceConfig.absolutePath ||
       path.resolve(
@@ -43,18 +53,8 @@ function init() {
     );
   }
 
-  function resolveName(sourceConfig) {
+  function resolveSourceName(sourceConfig) {
     return sourceConfig.name || path.basename(sourceConfig.absolutePath);
-  }
-
-  function initResolve(sourceConfig, parentConfig) {
-    let c = {
-      ...sourceConfig,
-      absolutePath: resolveAbsolutePath(sourceConfig, parentConfig),
-    };
-    c = { ...c, name: resolveName(c) };
-    c = { ...c, ...requireConfig(c.absolutePath) };
-    return c;
   }
 
   function resolve(resolveFunc) {
@@ -64,9 +64,11 @@ function init() {
 
   return {
     resolve,
+    resolveSource: (source, resolveFunc) => resolveConfig(source, resolveFunc),
     getConfig: () => config,
     getConfigFlat: () => configFlat,
+    getSourceByName: (name) => configFlat.find((s) => s.name === name),
   };
 }
 
-module.exports = init();
+module.exports = initSourceConfig();
