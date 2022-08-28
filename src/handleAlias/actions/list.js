@@ -1,10 +1,7 @@
-const { AliasesConfig } = require("../AliasesConfig");
-const { config, resolve, configFlat } = require("../../sourceConfig");
+const sourceConfig = require("../../sourceConfig");
 const clc = require("cli-color");
 const fs = require("fs");
 const path = require("path");
-const objToModuleExportsStr = require("../../util/objToModuleExportsStr");
-const { log } = require("console");
 
 function resolveAlias(alias, source) {
   const absolutePath = path.join(source.absolutePath, alias.relativePath);
@@ -12,7 +9,10 @@ function resolveAlias(alias, source) {
   return { ...alias, absolutePath, content };
 }
 
-function resolveAliases(source) {
+/**
+ * Resolves absolutePath and content for aliases in a source.
+ */
+function aliasesResolver(source) {
   if (!source.aliases) {
     return source;
   }
@@ -21,14 +21,17 @@ function resolveAliases(source) {
 }
 
 function handleList(args) {
-  const resolvedConfigFlat = resolve(resolveAliases);
-  const sourcesWithAliases = resolvedConfigFlat
-    .flatMap((source) => source)
+  sourceConfig.resolve(aliasesResolver);
+  const sourcesWithAliases = sourceConfig
+    .getConfigFlat()
     .filter((source) => source.aliases);
+
   for (const source of sourcesWithAliases) {
     for (const alias of source.aliases) {
       console.log(
-        `${clc.green.bold(alias.alias)} ${clc.green(`(${alias.relativePath})`)}`
+        `${clc.green.bold(alias.alias)} ${clc.green(
+          `(${source.name}/${alias.relativePath})`
+        )}`
       );
       if (args.verbose) {
         console.log(alias.content.trim());
@@ -36,11 +39,16 @@ function handleList(args) {
       }
     }
   }
-  // console.log(
-  //   clc.blue.bold(
-  //     `${aliases.length} alias${aliases.length === 1 ? "" : "es"} found`
-  //   )
-  // );
+
+  const aliasesCount = sourcesWithAliases.reduce(
+    (acc, source) => acc + source.aliases.length,
+    0
+  );
+  console.log(
+    clc.blue.bold(
+      `${aliasesCount} alias${aliasesCount === 1 ? "" : "es"} found`
+    )
+  );
 }
 
 module.exports = handleList;

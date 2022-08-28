@@ -1,15 +1,22 @@
 const path = require("path");
 const { config: globalConfig } = require("./config");
+const flatten = require("tree-flatten");
 
 function init() {
   const rootSourceConfig = { absolutePath: globalConfig.path.base };
   let config = resolveConfig(rootSourceConfig, initResolve);
+  let configFlat = flatten(config, "sources");
 
-  function resolveConfig(sourceConfig, resolveFunc) {
-    const resolvedSource = resolveFunc(sourceConfig);
+  function setConfig(newConfig) {
+    config = newConfig;
+    configFlat = flatten(newConfig, "sources");
+  }
+
+  function resolveConfig(sourceConfig, resolveFunc, parentConfig) {
+    const resolvedSource = resolveFunc(sourceConfig, parentConfig);
     if (resolvedSource.sources) {
       const resolvedSubSources = resolvedSource.sources.map((subSource) =>
-        resolveConfig(subSource, resolveFunc)
+        resolveConfig(subSource, resolveFunc, resolvedSource)
       );
       return { ...resolvedSource, sources: resolvedSubSources };
     }
@@ -36,21 +43,29 @@ function init() {
     );
   }
 
+  function resolveName(sourceConfig) {
+    return sourceConfig.name || path.basename(sourceConfig.absolutePath);
+  }
+
   function initResolve(sourceConfig, parentConfig) {
-    const absolutePath = resolveAbsolutePath(sourceConfig, parentConfig);
-    const fullConfig = requireConfig(absolutePath);
-    return {
+    let c = {
       ...sourceConfig,
-      ...fullConfig,
-      absolutePath,
+      absolutePath: resolveAbsolutePath(sourceConfig, parentConfig),
     };
+    c = { ...c, name: resolveName(c) };
+    c = { ...c, ...requireConfig(c.absolutePath) };
+    return c;
+  }
+
+  function resolve(resolveFunc) {
+    const resolvedConfig = resolveConfig(config, resolveFunc);
+    setConfig(resolvedConfig);
   }
 
   return {
-    config,
-    resolve: (resolveFunc) => {
-      config = resolveConfig(config, resolveFunc);
-    },
+    resolve,
+    getConfig: () => config,
+    getConfigFlat: () => configFlat,
   };
 }
 
