@@ -1,6 +1,7 @@
 const path = require("path");
 const { config: globalConfig } = require("./config");
 const flatten = require("tree-flatten");
+const { fileExists } = require("./util/files");
 
 function initSourceConfig() {
   const rootSourceConfig = { absolutePath: globalConfig.path.base };
@@ -8,12 +9,23 @@ function initSourceConfig() {
   let configFlat = flatten(config, "sources");
 
   function initResolver(sourceConfig, parentConfig) {
+    const absolutePath = resolveSourceAbsolutePath(sourceConfig, parentConfig);
     let c = {
       ...sourceConfig,
-      absolutePath: resolveSourceAbsolutePath(sourceConfig, parentConfig),
+      absolutePath,
+      rootRelativePath: parentConfig
+        ? path.relative(parentConfig.absolutePath, absolutePath)
+        : "",
     };
-    c = { ...c, name: resolveSourceName(c) };
+
     c = { ...c, ...loadConfigFile(c.absolutePath) };
+
+    if (parentConfig) {
+      c = { ...c, name: resolveSourceName(c) };
+    } else {
+      c = { ...c, name: "root" };
+    }
+
     return c;
   }
 
@@ -36,7 +48,7 @@ function initSourceConfig() {
   function loadConfigFile(sourceAbsolutePath) {
     const rootConfigPath = path.join(sourceAbsolutePath, ".pet", "config.js");
     try {
-      return require(rootConfigPath);
+      return { ...require(rootConfigPath), configAbsolutePath: rootConfigPath };
     } catch (e) {
       // TODO log error when config exists, but cannot be loaded
       return {};

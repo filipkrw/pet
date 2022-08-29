@@ -9,10 +9,14 @@ const filesResolver = require("../../resolvers/filesResolver");
 const flatten = require("tree-flatten/build/tree-flatten");
 const { config: globalConfig } = require("../../config");
 const moduleExportsStr = require("../../util/moduleExportsStr");
+const pprint = require("../../util/pprint");
+const { getAllAliases } = require("../helpers");
+const { createFileIfNotExists, fileExists } = require("../../util/files");
 
 function handleAdd([alias, filePath]) {
-  const targetFile = loadTargetFile(filePath);
-  addAlias(alias, targetFile);
+  // console.log(pprint(sourceConfig.getConfig()));
+  const [source, targetFile] = loadTargetFile(filePath);
+  addAlias(alias, targetFile, source);
 
   // const { source, relativePath, absolutePath } = getFileDetails(snippetPath);
   // if (!fs.existsSync(absolutePath)) {
@@ -44,15 +48,23 @@ function loadTargetFile(filePath) {
       `File "${fileRelativePath}" in source "${sourceName}" not found`
     );
   }
-  return targetFile;
+  return [source, targetFile];
 }
 
-function addAlias(alias, file) {
-  const configPath = path.join(globalConfig.path.dotPet, "config.js");
-  const config = require(configPath);
+function addAlias(alias, file, source) {
+  const configPath =
+    source.configAbsolutePath ||
+    path.join(source.absolutePath, ".pet", "config.js");
+  createFileIfNotExists(configPath);
+  const config = fileExists(configPath) ? require(configPath) : {};
   const aliases = config.aliases || [];
-  if (aliases.find((a) => a.alias === alias)) {
-    throw new CommandError(`Alias "${alias}" already exists.`);
+  const allAliases = getAllAliases();
+  const existingAlias = allAliases.find((a) => a.alias === alias);
+  if (existingAlias) {
+    console.log(existingAlias);
+    throw new CommandError(
+      `Alias "${alias}" already exists in source "${existingAlias.source.rootRelativePath}".`
+    );
   }
   const updatedAliases = [
     ...aliases,

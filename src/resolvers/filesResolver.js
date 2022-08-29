@@ -5,15 +5,11 @@ const fs = require("fs");
 
 function filesResolver(source) {
   const exclude = resolveSourceExclude(source);
-  const files = resolveFiles(source, exclude);
-
-  // resolve exclude
-  // load files
-
+  const files = resolveSourceFiles(source, exclude);
   return { ...source, exclude, files };
 }
 
-function resolveFiles(source, exclude) {
+function resolveSourceFiles(source, exclude) {
   const nodeTree = dree.scan(source.absolutePath, {
     normalize: true,
     exclude: constructOrRegex(exclude),
@@ -35,11 +31,12 @@ function resolveFiles(source, exclude) {
 }
 
 function resolveSourceExclude(source) {
-  const exclude = source.exclude || [".pet", ".git"];
-  // const subsourcesExclude = (source.sources| []).map((s) => s.relativePath);
-  // should handle absolute paths too
-  // TODO should probably exclude subsources too
-  return exclude;
+  if (source.exclue) {
+    return source.exclude;
+  }
+  const defaultExclude = [".pet", ".git"];
+  const subSourcesExclude = (source.sources || []).map((s) => s.relativePath);
+  return [...defaultExclude, ...subSourcesExclude];
 }
 
 function constructOrRegex(strings) {

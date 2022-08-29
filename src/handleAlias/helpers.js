@@ -9,7 +9,9 @@ function getAllAliases() {
         source: {
           name: s.name,
           relativePath: s.relativePath,
+          rootRelativePath: s.rootRelativePath,
           absolutePath: s.absolutePath,
+          configAbsolutePath: s.configAbsolutePath,
         },
         ...a,
       }))
