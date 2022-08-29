@@ -1,5 +1,8 @@
 #!/usr/bin/env node
+const resolveAliases = require("./handleAlias/resolveAliases");
 const { isInitialized, handleInit, handleConfig } = require("./handleInit");
+const json5 = require("json5");
+const pprint = require("./util/pprint");
 
 async function pet() {
   if (!isInitialized()) {
@@ -29,19 +32,21 @@ async function pet() {
     { name: "newSnippet", alias: "x", type: Boolean },
   ]);
 
-  try {
-    if (args.exec) handleRun(args);
-    else if (args.alias) handleAlias(args);
-    else if (args.query) handleQuery(args);
-    else if (args.config) handleConfig(args);
-    else if (args.newSnippet) handleCreate(args);
-  } catch (e) {
-    if (e instanceof CommandError) {
-      console.log(e.message);
-    } else {
-      throw e;
-    }
-  }
+  handleAlias(args);
+
+  // try {
+  //   if (args.exec) handleRun(args);
+  //   else if (args.alias) handleAlias(args);
+  //   else if (args.query) handleQuery(args);
+  //   else if (args.config) handleConfig(args);
+  //   else if (args.newSnippet) handleCreate(args);
+  // } catch (e) {
+  //   if (e instanceof CommandError) {
+  //     console.log(e.message);
+  //   } else {
+  //     throw e;
+  //   }
+  // }
 }
 
 pet();

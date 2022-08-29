@@ -3,8 +3,12 @@ const handleRemove = require("./actions/remove");
 const handleAdd = require("./actions/add");
 const handleList = require("./actions/list");
 const CommandError = require("./CommandError");
+const sourceConfig = require("../sourceConfig");
+const aliasesResolver = require("../resolvers/aliasesResolver");
 
 async function handleAlias(args) {
+  sourceConfig.resolve(aliasesResolver);
+
   if (args.remove) {
     if (args.query.length !== 1) {
       throw new Error("You must specify name of the snippet to remove.");

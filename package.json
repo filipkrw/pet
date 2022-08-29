@@ -16,6 +16,7 @@
     "command-line-args": "^5.2.1",
     "dree": "^3.3.5",
     "fuse.js": "^6.5.3",
+    "json5": "^2.2.1",
     "tree-flatten": "^1.0.0"
   },
   "devDependencies": {

@@ -2,6 +2,7 @@ const fs = require("fs");
 const CommandError = require("./CommandError");
 const { createFileIfNotExists } = require("../util/files");
 const removeDuplicates = require("../util/removeDuplicates");
+const util = require("util");
 
 class AliasesConfig {
   constructor(path) {
@@ -23,9 +24,9 @@ class AliasesConfig {
     this.writeConfig({ ...this.config, shells: newShells });
   }
 
-  addAlias(alias, relativePath) {
+  addAlias(alias, path) {
     const aliases = this.config.aliases || {};
-    const newAliases = { ...aliases, [alias]: { relativePath } };
+    const newAliases = { ...aliases, [alias]: { path } };
     this.writeConfig({ ...this.config, aliases: newAliases });
   }
 
@@ -46,7 +47,9 @@ class AliasesConfig {
   }
 
   writeConfig(config) {
-    fs.writeFileSync(this.path, JSON.stringify(config, null, 2), { flag: "w" });
+    fs.writeFileSync(this.path, `module.exports = ${util.inspect(config)}`, {
+      flag: "w",
+    });
     this.config = config;
   }
 }

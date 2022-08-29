@@ -8,7 +8,7 @@ const sourceConfig = require("../../sourceConfig");
 const filesResolver = require("../../resolvers/filesResolver");
 const flatten = require("tree-flatten/build/tree-flatten");
 const { config: globalConfig } = require("../../config");
-const objToModuleExportsStr = require("../../util/objToModuleExportsStr");
+const moduleExportsStr = require("../../util/moduleExportsStr");
 
 function handleAdd([alias, filePath]) {
   const targetFile = loadTargetFile(filePath);
@@ -60,7 +60,7 @@ function addAlias(alias, file) {
   ];
   fs.writeFileSync(
     configPath,
-    objToModuleExportsStr({ ...config, aliases: updatedAliases })
+    moduleExportsStr({ ...config, aliases: updatedAliases })
   );
 }
 

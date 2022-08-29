@@ -2,12 +2,9 @@ const { config } = require("../../config");
 const PowerShell = require("../shells/PowerShell");
 const Bash = require("../shells/Bash");
 const Zsh = require("../shells/Zsh/Zsh");
-const { AliasesConfig } = require("../AliasesConfig");
 const CommandError = require("../CommandError");
 
 async function handleInit() {
-  // const aliasesConfig = new AliasesConfig("");
-
   if (config.platform === "win32") {
     const powerShell = new PowerShell();
     await powerShell.init();
