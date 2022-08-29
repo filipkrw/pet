@@ -1,27 +1,7 @@
 const sourceConfig = require("../../sourceConfig");
 const clc = require("cli-color");
-const fs = require("fs");
-const path = require("path");
-
-function resolveAlias(alias, source) {
-  const absolutePath = path.join(source.absolutePath, alias.relativePath);
-  const content = fs.readFileSync(absolutePath, "utf8");
-  return { ...alias, absolutePath, content };
-}
-
-/**
- * Resolves absolutePath and content for aliases in a source.
- */
-function aliasesResolver(source) {
-  if (!source.aliases) {
-    return source;
-  }
-  const aliases = source.aliases.map((alias) => resolveAlias(alias, source));
-  return { ...source, aliases };
-}
 
 function handleList(args) {
-  sourceConfig.resolve(aliasesResolver);
   const sourcesWithAliases = sourceConfig
     .getConfigFlat()
     .filter((source) => source.aliases);

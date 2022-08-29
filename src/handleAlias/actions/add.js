@@ -7,10 +7,12 @@ const shellsBulkWrite = require("../shells/shellsBulkWrite");
 const sourceConfig = require("../../sourceConfig");
 const filesResolver = require("../../resolvers/filesResolver");
 const flatten = require("tree-flatten/build/tree-flatten");
+const { config: globalConfig } = require("../../config");
+const objToModuleExportsStr = require("../../util/objToModuleExportsStr");
 
 function handleAdd([alias, filePath]) {
   const targetFile = loadTargetFile(filePath);
-  console.log(targetFile);
+  addAlias(alias, targetFile);
 
   // const { source, relativePath, absolutePath } = getFileDetails(snippetPath);
   // if (!fs.existsSync(absolutePath)) {
@@ -43,6 +45,23 @@ function loadTargetFile(filePath) {
     );
   }
   return targetFile;
+}
+
+function addAlias(alias, file) {
+  const configPath = path.join(globalConfig.path.dotPet, "config.js");
+  const config = require(configPath);
+  const aliases = config.aliases || [];
+  if (aliases.find((a) => a.alias === alias)) {
+    throw new CommandError(`Alias "${alias}" already exists.`);
+  }
+  const updatedAliases = [
+    ...aliases,
+    { alias, relativePath: file.relativePath },
+  ];
+  fs.writeFileSync(
+    configPath,
+    objToModuleExportsStr({ ...config, aliases: updatedAliases })
+  );
 }
 
 module.exports = handleAdd;
