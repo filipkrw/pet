@@ -1,3 +1,4 @@
+const config = require("../config");
 const sourceConfig = require("../sourceConfig");
 
 function getAllAliases() {
@@ -8,6 +9,7 @@ function getAllAliases() {
       s.aliases.map((a) => ({
         source: {
           name: s.name,
+          isRoot: s.isRoot,
           relativePath: s.relativePath,
           rootRelativePath: s.rootRelativePath,
           absolutePath: s.absolutePath,
@@ -18,4 +20,8 @@ function getAllAliases() {
     );
 }
 
-module.exports = { getAllAliases };
+function getShells() {
+  console.log(config.config);
+}
+
+module.exports = { getAllAliases, getShells };

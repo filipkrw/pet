@@ -1,13 +1,15 @@
+const { getShells } = require("../helpers");
 const supportedShells = require("./supportedShells");
 
 function shellsBulkWrite(aliasesConfig) {
-  for (const shell of aliasesConfig.getShells()) {
-    if (!(shell in supportedShells)) {
-      continue;
-    }
-    const Shell = supportedShells[shell];
-    new Shell(aliasesConfig).write();
-  }
+  const shells = getShells();
+  // for (const shell of aliasesConfig.getShells()) {
+  //   if (!(shell in supportedShells)) {
+  //     continue;
+  //   }
+  //   const Shell = supportedShells[shell];
+  //   new Shell(aliasesConfig).write();
+  // }
 }
 
 module.exports = shellsBulkWrite;

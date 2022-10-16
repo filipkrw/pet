@@ -13,17 +13,23 @@ function initSourceConfig() {
     let c = {
       ...sourceConfig,
       absolutePath,
-      rootRelativePath: parentConfig
-        ? path.relative(parentConfig.absolutePath, absolutePath)
-        : "",
+      // rootRelativePath: parentConfig
+      //   ? path.relative(parentConfig.absolutePath, absolutePath)
+      //   : "",
     };
 
     c = { ...c, ...loadConfigFile(c.absolutePath) };
 
     if (parentConfig) {
-      c = { ...c, name: resolveSourceName(c) };
+      c = {
+        ...c,
+        name: resolveSourceName(c),
+        rootRelativePath: path
+          .relative(rootSourceConfig.absolutePath, absolutePath)
+          .replace("\\", "/"),
+      };
     } else {
-      c = { ...c, name: "root" };
+      c = { name: "root", isRoot: true, ...c };
     }
 
     return c;

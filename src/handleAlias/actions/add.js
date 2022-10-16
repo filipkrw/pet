@@ -12,11 +12,13 @@ const moduleExportsStr = require("../../util/moduleExportsStr");
 const pprint = require("../../util/pprint");
 const { getAllAliases } = require("../helpers");
 const { createFileIfNotExists, fileExists } = require("../../util/files");
+const handleInit = require("./init");
+const normalizePath = require("../../util/normalizePath");
 
 function handleAdd([alias, filePath]) {
-  // console.log(pprint(sourceConfig.getConfig()));
   const [source, targetFile] = loadTargetFile(filePath);
   addAlias(alias, targetFile, source);
+  // shellsBulkWrite();
 
   // const { source, relativePath, absolutePath } = getFileDetails(snippetPath);
   // if (!fs.existsSync(absolutePath)) {
@@ -51,29 +53,41 @@ function loadTargetFile(filePath) {
   return [source, targetFile];
 }
 
-function addAlias(alias, file, source) {
-  const configPath =
-    source.configAbsolutePath ||
-    path.join(source.absolutePath, ".pet", "config.js");
-  createFileIfNotExists(configPath);
-  const config = fileExists(configPath) ? require(configPath) : {};
-  const aliases = config.aliases || [];
+function addAlias(alias, targetFile, aliasSource) {
+  const rootSource = sourceConfig.getConfig();
+  const rootSourceOriginal = getSourceConfigFile(rootSource);
+
+  const aliases = rootSourceOriginal.aliases || [];
+  validateAliasNotExists(alias);
+  const updatedAliases = [
+    ...aliases,
+    {
+      alias,
+      relativePath: normalizePath(
+        path.join(aliasSource.rootRelativePath, targetFile.relativePath)
+      ),
+    },
+  ];
+  fs.writeFileSync(
+    rootSource.configAbsolutePath,
+    moduleExportsStr({ ...rootSourceOriginal, aliases: updatedAliases })
+  );
+}
+
+function validateAliasNotExists(alias) {
   const allAliases = getAllAliases();
   const existingAlias = allAliases.find((a) => a.alias === alias);
   if (existingAlias) {
-    console.log(existingAlias);
     throw new CommandError(
-      `Alias "${alias}" already exists in source "${existingAlias.source.rootRelativePath}".`
+      `Alias "${alias}" already exists in source "${existingAlias.source.name}".`
     );
   }
-  const updatedAliases = [
-    ...aliases,
-    { alias, relativePath: file.relativePath },
-  ];
-  fs.writeFileSync(
-    configPath,
-    moduleExportsStr({ ...config, aliases: updatedAliases })
-  );
+}
+
+function getSourceConfigFile(source) {
+  const configPath = source.configAbsolutePath;
+  const config = fileExists(configPath) ? require(configPath) : {};
+  return config;
 }
 
 module.exports = handleAdd;
