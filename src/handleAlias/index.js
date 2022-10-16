@@ -17,7 +17,7 @@ async function handleAlias(argv) {
     handleAdd(remainingArgv);
   } else if (command === "remove") {
     handleRemove(remainingArgv);
-  } else if (command === "ls" || command === "list") {
+  } else if (command === "list") {
     handleList(remainingArgv);
   }
 }
