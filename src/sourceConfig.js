@@ -1,7 +1,6 @@
 const path = require("path");
 const { config: globalConfig } = require("./config");
 const flatten = require("tree-flatten");
-const { fileExists } = require("./util/files");
 
 function initSourceConfig() {
   const rootSourceConfig = { absolutePath: globalConfig.path.base };
@@ -13,9 +12,6 @@ function initSourceConfig() {
     let c = {
       ...sourceConfig,
       absolutePath,
-      // rootRelativePath: parentConfig
-      //   ? path.relative(parentConfig.absolutePath, absolutePath)
-      //   : "",
     };
 
     c = { ...c, ...loadConfigFile(c.absolutePath) };
