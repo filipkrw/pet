@@ -10,6 +10,7 @@ const {
 } = require("../util/files");
 const writeFromTemplate = require("../util/writeFromTemplate");
 const getCwd = require("../util/getCwd");
+const getRootPath = require("../util/getRootPath");
 
 function isInitialized() {
   const configFilePath = getPetConfigPath();
@@ -17,8 +18,11 @@ function isInitialized() {
 }
 
 function getPetConfigPath() {
-  const srcPath = path.dirname(require.main.filename);
-  const configFilePath = path.resolve(srcPath, "..", "petConfig.js");
+  const configFilePath = path.resolve(
+    getRootPath(),
+    "localConfig",
+    "petConfig.js"
+  );
   return configFilePath;
 }
 

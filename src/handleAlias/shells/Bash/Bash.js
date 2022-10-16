@@ -6,8 +6,8 @@ const { createFileIfNotExists } = require("../../../util/files");
 const Shell = require("../Shell.js");
 
 class Bash extends Shell {
-  constructor(aliasesConfig) {
-    super("bash", "bash_aliases", aliasesConfig);
+  constructor() {
+    super("bash", "bash_aliases");
   }
 
   async mount() {

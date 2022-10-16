@@ -47,6 +47,10 @@ function isDirEmpty(dirPath) {
   return dirFiles.length === 0;
 }
 
+function readJsonFile(filePath) {
+  return JSON.parse(fs.readFileSync(filePath));
+}
+
 module.exports = {
   createFileIfNotExists,
   createDirectoryIfNotExists,
@@ -54,4 +58,5 @@ module.exports = {
   fileExists,
   isFileEmpty,
   isDirEmpty,
+  readJsonFile,
 };

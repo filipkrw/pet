@@ -1,26 +1,25 @@
-const { AliasesConfig } = require("../AliasesConfig");
-const { config } = require("../../config");
 const clc = require("cli-color");
-const fs = require("fs");
-const path = require("path");
+const { getAllAliases } = require("../helpers");
 
 function handleList(args) {
-  const aliasesConfig = new AliasesConfig(config.path.aliases.config);
-  const aliases = Object.entries(aliasesConfig.getAliases());
-  for (const [alias, source] of aliases) {
-    console.log(`${clc.green.bold(alias)} ${clc.green(`(${source.snippet})`)}`);
+  const aliases = getAllAliases().sort((a, b) =>
+    a.alias.localeCompare(b.alias)
+  );
+
+  for (const alias of aliases) {
+    console.log(
+      `${clc.green.bold(alias.alias)} ${clc.green(`(${alias.relativePath})`)}`
+    );
     if (args.verbose) {
-      const content = fs.readFileSync(
-        path.join(config.path.base, source.snippet),
-        "utf8"
-      );
-      console.log(content.trim());
+      console.log(alias.content.trim());
       console.log();
     }
   }
+
+  const aliasesCount = aliases.length;
   console.log(
     clc.blue.bold(
-      `${aliases.length} alias${aliases.length === 1 ? "" : "es"} found`
+      `${aliasesCount} alias${aliasesCount === 1 ? "" : "es"} found`
     )
   );
 }

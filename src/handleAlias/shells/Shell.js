@@ -1,16 +1,21 @@
 const path = require("path");
 const fs = require("fs");
-const util = require("util");
 const { config, updateConfig } = require("../../config.js");
+const { createFileIfNotExists } = require("../../util/files.js");
+const removeDuplicates = require("../../util/removeDuplicates.js");
+const { getAllAliases } = require("../helpers.js");
 
 class Shell {
-  constructor(name, file, aliasesConfig) {
+  constructor(name, file) {
     this.name = name;
-    this.aliasesConfig = aliasesConfig;
+    this.file = file;
     updateConfig({
       path: {
         aliases: {
-          [name]: path.join(config.path.dotPet, "aliases", "transformed", file),
+          [name]: path.join(
+            config.localConfig.transformedAliases.absolutePath,
+            file
+          ),
         },
       },
     });
@@ -19,24 +24,39 @@ class Shell {
   async init() {
     await this.mount();
     this.write();
-    this.aliasesConfig.addShell(this.name);
+    this.writeShellConfig();
   }
 
   write() {
-    const aliases = this.aliasesConfig.getAliases();
+    const aliases = getAllAliases();
     const transformed = [];
 
-    for (const [alias, source] of Object.entries(aliases)) {
+    for (const { alias, content, source } of aliases) {
       try {
-        const snippetPath = path.join(config.path.base, source.snippet);
-        const snippet = fs.readFileSync(snippetPath).toString();
-        transformed.push(this.transform(alias, snippet));
+        transformed.push(this.transform(alias, content));
       } catch (e) {
-        console.log(`Error reading "${source.snippet}", skipping...`);
+        console.log(`Error reading "${source.name}", skipping...`);
         continue;
       }
     }
-    fs.writeFileSync(config.path.aliases[this.name], transformed.join("\n\n"));
+
+    const transformedPath = path.join(
+      config.localConfig.transformedAliases.absolutePath,
+      this.file
+    );
+    createFileIfNotExists(transformedPath);
+    fs.writeFileSync(transformedPath, transformed.join("\n\n"));
+  }
+
+  writeShellConfig() {
+    const shellConfigPath = config.localConfig.shells.absolutePath;
+    createFileIfNotExists(shellConfigPath);
+    const shellConfigJSON = fs.readFileSync(shellConfigPath, {
+      encoding: "utf-8",
+    });
+    const shellConfig = JSON.parse(shellConfigJSON || "[]");
+    const newShells = [...shellConfig, this.name].filter(removeDuplicates);
+    fs.writeFileSync(shellConfigPath, JSON.stringify(newShells, null, 2));
   }
 }
 

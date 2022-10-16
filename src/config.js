@@ -1,17 +1,27 @@
 const os = require("os");
 const path = require("path");
-const petConfig = require("../petConfig");
+const petConfig = require("../localConfig/petConfig");
 const deepMerge = require("./util/deepMerge");
+const { fileExists, readJsonFile } = require("./util/files");
+const getRootPath = require("./util/getRootPath");
 
 function initConfig() {
   let config = {
     path: generatePaths(),
-    userConfig: getUserConfig(),
+    localConfig: getLocalConfig(),
     platform: os.platform(),
     shell: process.env.SHELL,
     textEditor: process.env.EDITOR || "nano",
     defaultExclude: [".pet", ".git"],
   };
+
+  updateConfig({
+    userConfig: getUserConfig(),
+  });
+
+  function updateConfig(params) {
+    config = deepMerge(config, params);
+  }
 
   function generatePaths() {
     const base = path.normalize(petConfig.basePath);
@@ -22,27 +32,87 @@ function initConfig() {
   function getUserConfig() {
     const basePath = petConfig.basePath;
     const userConfig = require(path.join(basePath, ".pet", "config.js"));
-    const sources = (userConfig.sources || []).map(resolveSourceConfig);
-    // TODO deal with duplicates
-    // TODO get absolutePath and exlude paths here
-    return { ...userConfig, sources };
+    const resolvedConfig = resolveUserConfig(userConfig, config.path.base);
+    return { ...resolvedConfig, absolutePath: basePath };
   }
 
-  function resolveSourceConfig(source) {
-    if (source.name) {
-      return source;
+  function resolveUserConfig(userConfig, userConfigPath) {
+    if (userConfig.sources) {
+      const sources = userConfig.sources.map((s) =>
+        resolveSource(s, userConfigPath)
+      );
+      return { ...userConfig, sources };
     }
-    const name = path.basename(source.relativePath || source.absolutePath);
-    return { ...source, name };
+    return userConfig;
   }
 
-  function updateConfig(params) {
-    config = deepMerge(config, params);
+  function resolveSource(source, sourcePath) {
+    const name =
+      source.name || path.basename(source.relativePath || source.absolutePath);
+    const absolutePath =
+      source.absolutePath || path.resolve(sourcePath, source.relativePath);
+    const exclude = source.exclude || config.defaultExclude;
+    const sourceConfig = { ...source, name, absolutePath, exclude };
+
+    const subconfigPath = path.join(absolutePath, ".pet", "config.js");
+    if (fileExists(subconfigPath)) {
+      const subconfig = require(subconfigPath);
+      return { ...sourceConfig, ...resolveUserConfig(subconfig, absolutePath) };
+    }
+
+    return sourceConfig;
+  }
+
+  /**
+   * Config local to the user's machine.
+   */
+  function getLocalConfig() {
+    const localConfigAbsolutePath = path.normalize(
+      path.join(getRootPath(), "localConfig")
+    );
+    const shellsAbsolutePath = path.join(
+      localConfigAbsolutePath,
+      "shells.json"
+    );
+    const shells = fileExists(shellsAbsolutePath)
+      ? readJsonFile(shellsAbsolutePath)
+      : [];
+    return {
+      absolutePath: localConfigAbsolutePath,
+      shells: {
+        absolutePath: shellsAbsolutePath,
+        shells,
+      },
+      transformedAliases: {
+        absolutePath: path.join(localConfigAbsolutePath, "transformedAliases"),
+      },
+    };
+  }
+
+  function getFileSource(filePath) {
+    // TODO perhaps handle nested sources
+    return config.userConfig.sources.find((source) => {
+      return filePath.startsWith(source.name);
+    });
+  }
+
+  function getFileDetails(filePath) {
+    const source = getFileSource(filePath);
+    const filePathNoSource = filePath.replace(
+      new RegExp(`^${source.name}/`),
+      ""
+    );
+    return {
+      source,
+      relativePath: filePathNoSource,
+      absolutePath: path.join(source.absolutePath, filePathNoSource),
+    };
   }
 
   return {
     config,
     updateConfig,
+    getFileDetails,
   };
 }
 

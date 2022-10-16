@@ -1,20 +1,69 @@
-const { AliasesConfig } = require("../AliasesConfig");
-const { config } = require("../../config");
 const path = require("path");
 const fs = require("fs");
 const CommandError = require("../CommandError");
 const shellsBulkWrite = require("../shells/shellsBulkWrite");
+const sourceConfig = require("../../sourceConfig");
+const filesResolver = require("../../resolvers/filesResolver");
+const flatten = require("tree-flatten/build/tree-flatten");
+const moduleExportsStr = require("../../util/moduleExportsStr");
+const { getAllAliases } = require("../helpers");
+const normalizePath = require("../../util/normalizePath");
+const getSourceRawConfigFile = require("../getSourceRawConfigFile");
 
-function handleAdd([alias, snippetPath]) {
-  const snippetFullPath = path.join(config.path.base, snippetPath);
-  if (!fs.existsSync(snippetFullPath)) {
-    throw new CommandError(`Snippet "${snippetPath}" doesn't exist.`);
-  }
-
-  const aliasesConfig = new AliasesConfig(config.path.aliases.config);
-  aliasesConfig.addAlias(alias, snippetPath);
-  shellsBulkWrite(aliasesConfig);
+function handleAdd([alias, filePath]) {
+  const [source, targetFile] = loadTargetFile(filePath);
+  addAliasToRootSourceConfig(alias, targetFile, source);
+  shellsBulkWrite();
   console.log(`Alias "${alias}" added.`);
+}
+
+function loadTargetFile(filePath) {
+  const [sourceName, ...rest] = filePath.split("/");
+  const fileRelativePath = rest.join("/");
+  const source = sourceConfig.getSourceByName(sourceName);
+  if (!source) {
+    throw new CommandError(`Source "${sourceName}" not found`);
+  }
+  const sourceWithFiles = sourceConfig.resolveSource(source, filesResolver);
+  const files = flatten(sourceWithFiles, "sources").flatMap((s) => s.files);
+  const targetFile = files.find((f) => f.relativePath === fileRelativePath);
+  if (!targetFile) {
+    throw new CommandError(
+      `File "${fileRelativePath}" in source "${sourceName}" not found`
+    );
+  }
+  return [source, targetFile];
+}
+
+function addAliasToRootSourceConfig(alias, targetFile, aliasSource) {
+  const rootSource = sourceConfig.getConfig();
+  const rootSourceRaw = getSourceRawConfigFile(rootSource);
+
+  const aliases = rootSourceRaw.aliases || [];
+  validateAliasNotExists(alias);
+  const updatedAliases = [
+    ...aliases,
+    {
+      alias,
+      relativePath: normalizePath(
+        path.join(aliasSource.rootRelativePath, targetFile.relativePath)
+      ),
+    },
+  ];
+  fs.writeFileSync(
+    rootSource.configAbsolutePath,
+    moduleExportsStr({ ...rootSourceRaw, aliases: updatedAliases })
+  );
+}
+
+function validateAliasNotExists(alias) {
+  const allAliases = getAllAliases();
+  const existingAlias = allAliases.find((a) => a.alias === alias);
+  if (existingAlias) {
+    throw new CommandError(
+      `Alias "${alias}" already exists in source "${existingAlias.source.name}".`
+    );
+  }
 }
 
 module.exports = handleAdd;

@@ -6,8 +6,8 @@ const { createFileIfNotExists } = require("../../../util/files");
 const Shell = require("../Shell.js");
 
 class Zsh extends Shell {
-  constructor(aliasesConfig) {
-    super("zsh", "zsh_aliases", aliasesConfig);
+  constructor() {
+    super("zsh", "zsh_aliases");
   }
 
   async mount() {
