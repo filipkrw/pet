@@ -2,6 +2,7 @@ const escapeRegex = require("../util/escapeRegex");
 const dree = require("dree");
 const flatten = require("tree-flatten");
 const fs = require("fs");
+const path = require("path");
 
 function filesResolver(source) {
   const exclude = resolveSourceExclude(source);
@@ -40,7 +41,9 @@ function resolveSourceExclude(source) {
     return source.exclude;
   }
   const defaultExclude = [".pet", ".git"];
-  const subSourcesExclude = (source.sources || []).map((s) => s.relativePath);
+  const subSourcesExclude = (source.sources || []).map((s) =>
+    path.join(s.absolutePath)
+  );
   return [...defaultExclude, ...subSourcesExclude];
 }
 

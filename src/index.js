@@ -10,17 +10,19 @@ async function pet() {
     return;
   }
 
-  const handleQuery = require("./handleQuery");
+  const handleFind = require("./handleFind");
   const handleAlias = require("./handleAlias");
   const handleCreate = require("./handleCreate");
+  const handleRemove = require("./handleRemove");
   const handleHelp = require("./handleHelp/handleHelp");
 
   try {
     handleArgvCommands([
-      { commands: ["find", "f"], callback: handleQuery },
+      { commands: ["find", "f"], callback: handleFind },
       { commands: ["create", "c"], callback: handleCreate },
-      { commands: ["config"], callback: handleConfig },
+      { commands: ["remove", "r"], callback: handleRemove },
       { commands: ["alias", "a"], callback: handleAlias },
+      { commands: ["config"], callback: handleConfig },
       { commands: [DEFAULT], callback: handleHelp },
     ]);
   } catch (e) {

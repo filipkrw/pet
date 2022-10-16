@@ -5,7 +5,6 @@ const parseArgvOptions = require("./cmdArgs/parseArgvOptions");
 
 function handleQuery(argv) {
   const { query } = parseQueryArgv(argv);
-  console.log(query);
   const allFiles = getAllFiles();
   const results = searchFiles(query, allFiles);
   printResults(results);
