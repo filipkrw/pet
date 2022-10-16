@@ -21,7 +21,7 @@ function getAllAliases() {
 }
 
 function getShells() {
-  console.log(config.config);
+  return config.config.localConfig.shells.shells;
 }
 
 module.exports = { getAllAliases, getShells };

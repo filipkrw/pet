@@ -2,7 +2,7 @@ const os = require("os");
 const path = require("path");
 const petConfig = require("../localConfig/petConfig");
 const deepMerge = require("./util/deepMerge");
-const { fileExists } = require("./util/files");
+const { fileExists, readJsonFile } = require("./util/files");
 const getRootPath = require("./util/getRootPath");
 
 function initConfig() {
@@ -67,13 +67,24 @@ function initConfig() {
    * Config local to the user's machine.
    */
   function getLocalConfig() {
-    const localConfigPath = path.normalize(
+    const localConfigAbsolutePath = path.normalize(
       path.join(getRootPath(), "localConfig")
     );
+    const shellsAbsolutePath = path.join(
+      localConfigAbsolutePath,
+      "shells.json"
+    );
+    const shells = fileExists(shellsAbsolutePath)
+      ? readJsonFile(shellsAbsolutePath)
+      : [];
     return {
-      path: localConfigPath,
+      absolutePath: localConfigAbsolutePath,
       shells: {
-        path: path.join("localConfig", "shells.json"),
+        absolutePath: shellsAbsolutePath,
+        shells,
+      },
+      transformedAliases: {
+        absolutePath: path.join(localConfigAbsolutePath, "transformedAliases"),
       },
     };
   }

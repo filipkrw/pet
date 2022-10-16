@@ -17,8 +17,8 @@ const normalizePath = require("../../util/normalizePath");
 
 function handleAdd([alias, filePath]) {
   const [source, targetFile] = loadTargetFile(filePath);
-  addAlias(alias, targetFile, source);
-  // shellsBulkWrite();
+  // addAliasToRootSourceConfig(alias, targetFile, source);
+  shellsBulkWrite();
 
   // const { source, relativePath, absolutePath } = getFileDetails(snippetPath);
   // if (!fs.existsSync(absolutePath)) {
@@ -53,7 +53,7 @@ function loadTargetFile(filePath) {
   return [source, targetFile];
 }
 
-function addAlias(alias, targetFile, aliasSource) {
+function addAliasToRootSourceConfig(alias, targetFile, aliasSource) {
   const rootSource = sourceConfig.getConfig();
   const rootSourceOriginal = getSourceConfigFile(rootSource);
 

@@ -9,10 +9,14 @@ class Shell {
   constructor(name, file, aliasesConfig) {
     this.name = name;
     this.aliasesConfig = aliasesConfig;
+    this.file = file;
     updateConfig({
       path: {
         aliases: {
-          [name]: path.join(config.path.dotPet, "aliases", "transformed", file),
+          [name]: path.join(
+            config.localConfig.transformedAliases.absolutePath,
+            file
+          ),
         },
       },
     });
@@ -21,7 +25,7 @@ class Shell {
   async init() {
     await this.mount();
     this.write();
-    // this.writeShellConfig();
+    this.writeShellConfig();
   }
 
   write() {
@@ -38,16 +42,15 @@ class Shell {
     }
 
     const transformedPath = path.join(
-      config.localConfig.path,
-      "transformedAliases",
-      this.name
+      config.localConfig.transformedAliases.absolutePath,
+      this.file
     );
     createFileIfNotExists(transformedPath);
     fs.writeFileSync(transformedPath, transformed.join("\n\n"));
   }
 
   writeShellConfig() {
-    const shellConfigPath = config.localConfig.shells.path;
+    const shellConfigPath = config.localConfig.shells.absolutePath;
     createFileIfNotExists(shellConfigPath);
     const shellConfigJSON = fs.readFileSync(shellConfigPath, {
       encoding: "utf-8",
