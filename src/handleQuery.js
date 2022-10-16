@@ -1,20 +1,20 @@
 const Fuse = require("fuse.js");
 const clc = require("cli-color");
 const { getAllFiles } = require("./handleAlias/helpers");
-const commandLineArgs = require("command-line-args");
+const parseArgvOptions = require("./cmdArgs/parseArgvOptions");
 
 function handleQuery(argv) {
-  const { query } = parseArgv(argv);
+  const { query } = parseQueryArgv(argv);
   console.log(query);
   const allFiles = getAllFiles();
   const results = searchFiles(query, allFiles);
   printResults(results);
 }
 
-function parseArgv(argv) {
-  const options = commandLineArgs(
+function parseQueryArgv(argv) {
+  const options = parseArgvOptions(
     [{ name: "query", defaultOption: true, multiple: true }],
-    { argv }
+    argv
   );
   const { query } = options;
   return {

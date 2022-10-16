@@ -12,6 +12,7 @@ const writeFromTemplate = require("../util/writeFromTemplate");
 const getCwd = require("../util/getCwd");
 const getRootPath = require("../util/getRootPath");
 const commandLineArgs = require("command-line-args");
+const parseArgvOptions = require("../cmdArgs/parseArgvOptions");
 
 function isInitialized() {
   const configFilePath = getPetConfigPath();
@@ -64,7 +65,7 @@ async function handleInit() {
 }
 
 async function handleConfig(argv) {
-  const args = parseArgv(argv);
+  const args = parseConfigArgv(argv);
   if (args.get) {
     const petConfigPath = getPetConfigPath();
     const petConfig = require(petConfigPath);
@@ -77,13 +78,13 @@ async function handleConfig(argv) {
   }
 }
 
-function parseArgv(argv) {
-  return commandLineArgs(
+function parseConfigArgv(argv) {
+  return parseArgvOptions(
     [
       { name: "get", alias: "g", type: Boolean },
       { name: "set", alias: "s", type: Boolean },
     ],
-    { argv }
+    argv
   );
 }
 

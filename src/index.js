@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const parseArgvCommand = require("./cmdArgs/parseArgvCommand");
 const { isInitialized, handleInit, handleConfig } = require("./handleInit");
 
 async function pet() {
@@ -13,15 +14,12 @@ async function pet() {
   const handleCreate = require("./handleCreate");
   const CommandError = require("./handleAlias/CommandError");
 
-  const args = commandLineArgs([{ name: "cmd", defaultOption: true }], {
-    stopAtFirstUnknown: true,
-  });
-  const remainingArgv = args._unknown || [];
+  const { command, remainingArgv } = parseArgvCommand();
 
   try {
-    if (args.cmd === "find") handleQuery(remainingArgv);
-    else if (args.cmd === "add") handleCreate(remainingArgv);
-    else if (args.cmd === "config") handleConfig(remainingArgv);
+    if (command === "find") handleQuery(remainingArgv);
+    else if (command === "add") handleCreate(remainingArgv);
+    else if (command === "config") handleConfig(remainingArgv);
   } catch (e) {
     if (e instanceof CommandError) {
       console.log(e.message);
