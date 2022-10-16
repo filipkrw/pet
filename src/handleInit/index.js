@@ -11,8 +11,7 @@ const {
 const writeFromTemplate = require("../util/writeFromTemplate");
 const getCwd = require("../util/getCwd");
 const getRootPath = require("../util/getRootPath");
-const commandLineArgs = require("command-line-args");
-const parseArgvOptions = require("../cmdArgs/parseArgvOptions");
+const handleArgvCommands = require("../cmdArgs/handleArgvCommands");
 
 function isInitialized() {
   const configFilePath = getPetConfigPath();
@@ -65,27 +64,20 @@ async function handleInit() {
 }
 
 async function handleConfig(argv) {
-  const args = parseConfigArgv(argv);
-  if (args.get) {
+  handleArgvCommands(
+    [
+      { commands: ["get", "g"], callback: handleGet },
+      { commands: ["set", "s"], callback: handleInit },
+    ],
+    argv
+  );
+  function handleGet() {
     const petConfigPath = getPetConfigPath();
     const petConfig = require(petConfigPath);
     for (const [key, value] of Object.entries(petConfig)) {
       console.log(`${clc.white(`${camelCaseToCapitalized(key)}:`)}\t${value}`);
     }
   }
-  if (args.set) {
-    handleInit();
-  }
-}
-
-function parseConfigArgv(argv) {
-  return parseArgvOptions(
-    [
-      { name: "get", alias: "g", type: Boolean },
-      { name: "set", alias: "s", type: Boolean },
-    ],
-    argv
-  );
 }
 
 function camelCaseToCapitalized(str) {

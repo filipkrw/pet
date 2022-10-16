@@ -7,7 +7,7 @@ Commands:
   [a]lias [r]emove <name>       Remove alias
   [a]lias [l]ist                List aliases
 
-  [co]nfig [g]et                Print config
-  [co]nfig [s]et                Set config (interactive)
+  config [g]et                  Print config
+  config [s]et                  Set config (interactive)
 
-  [h]elp                        Show this help
+  *                             Show this help

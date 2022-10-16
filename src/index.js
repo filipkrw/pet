@@ -1,6 +1,8 @@
 #!/usr/bin/env node
-const parseArgvCommand = require("./cmdArgs/parseArgvCommand");
+const CommandError = require("./handleAlias/CommandError");
+const handleArgvCommands = require("./cmdArgs/handleArgvCommands");
 const { isInitialized, handleInit, handleConfig } = require("./handleInit");
+const { DEFAULT } = require("./constants");
 
 async function pet() {
   if (!isInitialized()) {
@@ -8,18 +10,19 @@ async function pet() {
     return;
   }
 
-  const handleAlias = require("./handleAlias");
   const handleQuery = require("./handleQuery");
+  const handleAlias = require("./handleAlias");
   const handleCreate = require("./handleCreate");
-  const CommandError = require("./handleAlias/CommandError");
-
-  const { command, remainingArgv } = parseArgvCommand();
+  const handleHelp = require("./handleHelp/handleHelp");
 
   try {
-    if (command === "find") handleQuery(remainingArgv);
-    else if (command === "new") handleCreate(remainingArgv);
-    else if (command === "config") handleConfig(remainingArgv);
-    else if (command === "alias") handleAlias(remainingArgv);
+    handleArgvCommands([
+      { commands: ["find", "f"], callback: handleQuery },
+      { commands: ["create", "c"], callback: handleCreate },
+      { commands: ["config"], callback: handleConfig },
+      { commands: ["alias", "a"], callback: handleAlias },
+      { commands: [DEFAULT], callback: handleHelp },
+    ]);
   } catch (e) {
     if (e instanceof CommandError) {
       console.log(e.message);
