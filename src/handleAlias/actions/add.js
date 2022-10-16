@@ -9,12 +9,28 @@ const moduleExportsStr = require("../../util/moduleExportsStr");
 const { getAllAliases } = require("../helpers");
 const normalizePath = require("../../util/normalizePath");
 const getSourceRawConfigFile = require("../getSourceRawConfigFile");
+const parseArgvOptions = require("../../cmdArgs/parseArgvOptions");
 
-function handleAdd([alias, filePath]) {
+function handleAdd(argv) {
+  const { alias, filePath } = parseAddArgv(argv);
   const [source, targetFile] = loadTargetFile(filePath);
   addAliasToRootSourceConfig(alias, targetFile, source);
   shellsBulkWrite();
   console.log(`Alias "${alias}" added.`);
+}
+
+function parseAddArgv(argv) {
+  const args = parseArgvOptions(
+    [{ name: "query", type: String, defaultOption: true, multiple: true }],
+    argv
+  );
+  if (args.query.length !== 2) {
+    throw new CommandError(`Invalid arguments. Expected: "alias path/to/file"`);
+  }
+  return {
+    alias: args.query[0],
+    filePath: args.query[1],
+  };
 }
 
 function loadTargetFile(filePath) {

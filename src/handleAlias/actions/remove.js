@@ -4,9 +4,11 @@ const getSourceRawConfigFile = require("../getSourceRawConfigFile");
 const fs = require("fs");
 const moduleExportsStr = require("../../util/moduleExportsStr");
 const CommandError = require("../CommandError");
+const parseArgvOptions = require("../../cmdArgs/parseArgvOptions");
 
 // Need to find file path by alias name
-function handleRemove(alias) {
+function handleRemove(argv) {
+  const { alias } = parseRemoveArgv(argv);
   const allAliases = getAllAliases();
   const aliasToRemove = allAliases.find((a) => a.alias === alias);
   if (!aliasToRemove) {
@@ -26,6 +28,13 @@ function handleRemove(alias) {
 
   shellsBulkWrite();
   console.log(`Alias "${alias}" removed.`);
+}
+
+function parseRemoveArgv(argv) {
+  return parseArgvOptions(
+    [{ name: "alias", type: String, defaultOption: true }],
+    argv
+  );
 }
 
 module.exports = handleRemove;

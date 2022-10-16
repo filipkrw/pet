@@ -1,0 +1,13 @@
+Commands:
+  [f]ind <query>                Fuzzy find a snippet
+  [c]reate                      Create a new snippet (interactive)
+
+  [a]lias [i]nit                Setup aliases on your system
+  [a]lias [a]dd <name> <file>   Add alias
+  [a]lias [r]emove <name>       Remove alias
+  [a]lias [l]ist                List aliases
+
+  config [g]et                  Print config
+  config [s]et                  Set config (interactive)
+
+  *                             Show this help

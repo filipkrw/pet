@@ -11,6 +11,7 @@ const {
 const writeFromTemplate = require("../util/writeFromTemplate");
 const getCwd = require("../util/getCwd");
 const getRootPath = require("../util/getRootPath");
+const handleArgvCommands = require("../cmdArgs/handleArgvCommands");
 
 function isInitialized() {
   const configFilePath = getPetConfigPath();
@@ -62,16 +63,20 @@ async function handleInit() {
   console.log(clc.bold.green("Done!"));
 }
 
-async function handleConfig(args) {
-  if (args.get) {
+async function handleConfig(argv) {
+  handleArgvCommands(
+    [
+      { commands: ["get", "g"], callback: handleGet },
+      { commands: ["set", "s"], callback: handleInit },
+    ],
+    argv
+  );
+  function handleGet() {
     const petConfigPath = getPetConfigPath();
     const petConfig = require(petConfigPath);
     for (const [key, value] of Object.entries(petConfig)) {
       console.log(`${clc.white(`${camelCaseToCapitalized(key)}:`)}\t${value}`);
     }
-  }
-  if (args.set) {
-    handleInit();
   }
 }
 
