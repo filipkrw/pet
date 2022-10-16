@@ -5,7 +5,7 @@ const path = require("path");
 const { fileExists, createDirectoryIfNotExists } = require("../util/files");
 const spawn = require("child_process").spawn;
 
-module.exports = async function handleCreate() {
+async function handleCreate() {
   const relativePath = await promptForFilePath();
   const absolutePath = path.resolve(config.path.dotPet, "..", relativePath);
   createDirectoryIfNotExists(path.dirname(absolutePath));
@@ -15,7 +15,7 @@ module.exports = async function handleCreate() {
   } else {
     console.log(clc.bold.yellow("Aborted"));
   }
-};
+}
 
 async function promptForFilePath() {
   const filePath = await promptUser(clc.white("Path: "));
@@ -35,3 +35,5 @@ async function openEditor(filePath) {
     process.on("error", () => reject());
   });
 }
+
+module.exports = handleCreate;
