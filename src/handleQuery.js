@@ -1,12 +1,25 @@
 const Fuse = require("fuse.js");
 const clc = require("cli-color");
 const { getAllFiles } = require("./handleAlias/helpers");
+const commandLineArgs = require("command-line-args");
 
-function handleQuery(args) {
-  const query = args.query?.join(" ");
+function handleQuery(argv) {
+  const { query } = parseArgv({ argv });
+  console.log(query);
   const allFiles = getAllFiles();
   const results = searchFiles(query, allFiles);
-  printResults(results, args);
+  printResults(results);
+}
+
+function parseArgv({ argv }) {
+  const options = commandLineArgs(
+    [{ name: "query", defaultOption: true, multiple: true }],
+    { argv }
+  );
+  const { query } = options;
+  return {
+    query: query?.join(" "),
+  };
 }
 
 function search(query, files, keys = ["name", "relativePath", "content"]) {
@@ -26,22 +39,20 @@ function searchFiles(query, sourceFiles) {
   return search(query, sourceFiles).sort((a, b) => b.score - a.score);
 }
 
-function printResults(results, args) {
+function printResults(results) {
   for (const result of results) {
-    const sourcePrefix = getSourcePrefix(args, result.item.source);
+    const sourcePrefix = getSourcePrefix(result.item.source);
     console.log(clc.green.bold(`${sourcePrefix}${result.item.relativePath}`));
-    if (!args.namesOnly) {
-      console.log(result.item.content.trimEnd());
-      console.log();
-    }
+    console.log(result.item.content.trimEnd());
+    console.log();
   }
   console.log(
     clc.blue.bold(`${results.length} result${results.length === 1 ? "" : "s"}`)
   );
 }
 
-function getSourcePrefix(args, source) {
-  if (args.hideSource || source.isRoot) {
+function getSourcePrefix(source) {
+  if (source.isRoot) {
     return "";
   }
   return `${source.rootRelativePath}/`;
