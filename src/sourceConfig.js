@@ -7,6 +7,11 @@ function initSourceConfig() {
   let config = resolveConfig(rootSourceConfig, initResolver);
   let configFlat = flatten(config, "sources");
 
+  function reset() {
+    config = resolveConfig(rootSourceConfig, initResolver);
+    configFlat = flatten(config, "sources");
+  }
+
   function initResolver(sourceConfig, parentConfig) {
     const absolutePath = resolveSourceAbsolutePath(sourceConfig, parentConfig);
     let c = {
@@ -25,7 +30,7 @@ function initSourceConfig() {
           .replace("\\", "/"),
       };
     } else {
-      c = { name: "root", isRoot: true, ...c };
+      c = { name: "root", isRoot: true, ...c, rootRelativePath: "" };
     }
 
     return c;
@@ -50,6 +55,8 @@ function initSourceConfig() {
   function loadConfigFile(sourceAbsolutePath) {
     const rootConfigPath = path.join(sourceAbsolutePath, ".pet", "config.js");
     try {
+      // Needed when resetting the config
+      delete require.cache[require.resolve(rootConfigPath)];
       return { ...require(rootConfigPath), configAbsolutePath: rootConfigPath };
     } catch (e) {
       // TODO log error when config exists, but cannot be loaded
@@ -82,6 +89,7 @@ function initSourceConfig() {
     getConfig: () => config,
     getConfigFlat: () => configFlat,
     getSourceByName: (name) => configFlat.find((s) => s.name === name),
+    reset,
   };
 }
 

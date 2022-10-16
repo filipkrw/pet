@@ -1,8 +1,1 @@
-module.exports = {
-  sources: [
-    {
-      root: "..",
-      include: ["*"],
-    },
-  ],
-};
+module.exports = {};

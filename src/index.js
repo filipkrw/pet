@@ -32,7 +32,7 @@ async function pet() {
   try {
     if (args.exec) handleRun(args);
     else if (args.alias) handleAlias(args);
-    else if (args.query || !Object.keys(args).lenght) handleQuery(args);
+    else if (args.query || !Object.keys(args).length) handleQuery(args);
     else if (args.config) handleConfig(args);
     else if (args.newSnippet) handleCreate(args);
   } catch (e) {
