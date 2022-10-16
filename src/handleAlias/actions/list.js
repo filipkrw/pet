@@ -1,7 +1,10 @@
 const clc = require("cli-color");
+const parseArgvOptions = require("../../cmdArgs/parseArgvOptions");
 const { getAllAliases } = require("../helpers");
 
-function handleList(args) {
+function handleList(argv) {
+  const args = parseListArgv(argv);
+
   const aliases = getAllAliases().sort((a, b) =>
     a.alias.localeCompare(b.alias)
   );
@@ -21,6 +24,13 @@ function handleList(args) {
     clc.blue.bold(
       `${aliasesCount} alias${aliasesCount === 1 ? "" : "es"} found`
     )
+  );
+}
+
+function parseListArgv(argv) {
+  return parseArgvOptions(
+    [{ name: "verbose", alias: "v", type: Boolean }],
+    argv
   );
 }
 
