@@ -14,6 +14,11 @@ function resolveSourceFiles(source, exclude) {
     normalize: true,
     exclude: constructOrRegex(exclude),
   });
+  if (!nodeTree) {
+    // This can happen when the source directory is empty
+    // There might be different causes
+    return [];
+  }
   const nodes = flatten(nodeTree, "children").filter(
     (node) => node.type === "file"
   );
