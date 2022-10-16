@@ -6,9 +6,8 @@ const removeDuplicates = require("../../util/removeDuplicates.js");
 const { getAllAliases } = require("../helpers.js");
 
 class Shell {
-  constructor(name, file, aliasesConfig) {
+  constructor(name, file) {
     this.name = name;
-    this.aliasesConfig = aliasesConfig;
     this.file = file;
     updateConfig({
       path: {

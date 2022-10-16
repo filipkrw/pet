@@ -7,8 +7,8 @@ const { createFileIfNotExists } = require("../../../util/files");
 const Shell = require("../Shell.js");
 
 class PowerShell extends Shell {
-  constructor(aliasesConfig) {
-    super("powershell", "PowerShell_aliases.ps1", aliasesConfig);
+  constructor() {
+    super("powershell", "PowerShell_aliases.ps1");
   }
 
   async mount() {
