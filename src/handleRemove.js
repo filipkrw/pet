@@ -9,25 +9,17 @@ function handleRemove(argv) {
   const { snippetPath } = parseRemoveArgv(argv);
   const files = getAllFiles();
   const file = files.find((file) => {
-    return (
-      path.join(file.source.rootRelativePath, file.relativePath) ===
-      path.normalize(snippetPath)
-    );
+    return getFileRootRelativePath(file) === path.normalize(snippetPath);
   });
   if (!file) {
     throw new Error(`No snippet found at "${snippetPath}".`);
   }
-  const fileRootRelativePath = path.join(
-    file.source.rootRelativePath,
-    file.relativePath
-  );
-  const fileAbsolutePath = path.join(
-    file.source.absolutePath,
-    file.relativePath
-  );
+  const fileAbsolutePath = getFileAbsolutePath(file);
   if (fileExists(fileAbsolutePath)) {
     fs.rmSync(fileAbsolutePath);
-    console.log(`Snippet "${normalizePath(fileRootRelativePath)}" removed.`);
+    console.log(
+      `Snippet "${normalizePath(getFileRootRelativePath(file))}" removed.`
+    );
   }
 }
 
@@ -37,6 +29,14 @@ function parseRemoveArgv(argv) {
     argv
   );
   return options;
+}
+
+function getFileRootRelativePath(file) {
+  return path.join(file.source.rootRelativePath, file.relativePath);
+}
+
+function getFileAbsolutePath(file) {
+  return path.join(file.source.absolutePath, file.relativePath);
 }
 
 module.exports = handleRemove;

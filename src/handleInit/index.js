@@ -53,9 +53,7 @@ function writeUserConfig(basePath) {
 }
 
 async function handleInit() {
-  const initMessage = `First, tell us where you want your ${clc.bold(
-    ".pet"
-  )} config directory stored.\nIf you already have it, simply point to it. (It won't be deleted).`;
+  const initMessage = `First tell us where you want your config directory and snippets stored.\nIf you already have snippets directory, simply point to it.`;
   console.log(initMessage);
   const basePath = await promptUser(clc.white("Config Path:\t"), getCwd());
   writePetConfig(basePath);
