@@ -11,6 +11,7 @@ const {
 const writeFromTemplate = require("../util/writeFromTemplate");
 const getCwd = require("../util/getCwd");
 const getRootPath = require("../util/getRootPath");
+const commandLineArgs = require("command-line-args");
 
 function isInitialized() {
   const configFilePath = getPetConfigPath();
@@ -62,7 +63,8 @@ async function handleInit() {
   console.log(clc.bold.green("Done!"));
 }
 
-async function handleConfig(args) {
+async function handleConfig(argv) {
+  const args = parseArgv(argv);
   if (args.get) {
     const petConfigPath = getPetConfigPath();
     const petConfig = require(petConfigPath);
@@ -73,6 +75,16 @@ async function handleConfig(args) {
   if (args.set) {
     handleInit();
   }
+}
+
+function parseArgv(argv) {
+  return commandLineArgs(
+    [
+      { name: "get", alias: "g", type: Boolean },
+      { name: "set", alias: "s", type: Boolean },
+    ],
+    { argv }
+  );
 }
 
 function camelCaseToCapitalized(str) {

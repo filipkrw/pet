@@ -4,14 +4,14 @@ const { getAllFiles } = require("./handleAlias/helpers");
 const commandLineArgs = require("command-line-args");
 
 function handleQuery(argv) {
-  const { query } = parseArgv({ argv });
+  const { query } = parseArgv(argv);
   console.log(query);
   const allFiles = getAllFiles();
   const results = searchFiles(query, allFiles);
   printResults(results);
 }
 
-function parseArgv({ argv }) {
+function parseArgv(argv) {
   const options = commandLineArgs(
     [{ name: "query", defaultOption: true, multiple: true }],
     { argv }

@@ -10,19 +10,18 @@ async function pet() {
   const commandLineArgs = require("command-line-args");
   const handleAlias = require("./handleAlias");
   const handleQuery = require("./handleQuery");
-  const handleRun = require("./handleRun");
   const handleCreate = require("./handleCreate");
   const CommandError = require("./handleAlias/CommandError");
 
-  const args = commandLineArgs([{ name: "command", defaultOption: true }], {
+  const args = commandLineArgs([{ name: "cmd", defaultOption: true }], {
     stopAtFirstUnknown: true,
   });
-  const argv = args._unknown || [];
+  const remainingArgv = args._unknown || [];
 
   try {
-    if (args.command === "find") {
-      handleQuery(argv);
-    }
+    if (args.cmd === "find") handleQuery(remainingArgv);
+    else if (args.cmd === "add") handleCreate(remainingArgv);
+    else if (args.cmd === "config") handleConfig(remainingArgv);
   } catch (e) {
     if (e instanceof CommandError) {
       console.log(e.message);
