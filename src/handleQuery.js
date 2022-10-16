@@ -44,10 +44,10 @@ function getSourcePrefix(args, source) {
   if (args.hideSource) {
     return "";
   }
-  if (source.isRoot) {
-    return "/";
-  }
-  return `[${source.rootRelativePath}]/`;
+  // if (source.isRoot) {
+  //   return "root/";
+  // }
+  return `${source.name}/`;
 }
 
 module.exports = handleQuery;
