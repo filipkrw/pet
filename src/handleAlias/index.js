@@ -6,7 +6,7 @@ const sourceConfig = require("../sourceConfig");
 const aliasesResolver = require("../resolvers/aliasesResolver");
 const handleArgvCommands = require("../cmdArgs/handleArgvCommands");
 
-async function handleAlias(argv) {
+async function handleAlias(argv, subcommand) {
   sourceConfig.resolve(aliasesResolver);
   handleArgvCommands(
     [
@@ -15,7 +15,7 @@ async function handleAlias(argv) {
       { commands: ["remove", "r"], callback: handleRemove },
       { commands: ["list", "l"], callback: handleList },
     ],
-    argv
+    subcommand ? [subcommand, ...argv] : argv
   );
 }
 

@@ -1,7 +1,6 @@
 const path = require("path");
 const fs = require("fs");
 const promptUser = require("../util/promptUser");
-const util = require("util");
 const clc = require("cli-color");
 const {
   createFileIfNotExists,
@@ -61,13 +60,13 @@ async function handleInit() {
   console.log(clc.bold.green("Done!"));
 }
 
-async function handleConfig(argv) {
+async function handleConfig(argv, subcommands) {
   handleArgvCommands(
     [
       { commands: ["get", "g"], callback: handleGet },
       { commands: ["set", "s"], callback: handleInit },
     ],
-    argv
+    subcommands ? [subcommands, ...argv] : argv
   );
   function handleGet() {
     const petConfigPath = getPetConfigPath();
