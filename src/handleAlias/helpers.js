@@ -1,6 +1,7 @@
 const config = require("../config");
 const filesResolver = require("../resolvers/filesResolver");
 const sourceConfig = require("../sourceConfig");
+const path = require("path");
 
 function getAllAliases() {
   return sourceConfig
@@ -39,4 +40,18 @@ function getSourceEmbeddedConfig(s) {
   };
 }
 
-module.exports = { getAllAliases, getShells, getAllFiles };
+function getFileRootRelativePath(file) {
+  return path.join(file.source.rootRelativePath, file.relativePath);
+}
+
+function getFileAbsolutePath(file) {
+  return path.join(file.source.absolutePath, file.relativePath);
+}
+
+module.exports = {
+  getAllAliases,
+  getShells,
+  getAllFiles,
+  getFileRootRelativePath,
+  getFileAbsolutePath,
+};

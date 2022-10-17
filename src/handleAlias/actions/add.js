@@ -3,18 +3,20 @@ const fs = require("fs");
 const CommandError = require("../CommandError");
 const shellsBulkWrite = require("../shells/shellsBulkWrite");
 const sourceConfig = require("../../sourceConfig");
-const filesResolver = require("../../resolvers/filesResolver");
-const flatten = require("tree-flatten/build/tree-flatten");
 const moduleExportsStr = require("../../util/moduleExportsStr");
-const { getAllAliases } = require("../helpers");
+const {
+  getAllAliases,
+  getAllFiles,
+  getFileRootRelativePath,
+} = require("../helpers");
 const normalizePath = require("../../util/normalizePath");
 const getSourceRawConfigFile = require("../getSourceRawConfigFile");
 const parseArgvOptions = require("../../cmdArgs/parseArgvOptions");
 
 function handleAdd(argv) {
   const { alias, filePath } = parseAddArgv(argv);
-  const [source, targetFile] = loadTargetFile(filePath);
-  addAliasToRootSourceConfig(alias, targetFile, source);
+  const targetFile = loadTargetFile(filePath);
+  addAliasToRootSourceConfig(alias, targetFile, targetFile.source);
   shellsBulkWrite();
   console.log(`Alias "${alias}" added.`);
 }
@@ -34,21 +36,16 @@ function parseAddArgv(argv) {
 }
 
 function loadTargetFile(filePath) {
-  const [sourceName, ...rest] = filePath.split("/");
-  const fileRelativePath = rest.join("/");
-  const source = sourceConfig.getSourceByName(sourceName);
-  if (!source) {
-    throw new CommandError(`Source "${sourceName}" not found`);
-  }
-  const sourceWithFiles = sourceConfig.resolveSource(source, filesResolver);
-  const files = flatten(sourceWithFiles, "sources").flatMap((s) => s.files);
-  const targetFile = files.find((f) => f.relativePath === fileRelativePath);
+  const files = getAllFiles();
+  const targetFile = files.find(
+    (f) => normalizePath(getFileRootRelativePath(f)) === filePath
+  );
   if (!targetFile) {
     throw new CommandError(
-      `File "${fileRelativePath}" in source "${sourceName}" not found`
+      `File "${filePath}" in source "${targetFile.source.name}" not found`
     );
   }
-  return [source, targetFile];
+  return targetFile;
 }
 
 function addAliasToRootSourceConfig(alias, targetFile, aliasSource) {

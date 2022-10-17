@@ -1,5 +1,9 @@
 const parseArgvOptions = require("./cmdArgs/parseArgvOptions");
-const { getAllFiles } = require("./handleAlias/helpers");
+const {
+  getAllFiles,
+  getFileAbsolutePath,
+  getFileRootRelativePath,
+} = require("./handleAlias/helpers");
 const path = require("path");
 const { fileExists } = require("./util/files");
 const fs = require("fs");
@@ -29,14 +33,6 @@ function parseRemoveArgv(argv) {
     argv
   );
   return options;
-}
-
-function getFileRootRelativePath(file) {
-  return path.join(file.source.rootRelativePath, file.relativePath);
-}
-
-function getFileAbsolutePath(file) {
-  return path.join(file.source.absolutePath, file.relativePath);
 }
 
 module.exports = handleRemove;
