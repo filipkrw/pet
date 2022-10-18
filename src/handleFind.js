@@ -21,6 +21,13 @@ function parseQueryArgv(argv) {
   };
 }
 
+function searchFiles(query, sourceFiles) {
+  if (!query) {
+    return sourceFiles.map((f) => ({ item: f }));
+  }
+  return search(query, sourceFiles).sort((a, b) => b.score - a.score);
+}
+
 function search(query, files, keys = ["name", "relativePath", "content"]) {
   const fuse = new Fuse(files, {
     keys,
@@ -29,13 +36,6 @@ function search(query, files, keys = ["name", "relativePath", "content"]) {
     useExtendedSearch: true,
   });
   return fuse.search(query);
-}
-
-function searchFiles(query, sourceFiles) {
-  if (!query) {
-    return sourceFiles.map((f) => ({ item: f }));
-  }
-  return search(query, sourceFiles).sort((a, b) => b.score - a.score);
 }
 
 function printResults(results) {

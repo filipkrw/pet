@@ -19,7 +19,7 @@ function initSourceConfig() {
       absolutePath,
     };
 
-    c = { ...c, ...loadConfigFile(c.absolutePath) };
+    c = { ...loadConfigFile(c.absolutePath), ...c };
 
     if (parentConfig) {
       c = {

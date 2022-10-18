@@ -14,7 +14,7 @@
   "dependencies": {
     "cli-color": "^2.0.1",
     "command-line-args": "^5.2.1",
-    "dree": "^3.3.5",
+    "fast-glob": "^3.2.12",
     "fuse.js": "^6.5.3",
     "json5": "^2.2.1",
     "tree-flatten": "^1.0.0"
