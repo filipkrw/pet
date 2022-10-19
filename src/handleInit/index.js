@@ -13,8 +13,19 @@ const getRootPath = require("../util/getRootPath");
 const handleArgvCommands = require("../cmdArgs/handleArgvCommands");
 
 function isInitialized() {
-  const configFilePath = getPetConfigPath();
-  return fs.existsSync(configFilePath);
+  try {
+    const configFilePath = getPetConfigPath();
+    if (!fs.existsSync(configFilePath)) {
+      return false;
+    }
+    const localConfig = require(configFilePath);
+    if (!fs.existsSync(localConfig.basePath)) {
+      return false;
+    }
+  } catch (e) {
+    return false;
+  }
+  return true;
 }
 
 function getPetConfigPath() {
