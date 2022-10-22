@@ -1,7 +1,5 @@
-const pprint = require("./pprint");
-
+import pprint from "./pprint.js";
 function moduleExportsStr(val) {
-  return `module.exports = ${pprint(val)};`;
+    return `module.exports = ${pprint(val)};`;
 }
-
-module.exports = moduleExportsStr;
+export default moduleExportsStr;

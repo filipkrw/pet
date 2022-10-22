@@ -1,11 +1,9 @@
-const mergeDeep = require("./mergeDeep");
-
+import mergeDeep from "./mergeDeep";
 function mockConfig(initState) {
-  let config = initState;
-  return {
-    config,
-    updateConfig: (parameters) => (config = mergeDeep(config, parameters)),
-  };
+    let config = initState;
+    return {
+        config,
+        updateConfig: (parameters) => (config = mergeDeep(config, parameters)),
+    };
 }
-
-module.exports = mockConfig;
+export default mockConfig;

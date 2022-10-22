@@ -1,8 +1,6 @@
-const fs = require("fs");
-
+import fs from "fs";
 function handleHelp() {
-  const help = fs.readFileSync(`${__dirname}/help.txt`, "utf8");
-  console.log(help);
+    const help = fs.readFileSync(`${__dirname}/help.txt`, "utf8");
+    console.log(help);
 }
-
-module.exports = handleHelp;
+export default handleHelp;

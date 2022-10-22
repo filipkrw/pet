@@ -1,9 +1,6 @@
-const { fileExists } = require("../util/files");
-
+import { fileExists } from "../util/files.js";
 function getSourceRawConfigFile(source) {
-  const configPath = source.configAbsolutePath;
-  const config = fileExists(configPath) ? require(configPath) : {};
-  return config;
+    const configPath = source.configAbsolutePath;
+    return config;
 }
-
-module.exports = getSourceRawConfigFile;
+export default getSourceRawConfigFile;

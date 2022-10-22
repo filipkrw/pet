@@ -4,6 +4,7 @@
   "description": "",
   "main": "./src/index.js",
   "bin": "./src/index.js",
+  "type": "module",
   "keywords": [],
   "author": "filipkrw",
   "license": "ISC",
@@ -12,17 +13,20 @@
     "test:cli": "jest --testPathIgnorePatterns extension"
   },
   "dependencies": {
-    "cli-color": "^2.0.1",
-    "command-line-args": "^5.2.1",
-    "fast-glob": "^3.2.12",
-    "fuse.js": "^6.5.3",
-    "json5": "^2.2.1",
-    "tree-flatten": "^1.0.0"
+    "cli-color": "2.0.1",
+    "command-line-args": "5.2.1",
+    "fast-glob": "3.2.12",
+    "fuse.js": "6.5.3",
+    "json5": "2.2.1",
+    "tree-flatten": "1.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.17.0",
-    "eslint-config-prettier": "^8.5.0",
-    "jest": "^27.5.1",
-    "prettier": "^2.6.2"
+    "@typescript-eslint/eslint-plugin": "^5.40.1",
+    "@typescript-eslint/parser": "^5.40.1",
+    "eslint": "8.17.0",
+    "eslint-config-prettier": "8.5.0",
+    "jest": "27.5.1",
+    "prettier": "2.6.2",
+    "typescript": "4.8.4"
   }
 }

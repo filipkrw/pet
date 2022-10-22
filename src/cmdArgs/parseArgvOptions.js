@@ -1,7 +1,5 @@
-const commandLineArgs = require("command-line-args");
-
+import commandLineArgs from "command-line-args";
 function parseArgvOptions(optionsDefinition, argv) {
-  return commandLineArgs(optionsDefinition, { argv });
+    return commandLineArgs(optionsDefinition, { argv });
 }
-
-module.exports = parseArgvOptions;
+export default parseArgvOptions;

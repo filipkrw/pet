@@ -1,3 +1,3 @@
-module.exports = function getCwd() {
-  return process.cwd().replace(/\\/g, "/");
-};
+export default (function getCwd() {
+    return process.cwd().replace(/\\/g, "/");
+});

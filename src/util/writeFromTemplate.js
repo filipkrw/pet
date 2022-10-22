@@ -1,16 +1,13 @@
-const fs = require("fs");
-
+import fs from "fs";
 function getReplacer(dict) {
-  return function (match, key) {
-    return dict[key] || key;
-  };
+    return function (match, key) {
+        return dict[key] || key;
+    };
 }
-
 function writeFromTemplate(templatePath, targetPath, dict = {}) {
-  const replacer = getReplacer(dict);
-  const template = fs.readFileSync(templatePath, "utf8");
-  const result = template.replace(/\{\{([^}]+)\}\}/g, replacer);
-  fs.writeFileSync(targetPath, result, { flag: "w" });
+    const replacer = getReplacer(dict);
+    const template = fs.readFileSync(templatePath, "utf8");
+    const result = template.replace(/\{\{([^}]+)\}\}/g, replacer);
+    fs.writeFileSync(targetPath, result, { flag: "w" });
 }
-
-module.exports = writeFromTemplate;
+export default writeFromTemplate;

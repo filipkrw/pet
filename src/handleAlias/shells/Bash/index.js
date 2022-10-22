@@ -1,3 +1,2 @@
-const Bash = require("./Bash");
-
-module.exports = Bash;
+import Bash from "./Bash.js";
+export default Bash;

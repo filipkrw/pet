@@ -1,20 +1,17 @@
-const readline = require("readline");
-
+import readline from "readline";
 async function promptUser(prompt, defaultValue = "") {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    prompt,
-  });
-
-  return new Promise((resolve) => {
-    rl.prompt();
-    rl.write(defaultValue);
-    rl.on("line", (input) => {
-      rl.close();
-      resolve(input);
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+        prompt,
     });
-  });
+    return new Promise((resolve) => {
+        rl.prompt();
+        rl.write(defaultValue);
+        rl.on("line", (input) => {
+            rl.close();
+            resolve(input);
+        });
+    });
 }
-
-module.exports = promptUser;
+export default promptUser;

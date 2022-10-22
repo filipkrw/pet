@@ -1,3 +1,4 @@
-module.exports = {
-  basePath: "{{basePath}}",
+export const basePath = "{{basePath}}";
+export default {
+    basePath
 };

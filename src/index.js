@@ -1,20 +1,17 @@
 #!/usr/bin/env node
-const CommandError = require("./handleAlias/CommandError");
-const handleArgvCommandsWithSubcommands = require("./cmdArgs/handleArgvCommandsWithSubcommands");
-const { isInitialized, handleInit, handleConfig } = require("./handleInit");
-
+import CommandError from "./handleAlias/CommandError.js";
+import handleArgvCommandsWithSubcommands from "./cmdArgs/handleArgvCommandsWithSubcommands.js";
+import { isInitialized, handleInit, handleConfig } from "./handleInit/index.js";
+import handleFind from "./handleFind.js";
+import handleAlias from "./handleAlias/index.js";
+import handleCreate from "./handleCreate/index.js";
+import handleRemove from "./handleRemove.js";
+import handleHelp from "./handleHelp/index.js";
 async function pet() {
   if (!isInitialized()) {
     await handleInit();
     return;
   }
-
-  const handleFind = require("./handleFind");
-  const handleAlias = require("./handleAlias");
-  const handleCreate = require("./handleCreate");
-  const handleRemove = require("./handleRemove");
-  const handleHelp = require("./handleHelp");
-
   try {
     handleArgvCommandsWithSubcommands([
       { commands: { base: "find", short: "f" }, callback: handleFind },
@@ -42,5 +39,4 @@ async function pet() {
     }
   }
 }
-
 pet();
