@@ -1,20 +1,26 @@
 #!/usr/bin/env node
 import CommandError from "./handleAlias/CommandError.js";
 import handleArgvCommandsWithSubcommands from "./cmdArgs/handleArgvCommandsWithSubcommands.js";
-import { isInitialized, handleInit, handleConfig } from "./handleInit/index.js";
-import handleFind from "./handleFind.js";
-import handleAlias from "./handleAlias/index.js";
-import handleCreate from "./handleCreate/index.js";
-import handleRemove from "./handleRemove.js";
-import handleHelp from "./handleHelp/index.js";
+import {
+  checkIsInitialized,
+  handleInit,
+  handleConfig,
+} from "./handleInit/index.js";
 
 async function pet() {
-  if (!isInitialized()) {
+  const isInitialized = await checkIsInitialized();
+  if (!isInitialized) {
     await handleInit();
     return;
   }
 
   try {
+    const { default: handleFind } = await import("./handleFind.js");
+    const { default: handleAlias } = await import("./handleAlias/index.js");
+    const { default: handleCreate } = await import("./handleCreate/index.js");
+    const { default: handleRemove } = await import("./handleRemove.js");
+    const { default: handleHelp } = await import("./handleHelp/index.js");
+
     handleArgvCommandsWithSubcommands([
       { commands: { base: "find", short: "f" }, callback: handleFind },
       { commands: { base: "create", short: "c" }, callback: handleCreate },

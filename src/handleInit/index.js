@@ -12,8 +12,11 @@ import getCwd from "../util/getCwd.js";
 import getRootPath from "../util/getRootPath.js";
 import handleArgvCommands from "../cmdArgs/handleArgvCommands.js";
 import { importConfigFile } from "../util/importConfig.mjs";
+import { fileURLToPath } from "url";
 
-async function isInitialized() {
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+
+async function checkIsInitialized() {
   try {
     const configFilePath = getPetConfigPath();
     if (!fs.existsSync(configFilePath)) {
@@ -76,8 +79,9 @@ async function handleConfig(argv, subcommands) {
     ],
     subcommands ? [subcommands, ...argv] : argv
   );
-  function handleGet() {
+  async function handleGet() {
     const petConfigPath = getPetConfigPath();
+    const petConfig = await importConfigFile(petConfigPath);
     for (const [key, value] of Object.entries(petConfig)) {
       console.log(`${clc.white(`${camelCaseToCapitalized(key)}:`)}\t${value}`);
     }
@@ -90,11 +94,11 @@ function camelCaseToCapitalized(str) {
 }
 export { handleInit };
 export { handleConfig };
-export { isInitialized };
+export { checkIsInitialized };
 export { getPetConfigPath };
 export default {
   handleInit,
   handleConfig,
-  isInitialized,
+  checkIsInitialized,
   getPetConfigPath,
 };
