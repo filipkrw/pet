@@ -7,11 +7,13 @@ import handleAlias from "./handleAlias/index.js";
 import handleCreate from "./handleCreate/index.js";
 import handleRemove from "./handleRemove.js";
 import handleHelp from "./handleHelp/index.js";
+
 async function pet() {
   if (!isInitialized()) {
     await handleInit();
     return;
   }
+
   try {
     handleArgvCommandsWithSubcommands([
       { commands: { base: "find", short: "f" }, callback: handleFind },
@@ -39,4 +41,5 @@ async function pet() {
     }
   }
 }
+
 pet();

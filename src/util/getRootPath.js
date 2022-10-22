@@ -1,11 +1,14 @@
-import path from "path";
+import path from "node:path";
+import { fileURLToPath } from "url";
+
 /**
+ * Returns the path to the root of the project.
+ *
  * Correctness of this function is dependent on the "main"
  * path in package.json.
  */
 function getRootPath() {
-    // const srcPath = path.dirname(require.main.filename);
-    // return path.normalize(path.join(srcPath, ".."));
-    return 'D:/Pracownia/pet';
+  const thisFileDirectory = fileURLToPath(new URL(".", import.meta.url));
+  return path.normalize(path.join(thisFileDirectory, "../.."));
 }
 export default getRootPath;
