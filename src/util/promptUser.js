@@ -1,17 +1,19 @@
 import readline from "readline";
+
 async function promptUser(prompt, defaultValue = "") {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-        prompt,
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    prompt,
+  });
+  return new Promise((resolve) => {
+    rl.prompt();
+    rl.write(defaultValue);
+    rl.on("line", (input) => {
+      rl.close();
+      resolve(input);
     });
-    return new Promise((resolve) => {
-        rl.prompt();
-        rl.write(defaultValue);
-        rl.on("line", (input) => {
-            rl.close();
-            resolve(input);
-        });
-    });
+  });
 }
+
 export default promptUser;

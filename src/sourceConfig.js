@@ -97,5 +97,4 @@ async function initSourceConfig() {
   };
 }
 
-const sourceConfig = await initSourceConfig();
-export default sourceConfig;
+export default await initSourceConfig();

@@ -3,7 +3,7 @@ import clc from "cli-color";
 import { getAllFiles } from "./handleAlias/helpers.js";
 import parseArgvOptions from "./cmdArgs/parseArgvOptions.js";
 
-async function handleQuery(argv) {
+async function handleFind(argv) {
   const { query } = parseQueryArgv(argv);
   const allFiles = await getAllFiles();
   const results = searchFiles(query, allFiles);
@@ -32,7 +32,6 @@ function search(query, files, keys = ["name", "relativePath", "content"]) {
   const fuse = new Fuse(files, {
     keys,
     includeScore: true,
-    // includeMatches: true,
     useExtendedSearch: true,
   });
   return fuse.search(query);
@@ -57,4 +56,4 @@ function getSourcePrefix(source) {
   return `${source.rootRelativePath}/`;
 }
 
-export default handleQuery;
+export default handleFind;

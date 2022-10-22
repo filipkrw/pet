@@ -1,14 +1,19 @@
 import clc from "cli-color";
 import promptUser from "../util/promptUser.js";
-import config$0 from "../config.js";
+import config from "../config.js";
 import path from "path";
 import { fileExists, createDirectoryIfNotExists } from "../util/files.js";
-import { spawn as spawn$0 } from "child_process";
-const { config } = config$0;
-const spawn = { spawn: spawn$0 }.spawn;
+import { spawn } from "child_process";
+
+const { config: globalConfig } = config;
+
 async function handleCreate() {
   const relativePath = await promptForFilePath();
-  const absolutePath = path.resolve(config.path.dotPet, "..", relativePath);
+  const absolutePath = path.resolve(
+    globalConfig.path.dotPet,
+    "..",
+    relativePath
+  );
   createDirectoryIfNotExists(path.dirname(absolutePath));
   await openEditor(absolutePath);
   if (fileExists(absolutePath)) {
@@ -17,12 +22,14 @@ async function handleCreate() {
     console.log(clc.bold.yellow("Aborted"));
   }
 }
+
 async function promptForFilePath() {
   const filePath = await promptUser(clc.white("Path: "));
   return filePath;
 }
+
 async function openEditor(filePath) {
-  const process = spawn(config.localConfig.textEditor, [filePath], {
+  const process = spawn(globalConfig.localConfig.textEditor, [filePath], {
     shell: true,
     stdio: "inherit",
   });
@@ -32,4 +39,5 @@ async function openEditor(filePath) {
     process.on("error", () => reject());
   });
 }
+
 export default handleCreate;

@@ -8,4 +8,5 @@ async function getSourceRawConfigFile(source) {
   }
   return importConfigFile(configPath);
 }
+
 export default getSourceRawConfigFile;

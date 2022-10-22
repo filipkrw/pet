@@ -11,4 +11,5 @@ function getRootPath() {
   const __dirname = fileURLToPath(new URL(".", import.meta.url));
   return path.normalize(path.join(__dirname, "../.."));
 }
+
 export default getRootPath;

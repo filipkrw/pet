@@ -16,7 +16,7 @@ import { fileURLToPath } from "url";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
-async function checkIsInitialized() {
+export async function checkIsInitialized() {
   try {
     const configFilePath = getPetConfigPath();
     if (!fs.existsSync(configFilePath)) {
@@ -40,7 +40,8 @@ function getPetConfigPath() {
   );
   return configFilePath;
 }
-function writePetConfig(basePath) {
+
+export function writePetConfig(basePath) {
   const petConfigPath = getPetConfigPath();
   createFileIfNotExists(petConfigPath);
   writeFromTemplate(
@@ -49,6 +50,7 @@ function writePetConfig(basePath) {
     { basePath }
   );
 }
+
 function writeUserConfig(basePath) {
   const dotPetPath = path.resolve(basePath, ".pet");
   const configPath = path.resolve(dotPetPath, "config.js");
@@ -63,7 +65,8 @@ function writeUserConfig(basePath) {
     configPath
   );
 }
-async function handleInit() {
+
+export async function handleInit() {
   const initMessage = `First tell us where you want your config directory and snippets stored.\nIf you already have snippets directory, simply point to it.`;
   console.log(initMessage);
   const basePath = await promptUser(clc.white("Config Path:\t"), getCwd());
@@ -71,7 +74,8 @@ async function handleInit() {
   writeUserConfig(basePath);
   console.log(clc.bold.green("Done!"));
 }
-async function handleConfig(argv, subcommands) {
+
+export async function handleConfig(argv, subcommands) {
   handleArgvCommands(
     [
       { commands: ["get", "g"], callback: handleGet },
@@ -87,18 +91,9 @@ async function handleConfig(argv, subcommands) {
     }
   }
 }
+
 function camelCaseToCapitalized(str) {
   return str.replace(/([A-Z])/g, " $1").replace(/^./, function (str) {
     return str.toUpperCase();
   });
 }
-export { handleInit };
-export { handleConfig };
-export { checkIsInitialized };
-export { getPetConfigPath };
-export default {
-  handleInit,
-  handleConfig,
-  checkIsInitialized,
-  getPetConfigPath,
-};
