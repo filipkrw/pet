@@ -1,3 +1,3 @@
-import PowerShell from "./powershell.js";
+import PowerShell from "./PowerShell.js";
 
 export default PowerShell;

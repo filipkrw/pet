@@ -1,4 +1,4 @@
-import * as Fuse from "fuse.js";
+import Fuse from "fuse.js";
 import clc from "cli-color";
 import { getAllFiles } from "./handleAlias/helpers.js";
 import parseArgvOptions from "./cmdArgs/parseArgvOptions.js";

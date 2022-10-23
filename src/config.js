@@ -1,13 +1,13 @@
 import os from "os";
-import path from "path";
-import petConfig from "../localConfig/petConfig.js";
+import path from "node:path";
 import deepMerge from "./util/deepMerge.js";
 import { fileExists, readJsonFile } from "./util/files.js";
 import getRootPath from "./util/getRootPath.js";
+import { importConfigFile } from "./util/importConfig.mjs";
 
 async function initConfig() {
   let config = {
-    path: generatePaths(),
+    path: await generatePaths(),
     localConfig: getLocalConfig(),
     platform: os.platform(),
     shell: process.env.SHELL,
@@ -17,7 +17,10 @@ async function initConfig() {
     config = deepMerge(config, params);
   }
 
-  function generatePaths() {
+  async function generatePaths() {
+    const petConfig = await importConfigFile(
+      path.join(getRootPath(), "localConfig/petConfig.js")
+    );
     const base = path.normalize(petConfig.basePath);
     const dotPet = path.normalize(path.join(base, ".pet"));
     return { base, dotPet };
