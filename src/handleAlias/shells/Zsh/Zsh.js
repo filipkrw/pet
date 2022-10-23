@@ -4,8 +4,10 @@ import os from "os";
 import config from "../../../config.js";
 import { createFileIfNotExists } from "../../../util/files.js";
 import Shell from "../Shell.js";
+import { fileURLToPath } from "url";
 
 const { config: globalConfig } = config;
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 class Zsh extends Shell {
   constructor() {
