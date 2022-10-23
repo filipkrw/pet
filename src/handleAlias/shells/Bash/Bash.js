@@ -11,6 +11,7 @@ class Bash extends Shell {
   constructor() {
     super("bash", "bash_aliases");
   }
+
   async mount() {
     createFileIfNotExists(globalConfig.path.aliases[this.name]);
     try {
@@ -30,9 +31,10 @@ class Bash extends Shell {
       console.log(e.stderr || e);
     }
   }
+
   transform(alias, snippet) {
     const params = [];
-    let funcBody = snippet.replace(/(<[^>|^\*]*>)/g, (match) => {
+    let funcBody = snippet.replace(/(<[^>|^*]*>)/g, (match) => {
       const param = match.substr(1, match.length - 2).replace("-", "_");
       const indexInParams = params.findIndex((p) => p === param);
       if (indexInParams > -1) {
