@@ -1,9 +1,12 @@
-const { fileExists } = require("../util/files");
+import { fileExists } from "../util/files.js";
+import { importConfigFile } from "../util/importConfig.mjs";
 
-function getSourceRawConfigFile(source) {
+async function getSourceRawConfigFile(source) {
   const configPath = source.configAbsolutePath;
-  const config = fileExists(configPath) ? require(configPath) : {};
-  return config;
+  if (!fileExists(configPath)) {
+    throw new Error(`Config file does not exist: ${configPath}`);
+  }
+  return importConfigFile(configPath);
 }
 
-module.exports = getSourceRawConfigFile;
+export default getSourceRawConfigFile;

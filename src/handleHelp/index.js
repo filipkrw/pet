@@ -1,3 +1,3 @@
-const handleHelp = require("./handleHelp");
+import handleHelp from "./handleHelp.js";
 
-module.exports = handleHelp;
+export default handleHelp;

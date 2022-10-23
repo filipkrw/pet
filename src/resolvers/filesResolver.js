@@ -1,8 +1,8 @@
-const fs = require("fs");
-const path = require("path");
-const fg = require("fast-glob");
+import fs from "fs";
+import path from "path";
+import fg from "fast-glob";
 
-function filesResolver(source) {
+async function filesResolver(source) {
   const include = getSourceIncludePatterns(source);
   const exclude = getSourceExcludePatterns(source);
   const files = getSourceFilesWithContent(source, include, exclude);
@@ -44,4 +44,4 @@ function getSourceExcludePatterns(source) {
   return (source.sources || []).map((s) => s.relativePath);
 }
 
-module.exports = filesResolver;
+export default filesResolver;

@@ -1,9 +1,10 @@
-const parseArgvCommand = require("./parseArgvCommand");
+import parseArgvCommand from "./parseArgvCommand.js";
 
 async function handleArgvCommandsWithSubcommands(commandsConfig, argv) {
   const { command, remainingArgv } = parseArgvCommand(argv);
   const { callback, subcommand } = matchCommand(command, commandsConfig);
-  // In case callback is async
+
+  // Handle sync and async callbacks
   await Promise.resolve(callback(remainingArgv, subcommand));
 }
 
@@ -30,4 +31,4 @@ function findSubcommand(command, commands) {
   }
 }
 
-module.exports = handleArgvCommandsWithSubcommands;
+export default handleArgvCommandsWithSubcommands;

@@ -1,13 +1,13 @@
-const handleInit = require("./actions/init");
-const handleRemove = require("./actions/remove");
-const handleAdd = require("./actions/add");
-const handleList = require("./actions/list");
-const sourceConfig = require("../sourceConfig");
-const aliasesResolver = require("../resolvers/aliasesResolver");
-const handleArgvCommands = require("../cmdArgs/handleArgvCommands");
+import handleInit from "./actions/init.js";
+import handleRemove from "./actions/remove.js";
+import handleAdd from "./actions/add.js";
+import handleList from "./actions/list.js";
+import sourceConfig from "../sourceConfig.js";
+import aliasesResolver from "../resolvers/aliasesResolver.js";
+import handleArgvCommands from "../cmdArgs/handleArgvCommands.js";
 
 async function handleAlias(argv, subcommand) {
-  sourceConfig.resolve(aliasesResolver);
+  await sourceConfig.resolve(aliasesResolver);
   handleArgvCommands(
     [
       { commands: ["init", "i"], callback: handleInit },
@@ -19,4 +19,4 @@ async function handleAlias(argv, subcommand) {
   );
 }
 
-module.exports = handleAlias;
+export default handleAlias;

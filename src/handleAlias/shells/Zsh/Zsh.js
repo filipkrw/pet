@@ -1,9 +1,13 @@
-const path = require("path");
-const fs = require("fs");
-const os = require("os");
-const { config } = require("../../../config.js");
-const { createFileIfNotExists } = require("../../../util/files");
-const Shell = require("../Shell.js");
+import path from "path";
+import fs from "fs";
+import os from "os";
+import config from "../../../config.js";
+import { createFileIfNotExists } from "../../../util/files.js";
+import Shell from "../Shell.js";
+import { fileURLToPath } from "url";
+
+const { config: globalConfig } = config;
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 class Zsh extends Shell {
   constructor() {
@@ -11,15 +15,14 @@ class Zsh extends Shell {
   }
 
   async mount() {
-    createFileIfNotExists(config.path.aliases[this.name]);
-
+    createFileIfNotExists(globalConfig.path.aliases[this.name]);
     try {
       const bashrcPath = path.join(os.homedir(), ".zshrc");
       const bashrc = fs.readFileSync(bashrcPath);
       const toInject = fs
         .readFileSync(path.join(__dirname, ".zshrc_template"))
         .toString()
-        .replace(/{{aliasesPath}}/g, config.path.aliases[this.name]);
+        .replace(/{{aliasesPath}}/g, globalConfig.path.aliases[this.name]);
       if (bashrc.indexOf(toInject) === -1) {
         fs.writeFileSync(bashrcPath, toInject, {
           flag: "a+",
@@ -32,7 +35,7 @@ class Zsh extends Shell {
 
   transform(alias, snippet) {
     const params = [];
-    let funcBody = snippet.replace(/(<[^>|^\*]*>)/g, (match) => {
+    let funcBody = snippet.replace(/(<[^>|^*]*>)/g, (match) => {
       const param = match.substr(1, match.length - 2).replace("-", "_");
       const indexInParams = params.findIndex((p) => p === param);
       if (indexInParams > -1) {
@@ -50,4 +53,4 @@ ${alias}() {
   }
 }
 
-module.exports = Zsh;
+export default Zsh;

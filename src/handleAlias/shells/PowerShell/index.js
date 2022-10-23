@@ -1,3 +1,3 @@
-const PowerShell = require("./powershell");
+import PowerShell from "./PowerShell.js";
 
-module.exports = PowerShell;
+export default PowerShell;

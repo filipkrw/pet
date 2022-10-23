@@ -1,11 +1,11 @@
-const Fuse = require("fuse.js");
-const clc = require("cli-color");
-const { getAllFiles } = require("./handleAlias/helpers");
-const parseArgvOptions = require("./cmdArgs/parseArgvOptions");
+import Fuse from "fuse.js";
+import clc from "cli-color";
+import { getAllFiles } from "./handleAlias/helpers.js";
+import parseArgvOptions from "./cmdArgs/parseArgvOptions.js";
 
-function handleQuery(argv) {
+async function handleFind(argv) {
   const { query } = parseQueryArgv(argv);
-  const allFiles = getAllFiles();
+  const allFiles = await getAllFiles();
   const results = searchFiles(query, allFiles);
   printResults(results);
 }
@@ -32,7 +32,6 @@ function search(query, files, keys = ["name", "relativePath", "content"]) {
   const fuse = new Fuse(files, {
     keys,
     includeScore: true,
-    // includeMatches: true,
     useExtendedSearch: true,
   });
   return fuse.search(query);
@@ -57,4 +56,4 @@ function getSourcePrefix(source) {
   return `${source.rootRelativePath}/`;
 }
 
-module.exports = handleQuery;
+export default handleFind;

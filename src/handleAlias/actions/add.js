@@ -1,22 +1,22 @@
-const path = require("path");
-const fs = require("fs");
-const CommandError = require("../CommandError");
-const shellsBulkWrite = require("../shells/shellsBulkWrite");
-const sourceConfig = require("../../sourceConfig");
-const moduleExportsStr = require("../../util/moduleExportsStr");
-const {
+import path from "path";
+import fs from "fs";
+import CommandError from "../CommandError.js";
+import shellsBulkWrite from "../shells/shellsBulkWrite.js";
+import sourceConfig from "../../sourceConfig.js";
+import exportDefaultStr from "../../util/exportDefaultStr.js";
+import {
   getAllAliases,
   getAllFiles,
   getFileRootRelativePath,
-} = require("../helpers");
-const normalizePath = require("../../util/normalizePath");
-const getSourceRawConfigFile = require("../getSourceRawConfigFile");
-const parseArgvOptions = require("../../cmdArgs/parseArgvOptions");
+} from "../helpers.js";
+import normalizePath from "../../util/normalizePath.js";
+import getSourceRawConfigFile from "../getSourceRawConfigFile.js";
+import parseArgvOptions from "../../cmdArgs/parseArgvOptions.js";
 
-function handleAdd(argv) {
+async function handleAdd(argv) {
   const { alias, filePath } = parseAddArgv(argv);
-  const targetFile = loadTargetFile(filePath);
-  addAliasToRootSourceConfig(alias, targetFile, targetFile.source);
+  const targetFile = await loadTargetFile(filePath);
+  await addAliasToRootSourceConfig(alias, targetFile, targetFile.source);
   shellsBulkWrite();
   console.log(`Alias "${alias}" added.`);
 }
@@ -35,8 +35,8 @@ function parseAddArgv(argv) {
   };
 }
 
-function loadTargetFile(filePath) {
-  const files = getAllFiles();
+async function loadTargetFile(filePath) {
+  const files = await getAllFiles();
   const targetFile = files.find(
     (f) => normalizePath(getFileRootRelativePath(f)) === filePath
   );
@@ -48,10 +48,9 @@ function loadTargetFile(filePath) {
   return targetFile;
 }
 
-function addAliasToRootSourceConfig(alias, targetFile, aliasSource) {
+async function addAliasToRootSourceConfig(alias, targetFile, aliasSource) {
   const rootSource = sourceConfig.getConfig();
-  const rootSourceRaw = getSourceRawConfigFile(rootSource);
-
+  const rootSourceRaw = await getSourceRawConfigFile(rootSource);
   const aliases = rootSourceRaw.aliases || [];
   validateAliasNotExists(alias);
   const updatedAliases = [
@@ -65,7 +64,7 @@ function addAliasToRootSourceConfig(alias, targetFile, aliasSource) {
   ];
   fs.writeFileSync(
     rootSource.configAbsolutePath,
-    moduleExportsStr({ ...rootSourceRaw, aliases: updatedAliases })
+    exportDefaultStr({ ...rootSourceRaw, aliases: updatedAliases })
   );
 }
 
@@ -79,4 +78,4 @@ function validateAliasNotExists(alias) {
   }
 }
 
-module.exports = handleAdd;
+export default handleAdd;

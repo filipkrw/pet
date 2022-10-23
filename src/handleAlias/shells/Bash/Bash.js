@@ -1,9 +1,11 @@
-const path = require("path");
-const fs = require("fs");
-const os = require("os");
-const { config } = require("../../../config.js");
-const { createFileIfNotExists } = require("../../../util/files");
-const Shell = require("../Shell.js");
+import path from "path";
+import fs from "fs";
+import os from "os";
+import config from "../../../config.js";
+import { createFileIfNotExists } from "../../../util/files.js";
+import Shell from "../Shell.js";
+
+const { config: globalConfig } = config;
 
 class Bash extends Shell {
   constructor() {
@@ -11,8 +13,7 @@ class Bash extends Shell {
   }
 
   async mount() {
-    createFileIfNotExists(config.path.aliases[this.name]);
-
+    createFileIfNotExists(globalConfig.path.aliases[this.name]);
     try {
       const bashrcPath = path.join(os.homedir(), ".bashrc");
       createFileIfNotExists(bashrcPath);
@@ -20,7 +21,7 @@ class Bash extends Shell {
       const toInject = fs
         .readFileSync(path.join(__dirname, ".bashrc_template"))
         .toString()
-        .replace(/{{aliasesPath}}/g, config.path.aliases[this.name]);
+        .replace(/{{aliasesPath}}/g, globalConfig.path.aliases[this.name]);
       if (bashrc.indexOf(toInject) === -1) {
         fs.writeFileSync(bashrcPath, toInject, {
           flag: "a+",
@@ -33,7 +34,7 @@ class Bash extends Shell {
 
   transform(alias, snippet) {
     const params = [];
-    let funcBody = snippet.replace(/(<[^>|^\*]*>)/g, (match) => {
+    let funcBody = snippet.replace(/(<[^>|^*]*>)/g, (match) => {
       const param = match.substr(1, match.length - 2).replace("-", "_");
       const indexInParams = params.findIndex((p) => p === param);
       if (indexInParams > -1) {
@@ -51,4 +52,4 @@ ${alias}() {
   }
 }
 
-module.exports = Bash;
+export default Bash;

@@ -1,19 +1,20 @@
-const path = require("path");
-const fs = require("fs");
-const { config, updateConfig } = require("../../config.js");
-const { createFileIfNotExists } = require("../../util/files.js");
-const removeDuplicates = require("../../util/removeDuplicates.js");
-const { getAllAliases } = require("../helpers.js");
+import path from "path";
+import fs from "fs";
+import config from "../../config.js";
+import { createFileIfNotExists } from "../../util/files.js";
+import removeDuplicates from "../../util/removeDuplicates.js";
+import { getAllAliases } from "../helpers.js";
+const { config: globalConfig, updateConfig: updateGlobalConfig } = config;
 
 class Shell {
   constructor(name, file) {
     this.name = name;
     this.file = file;
-    updateConfig({
+    updateGlobalConfig({
       path: {
         aliases: {
           [name]: path.join(
-            config.localConfig.transformedAliases.absolutePath,
+            globalConfig.localConfig.transformedAliases.absolutePath,
             file
           ),
         },
@@ -30,7 +31,6 @@ class Shell {
   write() {
     const aliases = getAllAliases();
     const transformed = [];
-
     for (const { alias, content, source } of aliases) {
       try {
         transformed.push(this.transform(alias, content));
@@ -41,15 +41,16 @@ class Shell {
     }
 
     const transformedPath = path.join(
-      config.localConfig.transformedAliases.absolutePath,
+      globalConfig.localConfig.transformedAliases.absolutePath,
       this.file
     );
+
     createFileIfNotExists(transformedPath);
     fs.writeFileSync(transformedPath, transformed.join("\n\n"));
   }
 
   writeShellConfig() {
-    const shellConfigPath = config.localConfig.shells.absolutePath;
+    const shellConfigPath = globalConfig.localConfig.shells.absolutePath;
     createFileIfNotExists(shellConfigPath);
     const shellConfigJSON = fs.readFileSync(shellConfigPath, {
       encoding: "utf-8",
@@ -60,4 +61,4 @@ class Shell {
   }
 }
 
-module.exports = Shell;
+export default Shell;

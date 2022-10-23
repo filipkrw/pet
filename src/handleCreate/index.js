@@ -1,3 +1,3 @@
-const handleCreate = require("./handleCreate");
+import handleCreate from "./handleCreate.js";
 
-module.exports = handleCreate;
+export default handleCreate;

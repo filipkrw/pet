@@ -1,13 +1,19 @@
-const clc = require("cli-color");
-const promptUser = require("../util/promptUser");
-const { config } = require("../config");
-const path = require("path");
-const { fileExists, createDirectoryIfNotExists } = require("../util/files");
-const spawn = require("child_process").spawn;
+import clc from "cli-color";
+import promptUser from "../util/promptUser.js";
+import config from "../config.js";
+import path from "path";
+import { fileExists, createDirectoryIfNotExists } from "../util/files.js";
+import { spawn } from "child_process";
+
+const { config: globalConfig } = config;
 
 async function handleCreate() {
   const relativePath = await promptForFilePath();
-  const absolutePath = path.resolve(config.path.dotPet, "..", relativePath);
+  const absolutePath = path.resolve(
+    globalConfig.path.dotPet,
+    "..",
+    relativePath
+  );
   createDirectoryIfNotExists(path.dirname(absolutePath));
   await openEditor(absolutePath);
   if (fileExists(absolutePath)) {
@@ -23,9 +29,7 @@ async function promptForFilePath() {
 }
 
 async function openEditor(filePath) {
-  // TODO make editor customizable; there should be a machine-specific config; up to the user where to place settings
-  // const editor = process.env.EDITOR || "nano";
-  const process = spawn(config.textEditor, [filePath], {
+  const process = spawn(globalConfig.localConfig.textEditor, [filePath], {
     shell: true,
     stdio: "inherit",
   });
@@ -36,4 +40,4 @@ async function openEditor(filePath) {
   });
 }
 
-module.exports = handleCreate;
+export default handleCreate;

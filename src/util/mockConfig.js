@@ -1,4 +1,4 @@
-const mergeDeep = require("./mergeDeep");
+import mergeDeep from "./mergeDeep";
 
 function mockConfig(initState) {
   let config = initState;
@@ -8,4 +8,4 @@ function mockConfig(initState) {
   };
 }
 
-module.exports = mockConfig;
+export default mockConfig;

@@ -1,21 +1,26 @@
 #!/usr/bin/env node
-const CommandError = require("./handleAlias/CommandError");
-const handleArgvCommandsWithSubcommands = require("./cmdArgs/handleArgvCommandsWithSubcommands");
-const { isInitialized, handleInit, handleConfig } = require("./handleInit");
+import CommandError from "./handleAlias/CommandError.js";
+import handleArgvCommandsWithSubcommands from "./cmdArgs/handleArgvCommandsWithSubcommands.js";
+import {
+  checkIsInitialized,
+  handleInit,
+  handleConfig,
+} from "./handleInit/index.js";
 
 async function pet() {
-  if (!isInitialized()) {
+  const isInitialized = await checkIsInitialized();
+  if (!isInitialized) {
     await handleInit();
     return;
   }
 
-  const handleFind = require("./handleFind");
-  const handleAlias = require("./handleAlias");
-  const handleCreate = require("./handleCreate");
-  const handleRemove = require("./handleRemove");
-  const handleHelp = require("./handleHelp");
-
   try {
+    const { default: handleFind } = await import("./handleFind.js");
+    const { default: handleAlias } = await import("./handleAlias/index.js");
+    const { default: handleCreate } = await import("./handleCreate/index.js");
+    const { default: handleRemove } = await import("./handleRemove.js");
+    const { default: handleHelp } = await import("./handleHelp/index.js");
+
     handleArgvCommandsWithSubcommands([
       { commands: { base: "find", short: "f" }, callback: handleFind },
       { commands: { base: "create", short: "c" }, callback: handleCreate },

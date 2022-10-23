@@ -1,10 +1,4 @@
-const fs = require("fs");
-
-function getReplacer(dict) {
-  return function (match, key) {
-    return dict[key] || key;
-  };
-}
+import fs from "fs";
 
 function writeFromTemplate(templatePath, targetPath, dict = {}) {
   const replacer = getReplacer(dict);
@@ -13,4 +7,10 @@ function writeFromTemplate(templatePath, targetPath, dict = {}) {
   fs.writeFileSync(targetPath, result, { flag: "w" });
 }
 
-module.exports = writeFromTemplate;
+function getReplacer(dict) {
+  return function (match, key) {
+    return dict[key] || key;
+  };
+}
+
+export default writeFromTemplate;

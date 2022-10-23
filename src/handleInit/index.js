@@ -1,24 +1,28 @@
-const path = require("path");
-const fs = require("fs");
-const promptUser = require("../util/promptUser");
-const clc = require("cli-color");
-const {
+import path from "path";
+import fs from "fs";
+import promptUser from "../util/promptUser.js";
+import clc from "cli-color";
+import {
   createFileIfNotExists,
   createDirectoryIfNotExists,
   fileExists,
-} = require("../util/files");
-const writeFromTemplate = require("../util/writeFromTemplate");
-const getCwd = require("../util/getCwd");
-const getRootPath = require("../util/getRootPath");
-const handleArgvCommands = require("../cmdArgs/handleArgvCommands");
+} from "../util/files.js";
+import writeFromTemplate from "../util/writeFromTemplate.js";
+import getCwd from "../util/getCwd.js";
+import getRootPath from "../util/getRootPath.js";
+import handleArgvCommands from "../cmdArgs/handleArgvCommands.js";
+import { importConfigFile } from "../util/importConfig.mjs";
+import { fileURLToPath } from "url";
 
-function isInitialized() {
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+
+export async function checkIsInitialized() {
   try {
     const configFilePath = getPetConfigPath();
     if (!fs.existsSync(configFilePath)) {
       return false;
     }
-    const localConfig = require(configFilePath);
+    const localConfig = await importConfigFile(configFilePath);
     if (!fs.existsSync(localConfig.basePath)) {
       return false;
     }
@@ -37,7 +41,7 @@ function getPetConfigPath() {
   return configFilePath;
 }
 
-function writePetConfig(basePath) {
+export function writePetConfig(basePath) {
   const petConfigPath = getPetConfigPath();
   createFileIfNotExists(petConfigPath);
   writeFromTemplate(
@@ -62,7 +66,7 @@ function writeUserConfig(basePath) {
   );
 }
 
-async function handleInit() {
+export async function handleInit() {
   const initMessage = `First tell us where you want your config directory and snippets stored.\nIf you already have snippets directory, simply point to it.`;
   console.log(initMessage);
   const basePath = await promptUser(clc.white("Config Path:\t"), getCwd());
@@ -71,7 +75,7 @@ async function handleInit() {
   console.log(clc.bold.green("Done!"));
 }
 
-async function handleConfig(argv, subcommands) {
+export async function handleConfig(argv, subcommands) {
   handleArgvCommands(
     [
       { commands: ["get", "g"], callback: handleGet },
@@ -79,9 +83,9 @@ async function handleConfig(argv, subcommands) {
     ],
     subcommands ? [subcommands, ...argv] : argv
   );
-  function handleGet() {
+  async function handleGet() {
     const petConfigPath = getPetConfigPath();
-    const petConfig = require(petConfigPath);
+    const petConfig = await importConfigFile(petConfigPath);
     for (const [key, value] of Object.entries(petConfig)) {
       console.log(`${clc.white(`${camelCaseToCapitalized(key)}:`)}\t${value}`);
     }
@@ -93,5 +97,3 @@ function camelCaseToCapitalized(str) {
     return str.toUpperCase();
   });
 }
-
-module.exports = { handleInit, handleConfig, isInitialized, getPetConfigPath };

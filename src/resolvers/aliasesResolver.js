@@ -1,5 +1,5 @@
-const path = require("path");
-const fs = require("fs");
+import path from "path";
+import fs from "fs";
 
 function resolveAlias(alias, source) {
   const absolutePath = path.join(source.absolutePath, alias.relativePath);
@@ -10,7 +10,7 @@ function resolveAlias(alias, source) {
 /**
  * Resolves absolutePath and content for aliases in a source.
  */
-function aliasesResolver(source) {
+async function aliasesResolver(source) {
   if (!source.aliases) {
     return source;
   }
@@ -18,4 +18,4 @@ function aliasesResolver(source) {
   return { ...source, aliases };
 }
 
-module.exports = aliasesResolver;
+export default aliasesResolver;

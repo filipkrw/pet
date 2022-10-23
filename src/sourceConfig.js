@@ -1,26 +1,27 @@
-const path = require("path");
-const { config: globalConfig } = require("./config");
-const flatten = require("tree-flatten");
+import path from "path";
+import config from "./config.js";
+import flatten from "tree-flatten";
+import { importConfigFile } from "./util/importConfig.mjs";
+const { config: globalConfig } = config;
 
-function initSourceConfig() {
+async function initSourceConfig() {
   const rootSourceConfig = { absolutePath: globalConfig.path.base };
-  let config = resolveConfig(rootSourceConfig, initResolver);
+  let config = await resolveConfig(rootSourceConfig, initResolver);
   let configFlat = flatten(config, "sources");
 
-  function reset() {
-    config = resolveConfig(rootSourceConfig, initResolver);
+  async function reset() {
+    config = await resolveConfig(rootSourceConfig, initResolver);
     configFlat = flatten(config, "sources");
   }
 
-  function initResolver(sourceConfig, parentConfig) {
+  async function initResolver(sourceConfig, parentConfig) {
     const absolutePath = resolveSourceAbsolutePath(sourceConfig, parentConfig);
     let c = {
       ...sourceConfig,
       absolutePath,
     };
-
-    c = { ...loadConfigFile(c.absolutePath), ...c };
-
+    const loadedSourceConfig = await loadConfigFile(c.absolutePath);
+    c = { ...loadedSourceConfig, ...c };
     if (parentConfig) {
       c = {
         ...c,
@@ -32,7 +33,6 @@ function initSourceConfig() {
     } else {
       c = { name: "root", isRoot: true, ...c, rootRelativePath: "" };
     }
-
     return c;
   }
 
@@ -41,23 +41,26 @@ function initSourceConfig() {
     configFlat = flatten(newConfig, "sources");
   }
 
-  function resolveConfig(sourceConfig, resolveFunc, parentConfig) {
-    const resolvedSource = resolveFunc(sourceConfig, parentConfig);
+  async function resolveConfig(sourceConfig, resolveFunc, parentConfig) {
+    const resolvedSource = await resolveFunc(sourceConfig, parentConfig);
     if (resolvedSource.sources) {
-      const resolvedSubSources = resolvedSource.sources.map((subSource) =>
-        resolveConfig(subSource, resolveFunc, resolvedSource)
+      const resolvedSubSources = await Promise.all(
+        resolvedSource.sources.map((subSource) =>
+          resolveConfig(subSource, resolveFunc, resolvedSource)
+        )
       );
       return { ...resolvedSource, sources: resolvedSubSources };
     }
     return resolvedSource;
   }
 
-  function loadConfigFile(sourceAbsolutePath) {
+  async function loadConfigFile(sourceAbsolutePath) {
     const rootConfigPath = path.join(sourceAbsolutePath, ".pet", "config.js");
     try {
       // Needed when resetting the config
-      delete require.cache[require.resolve(rootConfigPath)];
-      return { ...require(rootConfigPath), configAbsolutePath: rootConfigPath };
+      // delete require.cache[require.resolve(rootConfigPath)];
+      const rootConfig = await importConfigFile(rootConfigPath);
+      return { ...rootConfig, configAbsolutePath: rootConfigPath };
     } catch (e) {
       // TODO log error when config exists, but cannot be loaded
       return {};
@@ -78,14 +81,15 @@ function initSourceConfig() {
     return sourceConfig.name || path.basename(sourceConfig.absolutePath);
   }
 
-  function resolve(resolveFunc) {
-    const resolvedConfig = resolveConfig(config, resolveFunc);
+  async function resolve(resolveFunc) {
+    const resolvedConfig = await resolveConfig(config, resolveFunc);
     setConfig(resolvedConfig);
   }
 
   return {
     resolve,
-    resolveSource: (source, resolveFunc) => resolveConfig(source, resolveFunc),
+    resolveSource: async (source, resolveFunc) =>
+      resolveConfig(source, resolveFunc),
     getConfig: () => config,
     getConfigFlat: () => configFlat,
     getSourceByName: (name) => configFlat.find((s) => s.name === name),
@@ -93,4 +97,4 @@ function initSourceConfig() {
   };
 }
 
-module.exports = initSourceConfig();
+export default await initSourceConfig();

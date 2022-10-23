@@ -1,11 +1,12 @@
-const fs = require("fs");
-const util = require("util");
-const exec = util.promisify(require("child_process").exec);
-const { config } = require("../../../config.js");
-const removeDuplicates = require("../../../util/removeDuplicates.js");
-const { createFileIfNotExists } = require("../../../util/files");
-const Shell = require("../Shell.js");
-
+import fs from "fs";
+import util from "util";
+import { exec as exec$0 } from "child_process";
+import config$0 from "../../../config.js";
+import removeDuplicates from "../../../util/removeDuplicates.js";
+import { createFileIfNotExists } from "../../../util/files.js";
+import Shell from "../Shell.js";
+const exec = util.promisify({ exec: exec$0 }.exec);
+const { config } = config$0;
 class PowerShell extends Shell {
   constructor() {
     super("powershell", "PowerShell_aliases.ps1");
@@ -13,7 +14,6 @@ class PowerShell extends Shell {
 
   async mount() {
     createFileIfNotExists(config.path.aliases[this.name]);
-
     try {
       // Get path of PowerShell profile file
       // https://www.red-gate.com/simple-talk/sysadmin/powerShell/persistent-powerShell-the-powerShell-profile/
@@ -23,11 +23,9 @@ class PowerShell extends Shell {
         }
         $Profile
       `;
-
       const { stdout } = await exec(command, { shell: "powerShell" });
       const profilePath = stdout.trim();
       createFileIfNotExists(profilePath);
-
       // Inject aliases path if not there already
       const profile = fs.readFileSync(profilePath);
       const toInject = `\n. ${config.path.aliases[this.name]}\n`;
@@ -59,4 +57,4 @@ function ${alias}(${funcParams}) {
   }
 }
 
-module.exports = PowerShell;
+export default PowerShell;

@@ -1,5 +1,4 @@
 // https://stackoverflow.com/questions/27936772/how-to-deep-merge-instead-of-shallow-merge
-
 /**
  * Simple object check.
  * @param item
@@ -17,7 +16,6 @@ function isObject(item) {
 function deepMerge(target, ...sources) {
   if (!sources.length) return target;
   const source = sources.shift();
-
   if (isObject(target) && isObject(source)) {
     for (const key in source) {
       if (isObject(source[key])) {
@@ -28,8 +26,7 @@ function deepMerge(target, ...sources) {
       }
     }
   }
-
   return deepMerge(target, ...sources);
 }
 
-module.exports = deepMerge;
+export default deepMerge;

@@ -1,7 +1,7 @@
-const path = require("path");
-const fs = require("fs");
+import path from "path";
+import fs from "fs";
 
-function createFileIfNotExists(filePath) {
+export function createFileIfNotExists(filePath) {
   if (!fileExists(filePath)) {
     const dirPath = path.dirname(filePath);
     createDirectoryIfNotExists(dirPath);
@@ -9,18 +9,17 @@ function createFileIfNotExists(filePath) {
   }
 }
 
-function createDirectoryIfNotExists(dirPath) {
+export function createDirectoryIfNotExists(dirPath) {
   if (!fileExists(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
   }
 }
 
-function deleteEmptyInFilePath(filePath) {
+export function deleteEmptyInFilePath(filePath) {
   if (isFileEmpty(filePath)) {
     fs.rmSync(filePath);
   }
   let dirPath = path.dirname(filePath);
-
   // eslint-disable-next-line no-constant-condition
   while (true) {
     if (isDirEmpty(dirPath)) {
@@ -32,31 +31,21 @@ function deleteEmptyInFilePath(filePath) {
   }
 }
 
-function fileExists(filePath) {
+export function fileExists(filePath) {
   return fs.existsSync(filePath);
 }
 
-function isFileEmpty(filePath) {
+export function isFileEmpty(filePath) {
   const stat = fs.statSync(filePath);
   return stat.size === 0;
 }
 
-function isDirEmpty(dirPath) {
+export function isDirEmpty(dirPath) {
   const dirFiles = fs.readdirSync(dirPath);
   console.log(dirFiles);
   return dirFiles.length === 0;
 }
 
-function readJsonFile(filePath) {
+export function readJsonFile(filePath) {
   return JSON.parse(fs.readFileSync(filePath));
 }
-
-module.exports = {
-  createFileIfNotExists,
-  createDirectoryIfNotExists,
-  deleteEmptyInFilePath,
-  fileExists,
-  isFileEmpty,
-  isDirEmpty,
-  readJsonFile,
-};

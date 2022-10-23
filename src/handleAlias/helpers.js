@@ -1,35 +1,35 @@
-const config = require("../config");
-const filesResolver = require("../resolvers/filesResolver");
-const sourceConfig = require("../sourceConfig");
-const path = require("path");
+import config from "../config.js";
+import filesResolver from "../resolvers/filesResolver.js";
+import sourceConfig from "../sourceConfig.js";
+import path from "path";
 
-function getAllAliases() {
+export function getAllAliases() {
   return sourceConfig
     .getConfigFlat()
     .filter((s) => s.aliases)
     .flatMap((s) =>
       s.aliases.map((a) => ({
-        source: getSourceEmbeddedConfig(s),
+        source: getSourceConfigToEmbed(s),
         ...a,
       }))
     );
 }
 
-function getAllFiles() {
-  sourceConfig.resolve(filesResolver);
+export async function getAllFiles() {
+  await sourceConfig.resolve(filesResolver);
   return sourceConfig.getConfigFlat().flatMap((s) =>
     s.files.map((f) => ({
-      source: getSourceEmbeddedConfig(s),
+      source: getSourceConfigToEmbed(s),
       ...f,
     }))
   );
 }
 
-function getShells() {
+export function getShells() {
   return config.config.localConfig.shells.shells;
 }
 
-function getSourceEmbeddedConfig(s) {
+function getSourceConfigToEmbed(s) {
   return {
     name: s.name,
     isRoot: s.isRoot,
@@ -40,18 +40,10 @@ function getSourceEmbeddedConfig(s) {
   };
 }
 
-function getFileRootRelativePath(file) {
+export function getFileRootRelativePath(file) {
   return path.join(file.source.rootRelativePath, file.relativePath);
 }
 
-function getFileAbsolutePath(file) {
+export function getFileAbsolutePath(file) {
   return path.join(file.source.absolutePath, file.relativePath);
 }
-
-module.exports = {
-  getAllAliases,
-  getShells,
-  getAllFiles,
-  getFileRootRelativePath,
-  getFileAbsolutePath,
-};

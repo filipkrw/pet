@@ -1,3 +1,3 @@
-const Zsh = require("./Zsh");
+import Zsh from "./Zsh.js";
 
-module.exports = Zsh;
+export default Zsh;

@@ -1,8 +1,8 @@
-const Bash = require("./Bash");
-const PowerShell = require("./PowerShell");
-const Zsh = require("./Zsh/Zsh");
+import Bash from "./Bash/index.js";
+import PowerShell from "./PowerShell/index.js";
+import Zsh from "./Zsh/Zsh.js";
 
-module.exports = {
+export default {
   powershell: PowerShell,
   bash: Bash,
   zsh: Zsh,

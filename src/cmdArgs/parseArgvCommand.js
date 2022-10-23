@@ -1,4 +1,4 @@
-const commandLineArgs = require("command-line-args");
+import commandLineArgs from "command-line-args";
 
 function parseArgvCommand(argv) {
   const args = commandLineArgs([{ name: "command", defaultOption: true }], {
@@ -11,4 +11,4 @@ function parseArgvCommand(argv) {
   };
 }
 
-module.exports = parseArgvCommand;
+export default parseArgvCommand;

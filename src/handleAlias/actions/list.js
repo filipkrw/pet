@@ -1,10 +1,9 @@
-const clc = require("cli-color");
-const parseArgvOptions = require("../../cmdArgs/parseArgvOptions");
-const { getAllAliases } = require("../helpers");
+import clc from "cli-color";
+import parseArgvOptions from "../../cmdArgs/parseArgvOptions.js";
+import { getAllAliases } from "../helpers.js";
 
 function handleList(argv) {
   const args = parseListArgv(argv);
-
   const aliases = getAllAliases().sort((a, b) =>
     a.alias.localeCompare(b.alias)
   );
@@ -18,7 +17,6 @@ function handleList(argv) {
       console.log();
     }
   }
-
   const aliasesCount = aliases.length;
   console.log(
     clc.blue.bold(
@@ -34,4 +32,4 @@ function parseListArgv(argv) {
   );
 }
 
-module.exports = handleList;
+export default handleList;

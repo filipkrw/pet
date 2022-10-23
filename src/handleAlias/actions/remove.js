@@ -1,20 +1,20 @@
-const shellsBulkWrite = require("../shells/shellsBulkWrite");
-const { getAllAliases } = require("../helpers");
-const getSourceRawConfigFile = require("../getSourceRawConfigFile");
-const fs = require("fs");
-const moduleExportsStr = require("../../util/moduleExportsStr");
-const CommandError = require("../CommandError");
-const parseArgvOptions = require("../../cmdArgs/parseArgvOptions");
+import shellsBulkWrite from "../shells/shellsBulkWrite.js";
+import { getAllAliases } from "../helpers.js";
+import getSourceRawConfigFile from "../getSourceRawConfigFile.js";
+import fs from "fs";
+import exportDefaultStr from "../../util/exportDefaultStr.js";
+import CommandError from "../CommandError.js";
+import parseArgvOptions from "../../cmdArgs/parseArgvOptions.js";
 
-// Need to find file path by alias name
-function handleRemove(argv) {
+async function handleRemove(argv) {
   const { alias } = parseRemoveArgv(argv);
   const allAliases = getAllAliases();
   const aliasToRemove = allAliases.find((a) => a.alias === alias);
   if (!aliasToRemove) {
     throw new CommandError(`Alias "${alias}" not found.`);
   }
-  const sourceConfigRaw = getSourceRawConfigFile(aliasToRemove.source);
+  const sourceConfigRaw = await getSourceRawConfigFile(aliasToRemove.source);
+
   const updatedAliases = sourceConfigRaw.aliases.filter(
     (a) => a.alias !== alias
   );
@@ -23,9 +23,8 @@ function handleRemove(argv) {
     updatedAliases.length === 0 ? rest : { ...rest, aliases: updatedAliases };
   fs.writeFileSync(
     aliasToRemove.source.configAbsolutePath,
-    moduleExportsStr(updatedConfig)
+    exportDefaultStr(updatedConfig)
   );
-
   shellsBulkWrite();
   console.log(`Alias "${alias}" removed.`);
 }
@@ -37,4 +36,4 @@ function parseRemoveArgv(argv) {
   );
 }
 
-module.exports = handleRemove;
+export default handleRemove;

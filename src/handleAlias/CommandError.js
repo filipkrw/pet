@@ -6,4 +6,4 @@ class CommandError extends Error {
   }
 }
 
-module.exports = CommandError;
+export default CommandError;

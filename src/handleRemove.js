@@ -1,17 +1,17 @@
-const parseArgvOptions = require("./cmdArgs/parseArgvOptions");
-const {
+import parseArgvOptions from "./cmdArgs/parseArgvOptions.js";
+import {
   getAllFiles,
   getFileAbsolutePath,
   getFileRootRelativePath,
-} = require("./handleAlias/helpers");
-const path = require("path");
-const { fileExists } = require("./util/files");
-const fs = require("fs");
-const normalizePath = require("./util/normalizePath");
+} from "./handleAlias/helpers.js";
+import path from "path";
+import { fileExists } from "./util/files.js";
+import fs from "fs";
+import normalizePath from "./util/normalizePath.js";
 
-function handleRemove(argv) {
+async function handleRemove(argv) {
   const { snippetPath } = parseRemoveArgv(argv);
-  const files = getAllFiles();
+  const files = await getAllFiles();
   const file = files.find((file) => {
     return getFileRootRelativePath(file) === path.normalize(snippetPath);
   });
@@ -35,4 +35,4 @@ function parseRemoveArgv(argv) {
   return options;
 }
 
-module.exports = handleRemove;
+export default handleRemove;

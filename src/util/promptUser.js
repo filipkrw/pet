@@ -1,4 +1,4 @@
-const readline = require("readline");
+import readline from "readline";
 
 async function promptUser(prompt, defaultValue = "") {
   const rl = readline.createInterface({
@@ -6,7 +6,6 @@ async function promptUser(prompt, defaultValue = "") {
     output: process.stdout,
     prompt,
   });
-
   return new Promise((resolve) => {
     rl.prompt();
     rl.write(defaultValue);
@@ -17,4 +16,4 @@ async function promptUser(prompt, defaultValue = "") {
   });
 }
 
-module.exports = promptUser;
+export default promptUser;

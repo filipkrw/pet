@@ -1,7 +1,7 @@
-const aliasesResolver = require("../../resolvers/aliasesResolver");
-const sourceConfig = require("../../sourceConfig");
-const { getShells } = require("../helpers");
-const supportedShells = require("./supportedShells");
+import aliasesResolver from "../../resolvers/aliasesResolver.js";
+import sourceConfig from "../../sourceConfig.js";
+import { getShells } from "../helpers.js";
+import supportedShells from "./supportedShells.js";
 
 function shellsBulkWrite() {
   // Make sure config is up to date; needed for `add` and `remove` commands
@@ -18,4 +18,4 @@ function shellsBulkWrite() {
   }
 }
 
-module.exports = shellsBulkWrite;
+export default shellsBulkWrite;
