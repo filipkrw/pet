@@ -32,5 +32,5 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ["**/*.test.*"],
+  ignorePatterns: ["**/*.test.*", "**/*.d.*"],
 };

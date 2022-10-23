@@ -9,8 +9,8 @@
   "author": "filipkrw",
   "license": "ISC",
   "scripts": {
-    "build": "tsc",
-    "format:lib": "eslint --config .eslintrc.lib.cjs --fix lib/**/*.js && prettier --write lib/**/*.js --loglevel warn"
+    "build": "tsc && npm run format:lib",
+    "format:lib": "eslint --config .eslintrc.lib.cjs --fix lib && prettier --write lib --loglevel warn"
   },
   "dependencies": {
     "cli-color": "2.0.1",
@@ -23,9 +23,13 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
-    "eslint": "8.17.0",
+    "eslint": "^8.0.1",
     "eslint-config-prettier": "8.5.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
     "prettier": "2.6.2",
-    "typescript": "4.8.4"
+    "typescript": "*"
   }
 }
