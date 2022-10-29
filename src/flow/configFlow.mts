@@ -15,11 +15,14 @@ function addName(config: RawConfig) {
   return { ...config, name: dirname(config.basePath) };
 }
 
+function printName(config: RawConfig & { name: string }) {
+  console.log(config.name);
+}
+
 export async function flow() {
-  const x = Flow.from(null)
-    .pipe(readPetConfig)
-    .pipe(addName)
-    .catch((e) => console.log(e.value.message))
-    .finally((data) => console.log(data));
-  // console.log(x);
+  Flow.start()
+    .then(readPetConfig)
+    .then(addName)
+    .then(printName)
+    .catch((e) => console.log(e.value.message));
 }

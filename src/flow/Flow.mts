@@ -16,6 +16,10 @@ type FlowData<T> = FlowValue<T> | FlowError;
 export class Flow<T> {
   constructor(private data: FlowData<T>) {}
 
+  static start(): Flow<null> {
+    return new Flow({ type: ValueSymbol, value: null });
+  }
+
   static from<T>(value: T): Flow<T> {
     return new Flow<T>({ type: ValueSymbol, value });
   }
@@ -24,7 +28,7 @@ export class Flow<T> {
     return new Flow<T>({ type: ErrorSymbol, value: error });
   }
 
-  pipe<U>(f: (value: T) => U): Flow<U> {
+  then<U>(f: (value: T) => U): Flow<U> {
     if (this.data.type === ValueSymbol) {
       try {
         return Flow.from(f(this.data.value));
@@ -45,10 +49,10 @@ export class Flow<T> {
     return this;
   }
 
-  finally(f: (data: FlowData<T>) => void): Flow<T> {
+  get(): T {
     if (this.data.type === ValueSymbol) {
-      f(this.data);
+      return this.data.value;
     }
-    return this;
+    throw this.data.value;
   }
 }
