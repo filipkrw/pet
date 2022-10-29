@@ -5,18 +5,18 @@ import { Flow } from "./Flow.mjs";
 
 type RawConfig = { basePath: string };
 
-async function readPetConfig() {
-  const petConfig = (await importConfigFile(
-    join(getRootPath(), "localConfig/petConfigs.js")
-  )) as RawConfig;
-  return petConfig;
+function readPetConfig() {
+  // const petConfig = (await importConfigFile(
+  //   join(getRootPath(), "localConfig/petConfigs.js")
+  // )) as RawConfig;
+  return { basePath: "xd/xd" };
 }
 
-async function addName(config: RawConfig) {
+function addName(config: RawConfig) {
   return { ...config, name: dirname(config.basePath) };
 }
 
 export async function flow() {
-  const config = await (await Flow.from(readPetConfig)).pipe(addName);
+  const config = Flow.from(readPetConfig()).then(addName);
   console.log(config);
 }
