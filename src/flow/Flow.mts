@@ -1,5 +1,3 @@
-type FlowFunc<T, U> = (value: T) => Promise<U>;
-
 const ValueSymbol = Symbol("FlowValue");
 const ErrorSymbol = Symbol("FlowError");
 
@@ -8,27 +6,40 @@ type FlowValue<T> = {
   value: T;
 };
 
-type FlowError<T> = {
+type FlowError = {
   type: typeof ErrorSymbol;
-  value: T;
+  value: Error;
 };
 
-export class Flow<T, TErr> {
-  constructor(private data: FlowValue<T> | FlowError<TErr>) {}
+export class Flow<T> {
+  constructor(private data: FlowValue<T> | FlowError) {}
 
-  static from<T, TErr>(value: T): Flow<T, TErr> {
-    return new Flow<T, TErr>({ type: ValueSymbol, value });
+  static from<T>(value: T): Flow<T> {
+    return new Flow<T>({ type: ValueSymbol, value });
   }
 
-  static fromError<T, TErr>(error: TErr): Flow<T, TErr> {
-    return new Flow<T, TErr>({ type: ErrorSymbol, value: error });
+  static fromError<T>(error: Error): Flow<T> {
+    return new Flow<T>({ type: ErrorSymbol, value: error });
   }
 
-  then<U>(f: (value: T) => U): Flow<U, TErr> {
+  pipe<U>(f: (value: T) => U): Flow<U> {
     if (this.data.type === ValueSymbol) {
-      return Flow.from(f(this.data.value));
-    } else {
-      return Flow.fromError(this.data.value);
+      try {
+        return Flow.from(f(this.data.value));
+      } catch (e) {
+        if (e instanceof Error) {
+          return Flow.fromError(e);
+        }
+        throw e;
+      }
     }
+    return Flow.fromError(this.data.value);
+  }
+
+  catch(f: (error: FlowError) => void): Flow<T> {
+    if (this.data.type === ErrorSymbol) {
+      f(this.data);
+    }
+    return this;
   }
 }

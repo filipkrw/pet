@@ -1,6 +1,4 @@
-import { dirname, join } from "node:path";
-import { getRootPath } from "../util/getRootPath.js";
-import { importConfigFile } from "../util/importConfig.mjs";
+import { dirname } from "node:path";
 import { Flow } from "./Flow.mjs";
 
 type RawConfig = { basePath: string };
@@ -9,6 +7,7 @@ function readPetConfig() {
   // const petConfig = (await importConfigFile(
   //   join(getRootPath(), "localConfig/petConfigs.js")
   // )) as RawConfig;
+  throw new Error("Some error occured here");
   return { basePath: "xd/xd" };
 }
 
@@ -17,6 +16,9 @@ function addName(config: RawConfig) {
 }
 
 export async function flow() {
-  const config = Flow.from(readPetConfig()).then(addName);
-  console.log(config);
+  const x = Flow.from(null)
+    .pipe(readPetConfig)
+    .pipe(addName)
+    .catch((e) => console.log(e.value.message));
+  console.log(x);
 }
