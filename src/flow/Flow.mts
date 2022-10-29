@@ -42,9 +42,9 @@ export class Flow<T> {
     return Flow.fromError(this.data.value);
   }
 
-  catch(f: (error: FlowError) => void): Flow<T> {
+  catch(f: (error: Error) => void): Flow<T> {
     if (this.data.type === ErrorSymbol) {
-      f(this.data);
+      f(this.data.value);
     }
     return this;
   }

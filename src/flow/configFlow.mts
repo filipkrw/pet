@@ -24,5 +24,5 @@ export async function flow() {
     .then(readPetConfig)
     .then(addName)
     .then(printName)
-    .catch((e) => console.log(e.value.message));
+    .catch((e) => console.log(e.message));
 }
