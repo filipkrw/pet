@@ -2,7 +2,7 @@ import os from "os";
 import path from "node:path";
 import deepMerge from "./util/deepMerge.js";
 import { fileExists, readJsonFile } from "./util/files.js";
-import getRootPath from "./util/getRootPath.js";
+import { getRootPath } from "./util/getRootPath.js";
 import { importConfigFile } from "./util/importConfig.mjs";
 
 async function initConfig() {

@@ -9,7 +9,7 @@ import {
 } from "../util/files.js";
 import writeFromTemplate from "../util/writeFromTemplate.js";
 import getCwd from "../util/getCwd.js";
-import getRootPath from "../util/getRootPath.js";
+import { getRootPath } from "../util/getRootPath.js";
 import handleArgvCommands from "../cmdArgs/handleArgvCommands.js";
 import { importConfigFile } from "../util/importConfig.mjs";
 import { fileURLToPath } from "url";

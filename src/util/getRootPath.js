@@ -7,9 +7,7 @@ import { fileURLToPath } from "url";
  * Correctness of this function is dependent on the "main"
  * path in package.json.
  */
-function getRootPath() {
+export function getRootPath() {
   const __dirname = fileURLToPath(new URL(".", import.meta.url));
   return path.normalize(path.join(__dirname, "../.."));
 }
-
-export default getRootPath;
