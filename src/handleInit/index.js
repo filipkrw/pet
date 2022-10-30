@@ -11,7 +11,7 @@ import writeFromTemplate from "../util/writeFromTemplate.js";
 import getCwd from "../util/getCwd.js";
 import { getRootPath } from "../util/getRootPath.js";
 import handleArgvCommands from "../cmdArgs/handleArgvCommands.js";
-import { importConfigFile } from "../util/importConfig.mjs";
+import { importConfigFile } from "../util/importConfig.js";
 import { fileURLToPath } from "url";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));

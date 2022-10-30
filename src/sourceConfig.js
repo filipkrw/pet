@@ -1,7 +1,7 @@
 import path from "path";
 import config from "./config.js";
 import flatten from "tree-flatten";
-import { importConfigFile } from "./util/importConfig.mjs";
+import { importConfigFile } from "./util/importConfig.js";
 const { config: globalConfig } = config;
 
 async function initSourceConfig() {

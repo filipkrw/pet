@@ -1,5 +1,5 @@
 import { fileExists } from "../util/files.js";
-import { importConfigFile } from "../util/importConfig.mjs";
+import { importConfigFile } from "../util/importConfig.js";
 
 async function getSourceRawConfigFile(source) {
   const configPath = source.configAbsolutePath;
