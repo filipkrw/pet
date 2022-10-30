@@ -1,11 +1,16 @@
 import esbuild from "esbuild";
 import { nodeExternalsPlugin } from "esbuild-node-externals";
 import fg from "fast-glob";
-import watch from "node-watch";
+import nodeWatch from "node-watch";
 import { copyFile } from "fs";
 
-build();
-watch("src", { recursive: true }, () => build());
+watch();
+
+function watch() {
+  console.log("Watching...");
+  build();
+  nodeWatch("src", { recursive: true }, () => build());
+}
 
 async function build() {
   esbuild
