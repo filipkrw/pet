@@ -22,6 +22,7 @@
     "tree-flatten": "1.0.0"
   },
   "devDependencies": {
+    "@types/command-line-args": "^5.2.0",
     "@types/node": "^18.11.7",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",

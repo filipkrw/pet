@@ -27,10 +27,7 @@ async function build() {
       copyAssets();
       console.log(getCurrentTime());
     })
-    .catch((err) => {
-      console.error(err);
-      process.exit(1);
-    });
+    .catch((err) => {});
 }
 
 async function findFiles() {

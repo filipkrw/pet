@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@types/command-line-args': ^5.2.0
   '@types/node': ^18.11.7
   '@typescript-eslint/eslint-plugin': ^5.40.1
   '@typescript-eslint/parser': ^5.40.1
@@ -31,6 +32,7 @@ dependencies:
   tree-flatten: 1.0.0
 
 devDependencies:
+  '@types/command-line-args': 5.2.0
   '@types/node': 18.11.7
   '@typescript-eslint/eslint-plugin': 5.40.1_lvrd64vezopahu63du6xkdkcb4
   '@typescript-eslint/parser': 5.40.1_vhsckgnokn2tf7m5xkrurmvfv4
@@ -115,6 +117,10 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
+
+  /@types/command-line-args/5.2.0:
+    resolution: {integrity: sha512-UuKzKpJJ/Ief6ufIaIzr3A/0XnluX7RvFgwkV89Yzvm77wCh1kFaFmqN8XEnGcN62EuHdedQjEMb8mYxFLGPyA==}
+    dev: true
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
