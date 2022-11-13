@@ -1,9 +1,8 @@
 import * as path from "node:path";
 import { fileExists } from "../util/files.js";
 import { importConfigFile } from "../util/importConfig.js";
+import { Vault, VaultWithSubVaults } from "../vault/types.js";
 import { LocalConfig } from "./readLocalConfig.js";
-import { resolveVault } from "./resolveVault.js";
-import { BaseConfig, VaultPaths } from "./types.js";
 
 export async function readVaultConfig({
   localConfig,
@@ -14,11 +13,39 @@ export async function readVaultConfig({
     absolutePath: localConfig.basePath,
     relativePath: "",
   };
-  const vault = await resolveVault(rootVaultPaths, importVaultConfig);
-  return { vault };
+  const rootVault = await importVaultConfigWithSubVaults(rootVaultPaths);
+  return { vault: rootVault };
 }
 
-async function importVaultConfig(paths: VaultPaths): Promise<BaseConfig> {
+async function importVaultConfigWithSubVaults(
+  paths: {
+    absolutePath: string;
+    relativePath: string;
+  },
+  subVaults?: Vault<unknown>[]
+): Promise<VaultWithSubVaults<unknown>> {
+  const vault = await importVaultConfig(paths);
+
+  if (vault.vaults) {
+    const subVaults = vault.vaults.map((subvault) =>
+      importVaultConfig({
+        ...subvault,
+        absolutePath: path.join(paths.absolutePath, subvault.relativePath),
+      })
+    );
+    return {
+      ...vault,
+      vaults: await Promise.all(subVaults),
+    };
+  }
+
+  return { ...vault, vaults: subVaults };
+}
+
+async function importVaultConfig(paths: {
+  absolutePath: string;
+  relativePath: string;
+}): Promise<VaultWithSubVaults<unknown>> {
   const vaultConfigAbsolutePath = getVaultConfigPath(paths.absolutePath);
   if (fileExists(vaultConfigAbsolutePath)) {
     const importedConfig = await importConfigFile(vaultConfigAbsolutePath);
