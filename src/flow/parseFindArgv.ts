@@ -1,13 +1,11 @@
 import parseArgvOptions from "../cmdArgs/parseArgvOptions.js";
 import { ArgvOptions } from "./types.js";
 
-export type ParseFindArgvResult = {
-  args: {
-    query: string;
-  };
+export type FindArgs = {
+  query: string;
 };
 
-export function parseFindArgv({ argv }: ArgvOptions): ParseFindArgvResult {
+export function parseFindArgv({ argv }: ArgvOptions): { args: FindArgs } {
   const options = parseArgvOptions(
     [{ name: "query", defaultOption: true, multiple: true }],
     argv
