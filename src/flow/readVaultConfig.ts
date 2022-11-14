@@ -8,13 +8,13 @@ export async function readVaultConfig({
   localConfig,
 }: {
   localConfig: LocalConfig;
-}): Promise<{ config: VaultWithSubVaults<unknown> }> {
+}): Promise<{ vault: VaultWithSubVaults<unknown> }> {
   const rootVaultPaths = {
     absolutePath: localConfig.basePath,
     relativePath: "",
   };
   const rootVault = await importVaultConfigWithSubVaults(rootVaultPaths);
-  return { config: rootVault };
+  return { vault: rootVault };
 }
 
 async function importVaultConfigWithSubVaults(

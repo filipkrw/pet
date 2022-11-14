@@ -11,10 +11,10 @@ export async function exec<T, U>(
 
 export async function execResolve<T, U, W>(
   input: {
-    config: VaultWithSubVaults<T>;
+    vault: VaultWithSubVaults<T>;
   } & W,
   func: (x: Vault<T>) => Promise<Vault<U>>
 ) {
-  const result = await resolve(input.config, func);
-  return { ...input, config: result };
+  const result = await resolve(input.vault, func);
+  return { ...input, vault: result };
 }
