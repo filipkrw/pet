@@ -30,15 +30,13 @@ export async function readFiles(x: Vault): Promise<
 }
 
 function getVaultIncludePatterns(vault: VaultWithSubVaults) {
-  return ["**"];
-  // source.include || ["**"];
+  return vault.includePatterns || ["**"];
 }
 
 function getVaultExcludePatterns(vault: VaultWithSubVaults) {
-  // if (source.exclude) {
-  //   return source.exclude;
-  // }
-  return (vault.vaults || []).map((s) => s.relativePath);
+  return (
+    vault.excludePatterns || (vault.vaults || []).map((s) => s.relativePath)
+  );
 }
 
 async function readFilesContent(
