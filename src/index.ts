@@ -6,7 +6,7 @@ import {
   handleInit,
   handleConfig,
 } from "./handleInit/index.js";
-import { runFindFlow } from "./flow/findFlow.js";
+import { runFindFlow } from "./flow/find/find.js";
 import parseArgvCommand from "./cmdArgs/parseArgvCommand.js";
 
 const { command, remainingArgv } = parseArgvCommand();

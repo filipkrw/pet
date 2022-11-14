@@ -1,5 +1,5 @@
-import parseArgvOptions from "../cmdArgs/parseArgvOptions.js";
-import { ArgvOptions } from "./types.js";
+import parseArgvOptions from "../../cmdArgs/parseArgvOptions.js";
+import { ArgvOptions } from "../types.js";
 
 export type FindArgs = {
   query: string;

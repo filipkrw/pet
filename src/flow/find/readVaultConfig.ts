@@ -1,7 +1,7 @@
 import * as path from "node:path";
-import { fileExists } from "../util/files.js";
-import { importConfigFile } from "../util/importConfig.js";
-import { Vault, VaultWithSubVaults } from "../vault/types.js";
+import { fileExists } from "../../util/files.js";
+import { importConfigFile } from "../../util/importConfig.js";
+import { Vault, VaultWithSubVaults } from "../../vault/types.js";
 import { LocalConfig } from "./readLocalConfig.js";
 
 export async function readVaultConfig({

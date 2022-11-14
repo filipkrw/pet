@@ -1,8 +1,8 @@
-import { Vault, VaultWithSubVaults } from "../vault/types";
 import fg from "fast-glob";
 import fs from "fs";
 import path from "path";
-import { getBaseVault } from "../vault/getBaseVault.js";
+import { getBaseVault } from "../../vault/getBaseVault.js";
+import { Vault, VaultWithSubVaults } from "../../vault/types";
 
 export type FileWithVault = {
   name: string;

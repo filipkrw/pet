@@ -1,5 +1,5 @@
-import { flatten } from "../vault/flatten.js";
-import { VaultWithSubVaults } from "../vault/types.js";
+import { flatten } from "../../vault/flatten.js";
+import { VaultWithSubVaults } from "../../vault/types.js";
 import { FileWithVault } from "./readFiles.js";
 import Fuse from "fuse.js";
 import { FindArgs } from "./parseFindArgv.js";

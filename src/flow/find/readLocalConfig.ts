@@ -1,6 +1,6 @@
 import * as path from "node:path";
-import { getRootPath } from "../util/getRootPath.js";
-import { importConfigFile } from "../util/importConfig.js";
+import { getRootPath } from "../../util/getRootPath.js";
+import { importConfigFile } from "../../util/importConfig.js";
 
 export type LocalConfig = {
   basePath: string;
