@@ -9,7 +9,7 @@ export type FileWithVault = {
   relativePath: string;
   absolutePath: string;
   content: string;
-  vault: Vault<>;
+  vault: Vault;
 };
 
 export async function readFiles<T>(x: Vault<T>): Promise<

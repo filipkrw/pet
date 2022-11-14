@@ -20,7 +20,7 @@ export function printFindResults({
   );
 }
 
-function getSourcePrefix(vault: Vault<{}>) {
+function getSourcePrefix(vault: Vault) {
   if (!vault.relativePath) {
     return "";
   }

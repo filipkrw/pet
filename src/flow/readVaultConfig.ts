@@ -8,7 +8,7 @@ export async function readVaultConfig({
   localConfig,
 }: {
   localConfig: LocalConfig;
-}): Promise<{ vault: VaultWithSubVaults<unknown> }> {
+}): Promise<{ vault: VaultWithSubVaults }> {
   const rootVaultPaths = {
     absolutePath: localConfig.basePath,
     relativePath: "",
@@ -22,8 +22,8 @@ async function importVaultConfigWithSubVaults(
     absolutePath: string;
     relativePath: string;
   },
-  subVaults?: Vault<unknown>[]
-): Promise<VaultWithSubVaults<unknown>> {
+  subVaults?: Vault[]
+): Promise<VaultWithSubVaults> {
   const vault = await importVaultConfig(paths);
 
   if (vault.vaults) {
@@ -45,7 +45,7 @@ async function importVaultConfigWithSubVaults(
 async function importVaultConfig(paths: {
   absolutePath: string;
   relativePath: string;
-}): Promise<VaultWithSubVaults<unknown>> {
+}): Promise<VaultWithSubVaults> {
   const vaultConfigAbsolutePath = getVaultConfigPath(paths.absolutePath);
   if (fileExists(vaultConfigAbsolutePath)) {
     const importedConfig = await importConfigFile(vaultConfigAbsolutePath);
