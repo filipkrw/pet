@@ -12,12 +12,12 @@ export type FileWithVault = {
   vault: Vault;
 };
 
-export async function readFiles<T>(x: Vault<T>): Promise<
-  Vault<T> & {
+export async function readFiles(x: Vault): Promise<
+  Vault<{
     includePatterns: string[];
     excludePatterns: string[];
     files: FileWithVault[];
-  }
+  }>
 > {
   const excludePatterns = getVaultExcludePatterns(x);
   const includePatterns = getVaultIncludePatterns(x);
@@ -29,20 +29,20 @@ export async function readFiles<T>(x: Vault<T>): Promise<
   };
 }
 
-function getVaultIncludePatterns<T>(vault: VaultWithSubVaults<T>) {
+function getVaultIncludePatterns(vault: VaultWithSubVaults) {
   return ["**"];
   // source.include || ["**"];
 }
 
-function getVaultExcludePatterns<T>(vault: VaultWithSubVaults<T>) {
+function getVaultExcludePatterns(vault: VaultWithSubVaults) {
   // if (source.exclude) {
   //   return source.exclude;
   // }
   return (vault.vaults || []).map((s) => s.relativePath);
 }
 
-async function readFilesContent<T>(
-  vault: VaultWithSubVaults<T>,
+async function readFilesContent(
+  vault: VaultWithSubVaults,
   includePatterns: string[],
   excludePatterns: string[]
 ) {
