@@ -1,10 +1,7 @@
 import * as path from "node:path";
 import { getRootPath } from "../../util/getRootPath.js";
 import { importConfigFile } from "../../util/importConfig.js";
-
-export type LocalConfig = {
-  basePath: string;
-};
+import { LocalConfig } from "../types.js";
 
 export async function readLocalConfig() {
   return {

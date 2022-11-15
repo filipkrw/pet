@@ -6,11 +6,13 @@ import {
   handleInit,
   handleConfig,
 } from "./handleInit/index.js";
-import { runFindFlow } from "./flow/find/find.js";
+import { find } from "./flow/find/find.js";
 import parseArgvCommand from "./cmdArgs/parseArgvCommand.js";
+import { create } from "./flow/create/create.js";
 
 const { command, remainingArgv } = parseArgvCommand();
-runFindFlow({ argv: remainingArgv } as { argv: string[] });
+// find({ argv: remainingArgv } as { argv: string[] });
+create({ argv: remainingArgv } as { argv: string[] });
 
 // async function pet() {
 //   const isInitialized = await checkIsInitialized();
