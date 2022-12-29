@@ -2,7 +2,7 @@ import * as path from "node:path";
 import { fileExists } from "../../util/files.js";
 import { importConfigFile } from "../../util/importConfig.js";
 import { Vault, VaultWithSubVaults } from "../../vault/types.js";
-import { LocalConfig } from "./readLocalConfig.js";
+import { LocalConfig } from "../types.js";
 
 export async function readVaultConfig({
   localConfig,

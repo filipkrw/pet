@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@types/cli-color': ^2.0.2
   '@types/command-line-args': ^5.2.0
   '@types/node': ^18.11.7
   '@typescript-eslint/eslint-plugin': ^5.40.1
@@ -21,13 +22,16 @@ specifiers:
   prettier: 2.6.2
   tree-flatten: 1.0.0
   typescript: '*'
+  zod: ^3.20.2
 
 dependencies:
+  '@types/cli-color': 2.0.2
   cli-color: 2.0.1
   command-line-args: 5.2.1
   fast-glob: 3.2.12
   json5: 2.2.1
   tree-flatten: 1.0.0
+  zod: 3.20.2
 
 devDependencies:
   '@types/command-line-args': 5.2.0
@@ -115,6 +119,10 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
+
+  /@types/cli-color/2.0.2:
+    resolution: {integrity: sha512-1ErQIcmNHtNViGKTtB/TIKqMkC2RkKI2nBneCr9hSCPo9H05g9VzjlaXPW3H0vaI8zFGjJZvSav+VKDKCtKgKA==}
+    dev: false
 
   /@types/command-line-args/5.2.0:
     resolution: {integrity: sha512-UuKzKpJJ/Ief6ufIaIzr3A/0XnluX7RvFgwkV89Yzvm77wCh1kFaFmqN8XEnGcN62EuHdedQjEMb8mYxFLGPyA==}
@@ -1914,3 +1922,7 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod/3.20.2:
+    resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}
+    dev: false

@@ -14,11 +14,13 @@
     "format:lib": "eslint --config .eslintrc.lib.cjs --fix lib && prettier --write lib --loglevel warn"
   },
   "dependencies": {
+    "@types/cli-color": "^2.0.2",
     "cli-color": "2.0.1",
     "command-line-args": "5.2.1",
     "fast-glob": "3.2.12",
     "json5": "2.2.1",
-    "tree-flatten": "1.0.0"
+    "tree-flatten": "1.0.0",
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@types/command-line-args": "^5.2.0",
