@@ -11,8 +11,8 @@ import parseArgvCommand from "./cmdArgs/parseArgvCommand.js";
 import { create } from "./flow/create/create.js";
 
 const { command, remainingArgv } = parseArgvCommand();
-// find({ argv: remainingArgv } as { argv: string[] });
-create({ argv: remainingArgv } as { argv: string[] });
+find({ argv: remainingArgv } as { argv: string[] });
+// create({ argv: remainingArgv } as { argv: string[] });
 
 // async function pet() {
 //   const isInitialized = await checkIsInitialized();

@@ -2,7 +2,7 @@ import clc from "cli-color";
 import { Vault } from "../../vault/types";
 import { FileWithVault } from "./readFiles";
 
-export function printFindResults({
+export function printSearchResults({
   searchResults,
 }: {
   searchResults: FileWithVault[];

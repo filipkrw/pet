@@ -28,7 +28,7 @@ function search(query: string, files: FileWithVault[]) {
   }
   return searchFuse(query, files)
     .sort((a, b) => (b.score || 0) - (a.score || 0))
-    .map((x) => x.item);
+    .map((x) => x.item) as FileWithVault[];
 }
 
 function searchFuse(
