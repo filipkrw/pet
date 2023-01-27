@@ -11,10 +11,10 @@ export async function find({ argv }: ArgvOptions) {
   const config = await Promise.resolve(parseFindArgv({ argv })).then((x) =>
     exec(x, loadConfigs)
   );
-  const overrideFunction = getFindFlowOverrideFunction(config);
-  if (overrideFunction) {
-    return overrideFunction(config);
-  }
+  // const overrideFunction = getFindFlowOverrideFunction(config);
+  // if (overrideFunction) {
+  //   return overrideFunction(config);
+  // }
   return Promise.resolve(config)
     .then((x) => execResolve(x, readFiles))
     .then((x) => exec(x, searchFiles))

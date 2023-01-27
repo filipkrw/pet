@@ -5,7 +5,12 @@ async function handleArgvCommandsWithSubcommands(commandsConfig, argv) {
   const { callback, subcommand } = matchCommand(command, commandsConfig);
 
   // Handle sync and async callbacks
-  await Promise.resolve(callback(remainingArgv, subcommand));
+  await Promise.resolve(
+    callback({
+      argv: remainingArgv,
+      subcommand,
+    })
+  );
 }
 
 function matchCommand(command, commandsConfig) {

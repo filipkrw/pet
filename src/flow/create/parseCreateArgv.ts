@@ -5,11 +5,12 @@ export type CreateArgs = {
   relativePath: string;
 };
 
+export const createArgvOptionsDefinition = [
+  { name: "relativePath", defaultOption: true },
+];
+
 export function parseCreateArgv({ argv }: ArgvOptions): { args: CreateArgs } {
-  const options = parseArgvOptions(
-    [{ name: "relativePath", defaultOption: true }],
-    argv
-  );
+  const options = parseArgvOptions(createArgvOptionsDefinition, argv);
   const { relativePath } = options;
   if (!relativePath) {
     throw new Error("Path is required");

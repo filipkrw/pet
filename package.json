@@ -21,6 +21,7 @@
     "fuse.js": "^6.6.2",
     "json5": "2.2.1",
     "tree-flatten": "1.0.0",
+    "yaml": "^2.2.1",
     "zod": "^3.20.2"
   },
   "devDependencies": {
