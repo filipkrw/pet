@@ -4,5 +4,4 @@ export type ArgvOptions = {
 
 export type LocalConfig = {
   basePath: string;
-  textEditor?: string;
 };

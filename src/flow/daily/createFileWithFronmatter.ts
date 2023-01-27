@@ -3,7 +3,6 @@ import path from "path";
 import yaml from "yaml";
 import { createFileIfNotExists } from "../../util/files.js";
 import { VaultWithSubVaults } from "../../vault/types";
-import { findVaultByName } from "../findVault.js";
 import { DailyCreateArgs } from "./parseDailyCreateArgv.js";
 
 export function createDailyFile({
@@ -14,9 +13,12 @@ export function createDailyFile({
   vault: VaultWithSubVaults;
 }) {
   const now = new Date();
-  const targetVault = findVaultByName(args.vault, vault);
   const relativePath = getDailyNoteRelativePath(now);
-  const absolutePath = path.join(targetVault.absolutePath, relativePath);
+  const absolutePath = path.join(
+    vault.absolutePath,
+    args.dirRelativePath || "",
+    relativePath
+  );
 
   createFileWithFronmatter(absolutePath, {
     datetime: now.toISOString(),

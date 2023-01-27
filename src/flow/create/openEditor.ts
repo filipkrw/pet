@@ -1,14 +1,14 @@
 import { spawn } from "child_process";
-import { LocalConfig } from "../types";
+import { VaultWithSubVaults } from "../../vault/types";
 
 export async function openEditor({
   file,
-  localConfig,
+  vault,
 }: {
   file: { absolutePath: string };
-  localConfig: LocalConfig;
+  vault: VaultWithSubVaults;
 }): Promise<Record<string, never>> {
-  const textEditor = localConfig.textEditor || "nano";
+  const textEditor = vault.textEditor || "nano";
   const process = spawn(textEditor, [file.absolutePath], {
     shell: true,
     stdio: "inherit",
