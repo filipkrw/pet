@@ -1,15 +1,16 @@
+import { z } from "zod";
 import parseArgvOptions from "../../cmdArgs/parseArgvOptions.js";
 import { defaultArgvOptionsDefinition } from "../loadConfigs/defaultArgvOptionsDefinition.js";
 import { ArgvOptions } from "../types.js";
 
-export type DailyCreateArgs = {
-  tags: string[];
-  vault?: string;
-};
+export type DailyCreateArgs = z.infer<typeof dailyCreateArgsSchema>;
 
-export function parseDailyCreateArgv({ argv }: ArgvOptions): {
-  args: DailyCreateArgs;
-} {
+const dailyCreateArgsSchema = z.object({
+  tags: z.array(z.string()).optional(),
+  vault: z.string().optional(),
+});
+
+export function parseDailyCreateArgv({ argv }: ArgvOptions) {
   const options = parseArgvOptions(
     [
       ...defaultArgvOptionsDefinition,
@@ -19,9 +20,6 @@ export function parseDailyCreateArgv({ argv }: ArgvOptions): {
   );
   const { tags, vault } = options;
   return {
-    args: {
-      tags: (tags || []) as string[],
-      vault: vault as string | undefined,
-    },
+    args: dailyCreateArgsSchema.parse({ tags, vault }),
   };
 }

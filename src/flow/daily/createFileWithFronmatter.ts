@@ -15,15 +15,13 @@ export function createDailyFile({
 }) {
   const now = new Date();
   const targetVault = findVaultByName(args.vault, vault);
-  const relativePath = createDateTimeRelativePath(now);
+  const relativePath = getDailyNoteRelativePath(now);
   const absolutePath = path.join(targetVault.absolutePath, relativePath);
 
-  if (args.tags) {
-    createFileWithFronmatter(absolutePath, {
-      tags: args.tags,
-      datetime: now.toISOString(),
-    });
-  }
+  createFileWithFronmatter(absolutePath, {
+    datetime: now.toISOString(),
+    tags: args.tags,
+  });
 
   return { file: { absolutePath } };
 }
@@ -42,12 +40,12 @@ function createFrontmatter(input: Record<string | number, unknown>) {
   return `---\n${content}---\n\n\n`;
 }
 
-function createDateTimeRelativePath(date: Date) {
+function getDailyNoteRelativePath(date: Date) {
   const dateISOString = date.toISOString();
 
   const dateElements = dateISOString.split("T");
   const dirPath = dateElements[0].replace(/-/g, "/");
   const fileName = dateElements[1].split(".")[0];
 
-  return path.join(dirPath, fileName);
+  return path.join(dirPath, fileName + ".md");
 }

@@ -55,5 +55,5 @@ async function importVaultConfig(paths: {
 }
 
 function getVaultConfigPath(vaultAbsolutePath: string) {
-  return path.join(vaultAbsolutePath, ".pet", "config.js");
+  return path.join(vaultAbsolutePath, ".pet", "config.mjs");
 }
