@@ -20,6 +20,10 @@ export function deleteEmptyInFilePath(filePath) {
     fs.rmSync(filePath);
   }
   let dirPath = path.dirname(filePath);
+  deleteEmptyInDirPath(dirPath);
+}
+
+export function deleteEmptyInDirPath(dirPath) {
   // eslint-disable-next-line no-constant-condition
   while (true) {
     if (isDirEmpty(dirPath)) {
@@ -42,7 +46,6 @@ export function isFileEmpty(filePath) {
 
 export function isDirEmpty(dirPath) {
   const dirFiles = fs.readdirSync(dirPath);
-  console.log(dirFiles);
   return dirFiles.length === 0;
 }
 

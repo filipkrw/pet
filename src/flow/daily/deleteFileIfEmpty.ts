@@ -1,4 +1,6 @@
 import { readFile, unlink } from "fs/promises";
+import path from "path";
+import { deleteEmptyInDirPath } from "../../util/files.js";
 
 export async function deleteFileIfEmpty({
   file,
@@ -10,6 +12,7 @@ export async function deleteFileIfEmpty({
   if (content.trim() === "") {
     await unlink(file.absolutePath);
   }
+  deleteEmptyInDirPath(path.dirname(file.absolutePath));
 }
 
 function removeFrontmatter(text: string) {
