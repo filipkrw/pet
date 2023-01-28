@@ -1,8 +1,8 @@
 import { exec } from "../../exec.js";
-import { getUserPlatformData } from "./getUserPlatformData.js";
-import { mount } from "./mount.js";
+import { getUserShellData } from "./getUserShellData.js";
+import { mountAliases } from "./mountAliases.js";
 
 export async function initAliases() {
-  return Promise.resolve(getUserPlatformData()) //
-    .then((x) => exec(x, mount));
+  return Promise.resolve(getUserShellData()) //
+    .then((x) => exec(x, mountAliases));
 }
