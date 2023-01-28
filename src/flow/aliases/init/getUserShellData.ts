@@ -19,7 +19,7 @@ export function getUserShellData() {
 
   return {
     shell: schema.parse({
-      name: shell,
+      name: getShellName(shell),
       profileFilePath,
       transformedAliasesFilePath,
     }),
@@ -35,5 +35,11 @@ function getShellProfileFilePath(shell: string) {
 function getShellTransformedAliasesFilePath(shell: string) {
   if (isZsh(shell)) {
     return path.join(getTransformedAliasesPath(), "zsh_aliases");
+  }
+}
+
+function getShellName(shell: string) {
+  if (isZsh(shell)) {
+    return "zsh";
   }
 }
