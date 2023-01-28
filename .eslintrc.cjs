@@ -10,6 +10,8 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["@typescript-eslint"],
-  rules: {},
   ignorePatterns: [".eslintrc.lib.cjs"],
+  rules: {
+    "@typescript-eslint/no-empty-function": 0,
+  },
 };

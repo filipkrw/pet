@@ -1,21 +1,21 @@
 import esbuild from "esbuild";
 import { nodeExternalsPlugin } from "esbuild-node-externals";
 import fg from "fast-glob";
-import nodeWatch from "node-watch";
 import { copyFile } from "fs";
+import nodeWatch from "node-watch";
 
 watch();
 
 function watch() {
   console.log("Watching...");
   build();
-  nodeWatch("src", { recursive: true }, () => build());
+  nodeWatch("src", { recursive: true }, build);
 }
 
 async function build() {
   esbuild
     .build({
-      entryPoints: await findFiles(),
+      entryPoints: await findSourceFiles(),
       outdir: "lib",
       platform: "node",
       target: "esnext",
@@ -23,31 +23,27 @@ async function build() {
       tsconfig: "tsconfig.json",
       plugins: [nodeExternalsPlugin()],
     })
-    .then(() => {
-      copyAssets();
-      console.log("Updated at", getCurrentTime());
-    })
-    .catch((err) => {});
+    .then(() => copyAssets())
+    .then(() => console.log(`Built at ${new Date().toLocaleTimeString()}`))
+    .catch(() => {});
 }
 
-async function findFiles() {
-  const patterns = ["src/**/*.js", "src/**/*.ts"];
-  return await fg(patterns);
-}
-
-function copyAssets() {
-  copyFile("src/handleHelp/help.txt", "lib/handleHelp/help.txt", (err) => {
-    if (err) throw err;
-  });
-  copyFile(
-    "src/flow/aliases/init/zsh/.zshrc_template",
-    "lib/flow/aliases/init/zsh/.zshrc_template",
-    (err) => {
+async function copyAssets() {
+  const assets = await findAssetFiles();
+  assets.forEach((sourcePath) => {
+    const destPath = sourcePath.replace(/^src/, "lib");
+    copyFile(sourcePath, destPath, (err) => {
       if (err) throw err;
-    }
-  );
+    });
+  });
 }
 
-function getCurrentTime() {
-  return new Date().toLocaleTimeString();
+async function findSourceFiles() {
+  const patterns = ["src/**/*.js", "src/**/*.ts"];
+  return fg(patterns);
+}
+
+async function findAssetFiles() {
+  const patterns = ["src/**/*.txt", "src/**/*.template"];
+  return fg(patterns, { dot: true });
 }

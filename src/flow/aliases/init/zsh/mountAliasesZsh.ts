@@ -23,7 +23,7 @@ function getZshrcMountSnippet(zshAliasesPath: string) {
   const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
   return fs
-    .readFileSync(path.join(__dirname, ".zshrc_template"))
+    .readFileSync(path.join(__dirname, ".zshrc.template"))
     .toString()
     .replace(/{{aliasesPath}}/g, zshAliasesPath);
 }

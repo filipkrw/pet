@@ -20,7 +20,7 @@ class Zsh extends Shell {
       const bashrcPath = path.join(os.homedir(), ".zshrc");
       const bashrc = fs.readFileSync(bashrcPath);
       const toInject = fs
-        .readFileSync(path.join(__dirname, ".zshrc_template"))
+        .readFileSync(path.join(__dirname, ".zshrc.template"))
         .toString()
         .replace(/{{aliasesPath}}/g, globalConfig.path.aliases[this.name]);
       if (bashrc.indexOf(toInject) === -1) {
