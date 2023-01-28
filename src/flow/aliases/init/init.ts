@@ -1,11 +1,11 @@
 import { exec } from "../../exec.js";
 import { loadConfigs } from "../../loadConfigs/loadConfigs.js";
-import { getUserShellData } from "./getUserShellData.js";
-import { loadAliases } from "./loadAliases.js";
-import { mountAliases } from "./mountAliases.js";
-import { printMessage } from "./printMessage.js";
-import { transformAliases } from "./transformAliases.js";
-import { writeAliases } from "./writeAliases.js";
+import { getUserShellData } from "./steps/getUserShellData.js";
+import { loadAliases } from "./steps/loadAliases.js";
+import { mountAliases } from "./steps/mountAliases.js";
+import { printMessage } from "./steps/printMessage.js";
+import { transformAliases } from "./steps/transformAliases.js";
+import { writeAliases } from "./steps/writeAliases.js";
 
 export async function initAliases() {
   return Promise.resolve(loadConfigs())

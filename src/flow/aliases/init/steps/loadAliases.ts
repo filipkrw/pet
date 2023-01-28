@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
-import { VaultWithSubVaults } from "../../../vault/types";
-import { Alias } from "../schemas/aliasSchema";
+import { VaultWithSubVaults } from "../../../../vault/types";
+import { Alias } from "../../schemas/aliasSchema";
 
 export type LoadedAlias = Alias & { content: string };
 
