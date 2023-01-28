@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-export function mountZsh({
+export function mountAliasesZsh({
   zshrcPath,
   zshAliasesPath,
 }: {

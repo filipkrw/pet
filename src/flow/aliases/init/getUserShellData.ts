@@ -1,7 +1,7 @@
 import os from "os";
 import { z } from "zod";
 import path from "path";
-import { getTransformedAliasesPath } from "../getTransformedAliasesPath.js";
+import { getTransformedAliasesPath } from "../util/getTransformedAliasesPath.js";
 import { isZsh } from "./shells/isZsh.js";
 
 const schema = z.object({

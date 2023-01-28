@@ -1,3 +1,4 @@
+import { Alias } from "../flow/aliases/schemas/aliasSchema";
 import { FindArgs } from "../flow/find/parseFindArgv";
 import { LocalConfig } from "../flow/types";
 
@@ -8,6 +9,7 @@ export type Vault<T = unknown> = {
   excludePatterns?: string[];
   plugins?: VaultPlugin[];
   textEditor?: string;
+  aliases?: Alias[];
 } & T;
 
 export type VaultWithSubVaults<T = unknown> = Vault<T> & {
