@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import handleArgvCommandsWithSubcommands from "./cmdArgs/handleArgvCommandsWithSubcommands.js";
+import { aliases } from "./flow/aliases/aliases.js";
 import { create } from "./flow/create/create.js";
 import { daily } from "./flow/daily/daily.js";
 import { find } from "./flow/find/find.js";
@@ -19,14 +20,14 @@ async function pet() {
       { commands: { base: "create", short: "c" }, callback: create },
       { commands: { base: "daily", short: "d" }, callback: daily },
       // { commands: { base: "remove", short: "r" }, callback: handleRemove },
-      // {
-      //   commands: {
-      //     base: "alias",
-      //     short: "a",
-      //     subcommands: ["i", "l", "a", "r"],
-      //   },
-      //   callback: handleAlias,
-      // },
+      {
+        commands: {
+          base: "alias",
+          short: "a",
+          subcommands: ["i", "l", "a", "r"],
+        },
+        callback: aliases,
+      },
       // {
       //   commands: { base: "config", short: "cf", subcommands: ["g", "s"] },
       //   callback: handleConfig,

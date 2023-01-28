@@ -39,6 +39,13 @@ function copyAssets() {
   copyFile("src/handleHelp/help.txt", "lib/handleHelp/help.txt", (err) => {
     if (err) throw err;
   });
+  copyFile(
+    "src/flow/aliases/init/zsh/.zshrc_template",
+    "lib/flow/aliases/init/zsh/.zshrc_template",
+    (err) => {
+      if (err) throw err;
+    }
+  );
 }
 
 function getCurrentTime() {

@@ -4,9 +4,7 @@ import { getRootPath } from "../../util/getRootPath.js";
 import { importConfigFile } from "../../util/importConfig.js";
 import { LocalConfig } from "../types.js";
 
-const localConfigSchema = z.object({
-  basePath: z.string(),
-});
+const localConfigSchema = z.object({ basePath: z.string() });
 
 export async function readLocalConfig() {
   return {
