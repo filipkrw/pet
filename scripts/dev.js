@@ -25,7 +25,7 @@ async function build() {
     })
     .then(() => {
       copyAssets();
-      console.log(getCurrentTime());
+      console.log("Updated at", getCurrentTime());
     })
     .catch((err) => {});
 }
@@ -49,11 +49,5 @@ function copyAssets() {
 }
 
 function getCurrentTime() {
-  const date = new Date();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const minutesPadded = minutes < 10 ? `0${minutes}` : minutes;
-  const seconds = date.getSeconds();
-  const secondsPadded = seconds < 10 ? `0${seconds}` : seconds;
-  return `${hours}:${minutesPadded}:${secondsPadded}`;
+  return new Date().toLocaleTimeString();
 }
