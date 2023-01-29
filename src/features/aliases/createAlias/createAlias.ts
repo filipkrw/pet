@@ -1,46 +1,28 @@
+import clc from "cli-color";
 import { exec } from "../../core/exec.js";
-import { getVaultConfigPath } from "../../core/loadConfigs/getVaultConfigPath.js";
-import { loadConfigs } from "../../core/loadConfigs/loadConfigs.js";
-import {
-  ArgvOptions,
-  LocalConfig,
-  VaultWithSubVaults,
-} from "../../core/types.js";
+import { loadCoreConfigs } from "../../core/loadConfigs/loadCoreConfigs.js";
+import { ArgvOptions } from "../../core/types.js";
 import { getUserShellData } from "../initAliases/steps/getUserShellData.js";
+import { loadAliasesConfig } from "../initAliases/steps/loadAliasesConfig.js";
+import { loadAliasesContent } from "../initAliases/steps/loadAliasesContent.js";
+import { saveTransformedAliases } from "../initAliases/steps/saveTransformedAliases.js";
+import { transformAliases } from "../initAliases/steps/transformAliases.js";
+import { addNewAlias } from "./steps/addNewAlias.js";
 import { parseCreateAliasArgv } from "./steps/parseCreateAliasArgv.js";
-import fs from "fs/promises";
+import { saveAliasesConfig } from "./steps/updateAliasesConfig.js";
 
 export async function createAlias({ argv }: ArgvOptions) {
-  return Promise.resolve(parseCreateAliasArgv({ argv }))
-    .then((x) => exec(x, loadConfigs))
-    .then((x) => exec(x, getUserShellData))
-    .then((x) => exec(x, saveAliasToConfig));
-}
-
-async function saveAliasToConfig({
-  args,
-  vault,
-  localConfig,
-}: ReturnType<typeof parseCreateAliasArgv> & {
-  vault: VaultWithSubVaults;
-  localConfig: LocalConfig;
-}) {
-  const newAlias = {
-    alias: args.alias,
-    relativePath: args.noteRelativePath,
-  };
-  const updatedAliases = [...(vault.aliases || []), newAlias];
-
-  console.log(updatedAliases);
-
-  // const vaultConfigPath = getVaultConfigPath(vault.absolutePath);
-  // const configContent = await fs.readFile(vaultConfigPath, "utf-8");
-  // const jsonConfigContent = JSON.parse(configContent);
-
-  // const updatedConfig = {
-  //   ...jsonConfigContent,
-  //   aliases: updatedAliases,
-  // };
-
-  // await fs.writeFile(vaultConfigPath, JSON.stringify(updatedConfig, null, 2));
+  return (
+    Promise.resolve(parseCreateAliasArgv({ argv }))
+      .then((x) => exec(x, loadCoreConfigs))
+      .then((x) => exec(x, loadAliasesConfig))
+      .then((x) => exec(x, addNewAlias))
+      .then((x) => exec(x, saveAliasesConfig))
+      //
+      .then((x) => exec(x, loadAliasesContent))
+      .then((x) => exec(x, getUserShellData))
+      .then((x) => exec(x, transformAliases))
+      .then((x) => exec(x, saveTransformedAliases))
+      .then(() => console.log(clc.bold.green("Done!")))
+  );
 }

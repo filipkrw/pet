@@ -26,7 +26,7 @@ export function loadAliasesContent({
         content,
       });
     } catch (e) {
-      console.log("Error loading alias", alias.alias);
+      console.log(`Error loading note "${alias.relativePath}", skipping...`);
       continue;
     }
   }

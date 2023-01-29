@@ -1,12 +1,7 @@
-import { z } from "zod";
 import { importConfigFile } from "../../../../util/importConfig.js";
 import { VaultWithSubVaults } from "../../../core/types.js";
-import { aliasSchema } from "../../schemas/aliasSchema.js";
+import { aliasesConfigSchema } from "../../schemas/aliasesConfigSchema.js";
 import { getAliasesConfigPath } from "../../util/getAliasesConfigPath.js";
-
-const schema = z.object({
-  aliases: z.array(aliasSchema),
-});
 
 export async function loadAliasesConfig({
   vault,
@@ -17,7 +12,7 @@ export async function loadAliasesConfig({
     const config = await importConfigFile(
       getAliasesConfigPath(vault.absolutePath)
     );
-    return schema.parse(config);
+    return aliasesConfigSchema.parse(config);
   } catch (e) {
     return { aliases: [] };
   }

@@ -13,9 +13,9 @@ export function parseCreateAliasArgv({ argv }: ArgvOptions) {
   );
   const parsedArgs = schema.parse(args);
   return {
-    args: {
+    newAlias: {
       alias: parsedArgs.query[0],
-      noteRelativePath: parsedArgs.query[1],
+      relativePath: parsedArgs.query[1],
     },
   };
 }

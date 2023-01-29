@@ -2,7 +2,7 @@ import { UserShellData } from "./getUserShellData.js";
 import fs from "fs";
 import { createFileIfNotExists } from "../../../../util/files.js";
 
-export function writeAliases({
+export function saveTransformedAliases({
   shell,
   transformedAliases,
 }: {
