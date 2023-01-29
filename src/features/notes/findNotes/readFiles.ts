@@ -2,7 +2,7 @@ import fg from "fast-glob";
 import fs from "fs";
 import path from "path";
 import { getBaseVault } from "../../../legacy/vault/getBaseVault.js";
-import { Vault, VaultWithSubVaults } from "../../types";
+import { Vault, VaultWithSubVaults } from "../../core/types.js";
 
 export type FileWithVault = {
   name: string;

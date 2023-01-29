@@ -1,4 +1,4 @@
-import { exec } from "../../exec.js";
+import { exec } from "../../core/exec.js";
 import { loadConfigs } from "../../core/loadConfigs/loadConfigs.js";
 import { getUserShellData } from "./steps/getUserShellData.js";
 import { loadAliases } from "./steps/loadAliases.js";

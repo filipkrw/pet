@@ -1,5 +1,5 @@
 import path from "path";
-import { VaultWithSubVaults } from "../../types";
+import { VaultWithSubVaults } from "../../core/types";
 import { CreateArgs } from "./parseCreateArgv.js";
 
 export async function getFilePath({

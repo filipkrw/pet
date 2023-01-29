@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import handleArgvCommandsWithSubcommands from "./cmdArgs/handleArgvCommandsWithSubcommands.js";
-import { aliases } from "./features/aliases/aliases.js";
-import { create } from "./features/core/create/create.js";
-import { daily } from "./features/daily/daily.js";
-import { find } from "./features/core/find/find.js";
+import { aliases } from "./features/aliases/index.js";
+import { createDailyNote } from "./features/dailyNotes/createDailyNote/createDailyNote.js";
+import { createNote } from "./features/notes/createNote/createNote.js";
+import { findNotes } from "./features/notes/findNotes/findNotes.js";
 import CommandError from "./legacy/handleAlias/CommandError.js";
 import { checkIsInitialized, handleInit } from "./legacy/handleInit/index.js";
 
@@ -16,9 +16,9 @@ async function pet() {
 
   try {
     handleArgvCommandsWithSubcommands([
-      { commands: { base: "find", short: "f" }, callback: find },
-      { commands: { base: "create", short: "c" }, callback: create },
-      { commands: { base: "daily", short: "d" }, callback: daily },
+      { commands: { base: "find", short: "f" }, callback: findNotes },
+      { commands: { base: "create", short: "c" }, callback: createNote },
+      { commands: { base: "daily", short: "d" }, callback: createDailyNote },
       // { commands: { base: "remove", short: "r" }, callback: handleRemove },
       {
         commands: {

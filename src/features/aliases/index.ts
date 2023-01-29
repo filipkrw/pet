@@ -1,6 +1,6 @@
 import handleArgvCommands from "../../cmdArgs/handleArgvCommands.js";
-import { ArgvOptions } from "../types";
-import { initAliases } from "./init/init.js";
+import { ArgvOptions } from "../core/types";
+import { initAliases } from "./initAliases/initAliases.js";
 
 export async function aliases({ argv, subcommand }: ArgvOptions) {
   handleArgvCommands(

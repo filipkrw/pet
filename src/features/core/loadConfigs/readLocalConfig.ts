@@ -2,7 +2,7 @@ import * as path from "node:path";
 import { z } from "zod";
 import { getRootPath } from "../../../util/getRootPath.js";
 import { importConfigFile } from "../../../util/importConfig.js";
-import { LocalConfig } from "../../types.js";
+import { LocalConfig } from "../../core/types.js";
 
 const localConfigSchema = z.object({ basePath: z.string() });
 

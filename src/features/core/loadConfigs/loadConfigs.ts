@@ -1,4 +1,4 @@
-import { exec } from "../../exec.js";
+import { exec } from "../exec.js";
 import { readLocalConfig } from "./readLocalConfig.js";
 import { readVaultConfig } from "./readVaultConfig.js";
 

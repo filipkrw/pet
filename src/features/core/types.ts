@@ -1,5 +1,5 @@
-import { Alias } from "./aliases/schemas/aliasSchema";
-import { FindArgs } from "./core/find/parseFindArgv";
+import { Alias } from "../aliases/schemas/aliasSchema";
+import { FindArgs } from "../notes/findNotes/parseFindArgv";
 
 export type Vault<T = unknown> = {
   relativePath: string;

@@ -1,6 +1,6 @@
 import path from "path";
 import { createDirectoryIfNotExists } from "../../../util/files.js";
-import { VaultWithSubVaults } from "../../types";
+import { VaultWithSubVaults } from "../../core/types";
 import { openEditor } from "./openEditor.js";
 import { CreateArgs } from "./parseCreateArgv.js";
 

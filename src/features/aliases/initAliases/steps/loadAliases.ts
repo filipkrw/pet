@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { VaultWithSubVaults } from "../../../types";
+import { VaultWithSubVaults } from "../../../core/types";
 import { Alias } from "../../schemas/aliasSchema";
 
 export type LoadedAlias = Alias & { content: string };
@@ -10,7 +10,7 @@ export function loadAliases({ vault }: { vault: VaultWithSubVaults }) {
     return { loadedAliases: [] };
   }
 
-  const loadedAliases = [];
+  const loadedAliases: LoadedAlias[] = [];
 
   for (const alias of vault.aliases) {
     try {
