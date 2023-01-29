@@ -1,4 +1,3 @@
-import { Alias } from "../aliases/schemas/aliasSchema";
 import { FindArgs } from "../notes/findNotes/parseFindArgv";
 
 export type Vault<T = unknown> = {
@@ -8,7 +7,6 @@ export type Vault<T = unknown> = {
   excludePatterns?: string[];
   plugins?: VaultPlugin[];
   textEditor?: string;
-  aliases?: Alias[];
 } & T;
 
 export type VaultWithSubVaults<T = unknown> = Vault<T> & {

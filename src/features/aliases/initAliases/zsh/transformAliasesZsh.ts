@@ -1,4 +1,4 @@
-import { LoadedAlias } from "../steps/loadAliases";
+import { LoadedAlias } from "../steps/loadAliasesContent";
 
 export function transformAliasesZsh({
   loadedAliases,
