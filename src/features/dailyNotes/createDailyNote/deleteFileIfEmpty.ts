@@ -1,6 +1,6 @@
 import { readFile, unlink } from "fs/promises";
 import path from "path";
-import { deleteEmptyInDirPath } from "../../../util/files";
+import { deleteEmptyInDirPath } from "../../../util/files.js";
 
 export async function deleteFileIfEmpty({
   file,

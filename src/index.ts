@@ -24,7 +24,7 @@ async function pet() {
         commands: {
           base: "alias",
           short: "a",
-          subcommands: ["i", "l", "a", "r"],
+          subcommands: ["i", "l", "a", "c"],
         },
         callback: aliases,
       },

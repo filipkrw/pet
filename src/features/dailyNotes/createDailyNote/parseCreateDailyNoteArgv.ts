@@ -1,6 +1,6 @@
 import { z } from "zod";
-import parseArgvOptions from "../../../cmdArgs/parseArgvOptions";
-import { ArgvOptions } from "../../core/types";
+import parseArgvOptions from "../../../cmdArgs/parseArgvOptions.js";
+import { ArgvOptions } from "../../core/types.js";
 
 export type DailyCreateArgs = z.infer<typeof dailyCreateArgsSchema>;
 

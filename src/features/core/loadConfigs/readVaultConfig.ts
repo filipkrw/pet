@@ -1,8 +1,8 @@
 import * as path from "node:path";
 import { fileExists } from "../../../util/files.js";
 import { importConfigFile } from "../../../util/importConfig.js";
-import { Vault, VaultWithSubVaults } from "../../core/types.js";
-import { LocalConfig } from "../../core/types.js";
+import { LocalConfig, Vault, VaultWithSubVaults } from "../../core/types.js";
+import { getVaultConfigPath } from "./getVaultConfigPath.js";
 
 export async function readVaultConfig({
   localConfig,
@@ -52,8 +52,4 @@ async function importVaultConfig(paths: {
     return { ...paths, ...importedConfig };
   }
   return paths;
-}
-
-function getVaultConfigPath(vaultAbsolutePath: string) {
-  return path.join(vaultAbsolutePath, ".pet", "config.mjs");
 }

@@ -1,7 +1,6 @@
-import fs from "fs";
-import path from "path";
-import { VaultWithSubVaults } from "../../../core/types";
-import { Alias } from "../../schemas/aliasSchema";
+import { loadNote } from "../../../core/loadNote.js";
+import { VaultWithSubVaults } from "../../../core/types.js";
+import { Alias } from "../../schemas/aliasSchema.js";
 
 export type LoadedAlias = Alias & { content: string };
 
@@ -15,7 +14,7 @@ export function loadAliases({ vault }: { vault: VaultWithSubVaults }) {
   for (const alias of vault.aliases) {
     try {
       const { relativePath } = alias;
-      const content = loadVaultFile({ vault, relativePath });
+      const content = loadNote({ vault, relativePath });
       loadedAliases.push({
         ...alias,
         content,
@@ -27,16 +26,4 @@ export function loadAliases({ vault }: { vault: VaultWithSubVaults }) {
   }
 
   return { loadedAliases };
-}
-
-function loadVaultFile({
-  vault,
-  relativePath,
-}: {
-  vault: VaultWithSubVaults;
-  relativePath: string;
-}) {
-  const vaultFilePath = path.join(vault.absolutePath, relativePath);
-  const vaultFile = fs.readFileSync(vaultFilePath, "utf8");
-  return vaultFile;
 }

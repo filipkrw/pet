@@ -6,7 +6,7 @@ async function handleArgvCommands(commandsConfig, argv) {
     commands.includes(command)
   );
   // Handle sync and async callbacks
-  await Promise.resolve(callback(remainingArgv));
+  await Promise.resolve(callback({ argv: remainingArgv }));
 }
 
 export default handleArgvCommands;
