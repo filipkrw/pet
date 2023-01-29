@@ -12,6 +12,7 @@ module.exports = {
   plugins: ["@typescript-eslint"],
   ignorePatterns: [".eslintrc.lib.cjs"],
   rules: {
+    "@typescript-eslint/ban-ts-comment": 1,
     "@typescript-eslint/no-empty-function": 0,
   },
 };

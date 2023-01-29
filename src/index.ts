@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 import handleArgvCommandsWithSubcommands from "./cmdArgs/handleArgvCommandsWithSubcommands.js";
-import { aliases } from "./flow/aliases/aliases.js";
-import { create } from "./flow/create/create.js";
-import { daily } from "./flow/daily/daily.js";
-import { find } from "./flow/find/find.js";
-import CommandError from "./handleAlias/CommandError.js";
-import { checkIsInitialized, handleInit } from "./handleInit/index.js";
+import { aliases } from "./features/aliases/aliases.js";
+import { create } from "./features/core/create/create.js";
+import { daily } from "./features/daily/daily.js";
+import { find } from "./features/core/find/find.js";
+import CommandError from "./legacy/handleAlias/CommandError.js";
+import { checkIsInitialized, handleInit } from "./legacy/handleInit/index.js";
 
 async function pet() {
   const isInitialized = await checkIsInitialized();
