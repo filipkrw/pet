@@ -1,0 +1,18 @@
+import { z } from "zod";
+import parseArgvOptions from "../../../../cmdArgs/parseArgvOptions.js";
+import { ArgvOptions } from "../../../core/types.js";
+
+const schema = z.object({
+  query: z.string(),
+});
+
+export function parseDeleteAliasArgv({ argv }: ArgvOptions) {
+  const args = parseArgvOptions(
+    [{ name: "query", type: String, defaultOption: true }],
+    argv
+  );
+  const parsedArgs = schema.parse(args);
+  return {
+    aliasToRemove: parsedArgs.query,
+  };
+}

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import handleArgvCommandsWithSubcommands from "./cmdArgs/handleArgvCommandsWithSubcommands.js";
-import { aliases } from "./features/aliases/index.js";
+import { handleAliases } from "./features/aliases/index.js";
 import { createDailyNote } from "./features/dailyNotes/createDailyNote/createDailyNote.js";
 import { createNote } from "./features/notes/createNote/createNote.js";
 import { findNotes } from "./features/notes/findNotes/findNotes.js";
@@ -24,9 +24,9 @@ async function pet() {
         commands: {
           base: "alias",
           short: "a",
-          subcommands: ["i", "l", "a", "c"],
+          subcommands: ["i", "l", "r", "c"],
         },
-        callback: aliases,
+        callback: handleAliases,
       },
       // {
       //   commands: { base: "config", short: "cf", subcommands: ["g", "s"] },
