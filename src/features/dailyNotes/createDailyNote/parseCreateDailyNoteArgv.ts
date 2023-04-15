@@ -2,9 +2,9 @@ import { z } from "zod";
 import parseArgvOptions from "../../../cmdArgs/parseArgvOptions.js";
 import { ArgvOptions } from "../../core/types.js";
 
-export type DailyCreateArgs = z.infer<typeof dailyCreateArgsSchema>;
+export type DailyCreateArgs = z.infer<typeof schema>;
 
-const dailyCreateArgsSchema = z.object({
+const schema = z.object({
   tags: z.array(z.string()).optional(),
   dirRelativePath: z.string().optional(),
 });
@@ -19,6 +19,6 @@ export function parseDailyCreateArgv({ argv }: ArgvOptions) {
   );
   const { dirRelativePath, tags } = options;
   return {
-    args: dailyCreateArgsSchema.parse({ dirRelativePath, tags }),
+    args: schema.parse({ dirRelativePath, tags }),
   };
 }
