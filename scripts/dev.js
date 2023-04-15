@@ -22,6 +22,7 @@ async function build() {
       format: "esm",
       tsconfig: "tsconfig.json",
       plugins: [nodeExternalsPlugin()],
+      sourcemap: true,
     })
     .then(() => copyAssets())
     .then(() => console.log(`Built at ${new Date().toLocaleTimeString()}`))
