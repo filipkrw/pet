@@ -8,6 +8,7 @@ import { handleHelp } from "./features/core/help/handleHelp.js";
 
 import CommandError from "./legacy/handleAlias/CommandError.js";
 import { checkIsInitialized, handleInit } from "./legacy/handleInit/index.js";
+import { removeNote } from "./features/notes/removeNote/removeNote.js";
 
 async function pet() {
   const isInitialized = await checkIsInitialized();
@@ -24,7 +25,7 @@ async function pet() {
         commands: { base: "daily", short: "d", subcommands: ["c", "f"] },
         callback: handleDailyNotes,
       },
-      // { commands: { base: "remove", short: "r" }, callback: handleRemove },
+      { commands: { base: "remove", short: "r" }, callback: removeNote },
       {
         commands: {
           base: "alias",
