@@ -1,17 +1,17 @@
 import clc from "cli-color";
-import promptUser from "../../util/promptUser.js";
-import getCwd from "../../util/getCwd.js";
-import { LocalConfig } from "../core/types.js";
-import { getLocalConfigPath } from "../core/loadConfigs/getLocalConfigPath.js";
+import path from "path";
+import { fileURLToPath } from "url";
 import {
   createDirectoryIfNotExists,
   createFileIfNotExists,
   fileExists,
 } from "../../util/files.js";
-import writeFromTemplate from "../../util/writeFromTemplate.js";
-import path from "path";
+import getCwd from "../../util/getCwd.js";
+import promptUser from "../../util/promptUser.js";
+import { writeFromTemplate } from "../../util/writeFromTemplate.js";
 import { exec } from "../core/exec.js";
-import { fileURLToPath } from "url";
+import { getLocalConfigPath } from "../core/loadConfigs/getLocalConfigPath.js";
+import { LocalConfig } from "../core/types.js";
 
 export async function setConfig() {
   Promise.resolve(createLocalConfig())
@@ -34,21 +34,21 @@ export async function createLocalConfig(): Promise<{
   return { localConfig: { basePath } };
 }
 
-export function writeLocalConfig({
+export async function writeLocalConfig({
   localConfig,
 }: {
   localConfig: LocalConfig;
 }) {
   const localPetConfigPath = path.resolve(getLocalConfigPath(), "petConfig.js");
   createFileIfNotExists(localPetConfigPath);
-  writeFromTemplate(
+  await writeFromTemplate(
     path.resolve(__dirname, "petConfig.template"),
     localPetConfigPath,
     localConfig
   );
 }
 
-export function writeVaultConfig({
+export async function writeVaultConfig({
   localConfig,
 }: {
   localConfig: LocalConfig;
@@ -61,7 +61,7 @@ export function writeVaultConfig({
   }
   console.log(`${clc.white("Info:")}\t\tNew config file created.`);
   createDirectoryIfNotExists(dotPetPath);
-  writeFromTemplate(
+  await writeFromTemplate(
     path.resolve(__dirname, "vaultConfig.template"),
     configPath
   );

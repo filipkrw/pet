@@ -1,6 +1,6 @@
 import readline from "readline";
 
-async function promptUser(prompt, defaultValue = "") {
+async function promptUser(prompt: string, defaultValue = ""): Promise<string> {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,

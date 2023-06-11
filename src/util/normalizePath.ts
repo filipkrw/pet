@@ -1,8 +1,6 @@
 /**
  * Standard `path.normalize` behavior differes between Windows and Unix.
  */
-function normalizePath(path) {
+export function normalizePath(path: string) {
   return path.replace(/\\/g, "/");
 }
-
-export default normalizePath;
