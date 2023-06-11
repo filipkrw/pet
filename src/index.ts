@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 import handleArgvCommandsWithSubcommands from "./cmdArgs/handleArgvCommandsWithSubcommands.js";
 import { handleAliases } from "./features/aliases/index.js";
+import { handleConfig } from "./features/config/index.js";
+import { handleHelp } from "./features/core/help/handleHelp.js";
 import { handleDailyNotes } from "./features/dailyNotes/index.js";
 import { createNote } from "./features/notes/createNote/createNote.js";
 import { findNotes } from "./features/notes/findNotes/findNotes.js";
-import { handleHelp } from "./features/core/help/handleHelp.js";
-
+import { removeNote } from "./features/notes/removeNote/removeNote.js";
 import CommandError from "./legacy/handleAlias/CommandError.js";
 import { checkIsInitialized, handleInit } from "./legacy/handleInit/index.js";
-import { removeNote } from "./features/notes/removeNote/removeNote.js";
 
 async function pet() {
   const isInitialized = await checkIsInitialized();
@@ -34,10 +34,10 @@ async function pet() {
         },
         callback: handleAliases,
       },
-      // {
-      //   commands: { base: "config", short: "cf", subcommands: ["g", "s"] },
-      //   callback: handleConfig,
-      // },
+      {
+        commands: { base: "config", short: "cf", subcommands: ["g", "s"] },
+        callback: handleConfig,
+      },
       { isDefault: true, callback: handleHelp },
     ]);
   } catch (e) {
