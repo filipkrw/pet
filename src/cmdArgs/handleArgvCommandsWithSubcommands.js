@@ -1,6 +1,6 @@
 import parseArgvCommand from "./parseArgvCommand.js";
 
-async function handleArgvCommandsWithSubcommands(commandsConfig, argv) {
+export async function handleArgvCommandsWithSubcommands(commandsConfig, argv) {
   const { command, remainingArgv } = parseArgvCommand(argv);
   const { callback, subcommand } = matchCommand(command, commandsConfig);
 
@@ -35,5 +35,3 @@ function findSubcommand(command, commands) {
     }
   }
 }
-
-export default handleArgvCommandsWithSubcommands;
