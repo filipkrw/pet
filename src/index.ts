@@ -3,13 +3,13 @@ import { handleArgvCommandsWithSubcommands } from "./cmdArgs/handleArgvCommandsW
 import { handleAliases } from "./features/aliases/index.js";
 import { handleConfig } from "./features/config/index.js";
 import { setConfig } from "./features/config/setConfig.js";
+import { CommandError } from "./features/core/CommandError.js";
 import { checkIsInitialized } from "./features/core/checkIsInitialized.js";
 import { handleHelp } from "./features/core/help/handleHelp.js";
 import { handleDailyNotes } from "./features/dailyNotes/index.js";
 import { createNote } from "./features/notes/createNote/createNote.js";
 import { findNotes } from "./features/notes/findNotes/findNotes.js";
 import { removeNote } from "./features/notes/removeNote/removeNote.js";
-import CommandError from "./legacy/handleAlias/CommandError.js";
 
 async function pet() {
   const isInitialized = await checkIsInitialized();

@@ -1,6 +1,6 @@
 import yaml from "yaml";
 import { z } from "zod";
-import { flatten } from "../../../legacy/vault/flatten.js";
+import { flatten } from "../../core/flatten.js";
 import { exec, execResolve } from "../../core/exec.js";
 import { loadCoreConfigs } from "../../core/loadConfigs/loadCoreConfigs.js";
 import { ArgvOptions, Vault } from "../../core/types.js";

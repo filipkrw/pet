@@ -1,9 +1,9 @@
 import * as path from "node:path";
-import CommandError from "../../../legacy/handleAlias/CommandError.js";
 import { fileExists } from "../../../util/files.js";
 import { importConfigFile } from "../../../util/importConfig.js";
 import { LocalConfig, Vault, VaultWithSubVaults } from "../../core/types.js";
 import { Feature } from "../../types.js";
+import { CommandError } from "../CommandError.js";
 import { getVaultConfigPath } from "./getVaultConfigPath.js";
 
 export async function readVaultConfig({

@@ -1,12 +1,12 @@
 import clc from "cli-color";
 import fs from "fs/promises";
 import path from "path";
-import CommandError from "../../../legacy/handleAlias/CommandError.js";
 import { fileExists } from "../../../util/files.js";
 import { exec } from "../../core/exec.js";
 import { loadCoreConfigs } from "../../core/loadConfigs/loadCoreConfigs.js";
 import { ArgvOptions, VaultWithSubVaults } from "../../core/types.js";
 import { CreateArgs, parseCreateArgv } from "../createNote/parseCreateArgv.js";
+import { CommandError } from "../../core/CommandError.js";
 
 export async function removeNote({ argv }: ArgvOptions) {
   return Promise.resolve(parseCreateArgv({ argv }))

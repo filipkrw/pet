@@ -1,4 +1,4 @@
-import { Vault, VaultWithSubVaults } from "../../features/core/types.js";
+import { Vault, VaultWithSubVaults } from "./types.js";
 // @ts-ignore
 import treeFlatten from "tree-flatten";
 
