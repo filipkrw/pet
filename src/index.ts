@@ -2,18 +2,19 @@
 import handleArgvCommandsWithSubcommands from "./cmdArgs/handleArgvCommandsWithSubcommands.js";
 import { handleAliases } from "./features/aliases/index.js";
 import { handleConfig } from "./features/config/index.js";
+import { setConfig } from "./features/config/setConfig.js";
 import { handleHelp } from "./features/core/help/handleHelp.js";
 import { handleDailyNotes } from "./features/dailyNotes/index.js";
 import { createNote } from "./features/notes/createNote/createNote.js";
 import { findNotes } from "./features/notes/findNotes/findNotes.js";
 import { removeNote } from "./features/notes/removeNote/removeNote.js";
 import CommandError from "./legacy/handleAlias/CommandError.js";
-import { checkIsInitialized, handleInit } from "./legacy/handleInit/index.js";
+import { checkIsInitialized } from "./legacy/handleInit/index.js";
 
 async function pet() {
   const isInitialized = await checkIsInitialized();
   if (!isInitialized) {
-    await handleInit();
+    await setConfig();
     return;
   }
 
