@@ -1,4 +1,4 @@
-import handleArgvCommands from "../../cmdArgs/handleArgvCommands.js";
+import handleArgvCommands from "../../cli/handleArgvCommands.js";
 import { ArgvOptions } from "../core/types.js";
 import { getConfig } from "./getConfig.js";
 import { setConfig } from "./setConfig.js";

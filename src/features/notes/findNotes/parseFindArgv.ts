@@ -1,4 +1,4 @@
-import parseArgvOptions from "../../../cmdArgs/parseArgvOptions.js";
+import parseArgvOptions from "../../../cli/parseArgvOptions.js";
 import { ArgvOptions } from "../../core/types.js";
 
 export type FindArgs = {

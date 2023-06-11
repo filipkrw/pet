@@ -6,11 +6,12 @@ const argvSchema = z.object({
   remainingArgv: z.array(z.string()),
 });
 
-function parseArgvCommand(argv) {
+function parseArgvCommand(argv?: string[]) {
   const args = commandLineArgs([{ name: "command", defaultOption: true }], {
     stopAtFirstUnknown: true,
     argv, // Can be undefined
   });
+
   return argvSchema.parse({
     command: args.command,
     remainingArgv: args._unknown || [],

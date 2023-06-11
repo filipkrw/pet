@@ -1,11 +1,12 @@
 #!/usr/bin/env node
-import { handleArgvCommandsWithSubcommands } from "./cmdArgs/handleArgvCommandsWithSubcommands.js";
+import { UnknownCommandError } from "./cli/UnknownCommandError.js";
+import { handleArgvCommandsWithSubcommands } from "./cli/handleArgvCommandsWithSubcommands.js";
 import { handleAliases } from "./features/aliases/index.js";
 import { handleConfig } from "./features/config/index.js";
 import { setConfig } from "./features/config/setConfig.js";
 import { CommandError } from "./features/core/CommandError.js";
 import { checkIsInitialized } from "./features/core/checkIsInitialized.js";
-import { handleHelp } from "./features/core/help/handleHelp.js";
+import { showHelp } from "./features/core/help/showHelp.js";
 import { handleDailyNotes } from "./features/dailyNotes/index.js";
 import { createNote } from "./features/notes/createNote/createNote.js";
 import { findNotes } from "./features/notes/findNotes/findNotes.js";
@@ -39,11 +40,12 @@ async function pet() {
         commands: { base: "config", short: "cf", subcommands: ["g", "s"] },
         callback: handleConfig,
       },
-      { isDefault: true, callback: handleHelp },
     ]);
   } catch (e) {
     if (e instanceof CommandError) {
       console.log(e.message);
+    } else if (e instanceof UnknownCommandError) {
+      showHelp();
     } else {
       throw e;
     }
