@@ -4,7 +4,7 @@ import { handleAliases } from "./features/aliases/index.js";
 import { handleDailyNotes } from "./features/dailyNotes/index.js";
 import { createNote } from "./features/notes/createNote/createNote.js";
 import { findNotes } from "./features/notes/findNotes/findNotes.js";
-import { handleHelp } from "./help/handleHelp.js";
+import { handleHelp } from "./features/core/help/handleHelp.js";
 
 import CommandError from "./legacy/handleAlias/CommandError.js";
 import { checkIsInitialized, handleInit } from "./legacy/handleInit/index.js";
