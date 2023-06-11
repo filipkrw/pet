@@ -5,6 +5,7 @@ import { handleDailyNotes } from "./features/dailyNotes/index.js";
 import { createNote } from "./features/notes/createNote/createNote.js";
 import { findNotes } from "./features/notes/findNotes/findNotes.js";
 import CommandError from "./legacy/handleAlias/CommandError.js";
+import handleHelp from "./legacy/handleHelp/handleHelp.js";
 import { checkIsInitialized, handleInit } from "./legacy/handleInit/index.js";
 
 async function pet() {
@@ -15,7 +16,7 @@ async function pet() {
   }
 
   try {
-    handleArgvCommandsWithSubcommands([
+    await handleArgvCommandsWithSubcommands([
       { commands: { base: "find", short: "f" }, callback: findNotes },
       { commands: { base: "create", short: "c" }, callback: createNote },
       {
@@ -35,7 +36,7 @@ async function pet() {
       //   commands: { base: "config", short: "cf", subcommands: ["g", "s"] },
       //   callback: handleConfig,
       // },
-      // { isDefault: true, callback: handleHelp },
+      { isDefault: true, callback: handleHelp },
     ]);
   } catch (e) {
     if (e instanceof CommandError) {

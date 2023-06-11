@@ -2,7 +2,7 @@ import commandLineArgs from "command-line-args";
 import { z } from "zod";
 
 const argvSchema = z.object({
-  command: z.string(),
+  command: z.string().optional(),
   remainingArgv: z.array(z.string()),
 });
 
