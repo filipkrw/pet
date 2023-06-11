@@ -10,9 +10,15 @@ import {
   parseFindDailyNotesArgv,
 } from "./parseFindDailyNotesArgv.js";
 import clc from "cli-color";
+import { Feature } from "../../types.js";
+
+function getFeatureData(): Feature {
+  return { name: "daily" };
+}
 
 export function findDailyNotes({ argv }: ArgvOptions) {
   return Promise.resolve(parseFindDailyNotesArgv({ argv }))
+    .then((x) => exec(x, getFeatureData))
     .then((x) => exec(x, loadCoreConfigs))
     .then((x) => execResolve(x, readFiles))
     .then((x) => exec(x, flattenFiles))

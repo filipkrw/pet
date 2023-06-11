@@ -7,6 +7,10 @@ export type Vault<T = unknown> = {
   excludePatterns?: string[];
   plugins?: VaultPlugin[];
   textEditor?: string;
+  features?: {
+    disable?: string[];
+    enable?: string[];
+  };
 } & T;
 
 export type VaultWithSubVaults<T = unknown> = Vault<T> & {

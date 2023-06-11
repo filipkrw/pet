@@ -14,7 +14,7 @@ export function parseFindDailyNotesArgv({ argv }: ArgvOptions) {
     argv
   );
   const { tags } = options;
-  return {
+  return Promise.resolve({
     args: schema.parse({ tags }),
-  };
+  });
 }

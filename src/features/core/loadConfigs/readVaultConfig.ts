@@ -3,18 +3,27 @@ import { fileExists } from "../../../util/files.js";
 import { importConfigFile } from "../../../util/importConfig.js";
 import { LocalConfig, Vault, VaultWithSubVaults } from "../../core/types.js";
 import { getVaultConfigPath } from "./getVaultConfigPath.js";
+import { Feature } from "../../types.js";
 
 export async function readVaultConfig({
   localConfig,
+  feature,
 }: {
   localConfig: LocalConfig;
+  feature: Feature;
 }): Promise<{ vault: VaultWithSubVaults }> {
   const rootVaultPaths = {
     absolutePath: localConfig.basePath,
     relativePath: "",
   };
   const rootVault = await importVaultConfigWithSubVaults(rootVaultPaths);
-  return { vault: rootVault };
+  const filteredVaults = filterOutVaults(rootVault, feature);
+  if (!filteredVaults) {
+    throw new Error(
+      `No vaults found for feature "${feature.name}" in "${localConfig.basePath}"`
+    );
+  }
+  return { vault: filteredVaults };
 }
 
 async function importVaultConfigWithSubVaults(
@@ -52,4 +61,37 @@ async function importVaultConfig(paths: {
     return { ...paths, ...importedConfig };
   }
   return paths;
+}
+
+function shouldKeepVault(vault: Vault, feature: Feature) {
+  if (!vault.features) {
+    return true;
+  }
+
+  if (vault.features.disable?.includes(feature.name)) {
+    return false;
+  }
+
+  if (
+    vault.features.disable?.includes("*") &&
+    !vault.features.enable?.includes(feature.name)
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+function filterOutVaults(vault: VaultWithSubVaults, feature: Feature) {
+  if (!shouldKeepVault(vault, feature)) {
+    return;
+  }
+
+  if (vault.vaults) {
+    vault.vaults = vault.vaults.filter((subvault) =>
+      filterOutVaults(subvault, feature)
+    );
+  }
+
+  return vault;
 }
