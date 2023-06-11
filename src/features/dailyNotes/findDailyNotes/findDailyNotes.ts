@@ -12,10 +12,6 @@ import {
 import clc from "cli-color";
 import { Feature } from "../../types.js";
 
-function getFeatureData(): Feature {
-  return { name: "daily" };
-}
-
 export function findDailyNotes({ argv }: ArgvOptions) {
   return Promise.resolve(parseFindDailyNotesArgv({ argv }))
     .then((x) => exec(x, getFeatureData))
@@ -25,6 +21,10 @@ export function findDailyNotes({ argv }: ArgvOptions) {
     .then((x) => exec(x, readFilesWithFrontmatter))
     .then((x) => exec(x, filterByTag))
     .then((x) => exec(x, printResults));
+}
+
+function getFeatureData(): Feature {
+  return { name: "daily" };
 }
 
 function flattenFiles({ vault }: { vault: Vault<{ files: FileWithVault[] }> }) {
