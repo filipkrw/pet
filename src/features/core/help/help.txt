@@ -4,7 +4,7 @@ Commands:
   [r]emove <path>                  Remove a snippet
 
   [a]lias [i]nit                   Setup aliases on your system
-  [a]lias [a]dd <name> <path>      Add alias
+  [a]lias [c]reate <name> <path>   Add alias
   [a]lias [r]emove <name>          Remove alias
   [a]lias [l]ist [-v, --verbose]   List aliases
 
