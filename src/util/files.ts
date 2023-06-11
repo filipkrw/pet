@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 
-export function createFileIfNotExists(filePath) {
+export function createFileIfNotExists(filePath: string) {
   if (!fileExists(filePath)) {
     const dirPath = path.dirname(filePath);
     createDirectoryIfNotExists(dirPath);
@@ -9,21 +9,21 @@ export function createFileIfNotExists(filePath) {
   }
 }
 
-export function createDirectoryIfNotExists(dirPath) {
+export function createDirectoryIfNotExists(dirPath: string) {
   if (!fileExists(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
   }
 }
 
-export function deleteEmptyInFilePath(filePath) {
+export function deleteEmptyInFilePath(filePath: string) {
   if (isFileEmpty(filePath)) {
     fs.rmSync(filePath);
   }
-  let dirPath = path.dirname(filePath);
+  const dirPath = path.dirname(filePath);
   deleteEmptyInDirPath(dirPath);
 }
 
-export function deleteEmptyInDirPath(dirPath) {
+export function deleteEmptyInDirPath(dirPath: string) {
   // eslint-disable-next-line no-constant-condition
   while (true) {
     if (isDirEmpty(dirPath)) {
@@ -35,20 +35,16 @@ export function deleteEmptyInDirPath(dirPath) {
   }
 }
 
-export function fileExists(filePath) {
+export function fileExists(filePath: string) {
   return fs.existsSync(filePath);
 }
 
-export function isFileEmpty(filePath) {
+export function isFileEmpty(filePath: string) {
   const stat = fs.statSync(filePath);
   return stat.size === 0;
 }
 
-export function isDirEmpty(dirPath) {
+export function isDirEmpty(dirPath: string) {
   const dirFiles = fs.readdirSync(dirPath);
   return dirFiles.length === 0;
-}
-
-export function readJsonFile(filePath) {
-  return JSON.parse(fs.readFileSync(filePath));
 }

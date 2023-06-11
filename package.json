@@ -11,6 +11,7 @@
   "scripts": {
     "dev": "node scripts/dev.js",
     "build": "tsc && npm run format:lib",
+    "typecheck": "tsc --noEmit",
     "format:lib": "eslint --config .eslintrc.lib.cjs --fix lib && prettier --write lib --loglevel warn"
   },
   "dependencies": {
