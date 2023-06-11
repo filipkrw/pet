@@ -4,8 +4,9 @@ import { handleAliases } from "./features/aliases/index.js";
 import { handleDailyNotes } from "./features/dailyNotes/index.js";
 import { createNote } from "./features/notes/createNote/createNote.js";
 import { findNotes } from "./features/notes/findNotes/findNotes.js";
+import { handleHelp } from "./help/handleHelp.js";
+
 import CommandError from "./legacy/handleAlias/CommandError.js";
-import handleHelp from "./legacy/handleHelp/handleHelp.js";
 import { checkIsInitialized, handleInit } from "./legacy/handleInit/index.js";
 
 async function pet() {
