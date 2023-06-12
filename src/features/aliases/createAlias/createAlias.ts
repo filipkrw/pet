@@ -14,8 +14,8 @@ import { saveAliasesConfig } from "./steps/updateAliasesConfig.js";
 
 export async function createAlias({ argv }: ArgvOptions) {
   return (
-    Promise.resolve(parseCreateAliasArgv({ argv }))
-      .then((x) => exec(x, aliases.getMeta))
+    Promise.resolve({ ...aliases.getMeta(), argv })
+      .then((x) => exec(x, parseCreateAliasArgv))
       .then((x) => exec(x, loadCoreConfigs))
       .then((x) => exec(x, loadAliasesConfig))
       .then((x) => exec(x, addAliasToConfig))

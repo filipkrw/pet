@@ -7,8 +7,8 @@ import { parseCreateArgv } from "./parseCreateArgv.js";
 import { printMessage } from "./printMessage.js";
 
 export async function createNote({ argv }: ArgvOptions) {
-  return Promise.resolve(parseCreateArgv({ argv }))
-    .then((x) => exec(x, notes.getMeta))
+  return Promise.resolve({ ...notes.getMeta(), argv })
+    .then((x) => exec(x, parseCreateArgv))
     .then((x) => exec(x, loadCoreConfigs))
     .then((x) => exec(x, openFile))
     .then((x) => printMessage(x));

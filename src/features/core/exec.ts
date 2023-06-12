@@ -1,9 +1,9 @@
 import { resolve } from "./resolve.js";
 import { type Vault, type VaultWithSubVaults } from "./types.js";
 
-export async function exec<T, U>(
+export async function exec<T extends V, U, V>(
   input: T,
-  func: (x: T) => U | Promise<U>
+  func: (x: V) => U | Promise<U>
 ): Promise<T & U> {
   const output = await Promise.resolve(func(input));
   return { ...input, ...output };

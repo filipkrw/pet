@@ -13,8 +13,8 @@ import {
 } from "./parseFindDailyNotesArgv.js";
 
 export function findDailyNotes({ argv }: ArgvOptions) {
-  return Promise.resolve(parseFindDailyNotesArgv({ argv }))
-    .then((x) => exec(x, dailyNotes.getMeta))
+  return Promise.resolve({ ...dailyNotes.getMeta(), argv })
+    .then((x) => exec(x, parseFindDailyNotesArgv))
     .then((x) => exec(x, loadCoreConfigs))
     .then((x) => execResolve(x, readFiles))
     .then((x) => exec(x, flattenFiles))

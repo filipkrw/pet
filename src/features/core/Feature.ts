@@ -3,9 +3,9 @@ export type FeatureMeta = {
 };
 
 export class Feature {
-  meta: FeatureMeta;
+  private meta: FeatureMeta;
 
-  constructor(public name: string) {
+  constructor(name: string) {
     this.meta = { name };
   }
 

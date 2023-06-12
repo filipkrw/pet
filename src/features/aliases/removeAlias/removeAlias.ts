@@ -14,8 +14,8 @@ import { aliases } from "../Aliases.js";
 
 export async function removeAlias({ argv }: ArgvOptions) {
   return (
-    Promise.resolve(parseDeleteAliasArgv({ argv }))
-      .then((x) => exec(x, aliases.getMeta))
+    Promise.resolve({ ...aliases.getMeta(), argv })
+      .then((x) => exec(x, parseDeleteAliasArgv))
       .then((x) => exec(x, loadCoreConfigs))
       .then((x) => exec(x, loadAliasesConfig))
       .then((x) => exec(x, removeAliasFromConfig))

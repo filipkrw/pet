@@ -2,16 +2,16 @@ import clc from "cli-color";
 import fs from "fs/promises";
 import path from "path";
 import { fileExists } from "../../../util/files.js";
+import { CommandError } from "../../core/CommandError.js";
 import { exec } from "../../core/exec.js";
 import { loadCoreConfigs } from "../../core/loadConfigs/loadCoreConfigs.js";
 import { ArgvOptions, VaultWithSubVaults } from "../../core/types.js";
-import { CreateArgs, parseCreateArgv } from "../createNote/parseCreateArgv.js";
-import { CommandError } from "../../core/CommandError.js";
 import { notes } from "../Notes.js";
+import { CreateArgs, parseCreateArgv } from "../createNote/parseCreateArgv.js";
 
 export async function removeNote({ argv }: ArgvOptions) {
-  return Promise.resolve(parseCreateArgv({ argv }))
-    .then((x) => exec(x, notes.getMeta))
+  return Promise.resolve({ ...notes.getMeta(), argv })
+    .then((x) => exec(x, parseCreateArgv))
     .then((x) => exec(x, loadCoreConfigs))
     .then((x) => exec(x, deleteNoteFile))
     .then(() => console.log(clc.bold.green("Note has been removed")));
