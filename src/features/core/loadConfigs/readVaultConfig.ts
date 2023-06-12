@@ -2,16 +2,16 @@ import * as path from "node:path";
 import { fileExists } from "../../../util/files.js";
 import { importConfigFile } from "../../../util/importConfig.js";
 import { LocalConfig, Vault, VaultWithSubVaults } from "../../core/types.js";
-import { Feature } from "../../types.js";
 import { CommandError } from "../CommandError.js";
 import { getVaultConfigPath } from "./getVaultConfigPath.js";
+import { FeatureMeta } from "../Feature.js";
 
 export async function readVaultConfig({
   localConfig,
   feature,
 }: {
   localConfig: LocalConfig;
-  feature: Feature;
+  feature: FeatureMeta;
 }): Promise<{ vault: VaultWithSubVaults }> {
   const rootVaultPaths = {
     absolutePath: localConfig.basePath,
@@ -64,7 +64,7 @@ async function importVaultConfig(paths: {
   return paths;
 }
 
-function shouldKeepVault(vault: Vault, feature: Feature) {
+function shouldKeepVault(vault: Vault, feature: FeatureMeta) {
   if (!vault.features) {
     return true;
   }
@@ -83,7 +83,7 @@ function shouldKeepVault(vault: Vault, feature: Feature) {
   return true;
 }
 
-function filterOutVaults(vault: VaultWithSubVaults, feature: Feature) {
+function filterOutVaults(vault: VaultWithSubVaults, feature: FeatureMeta) {
   if (!shouldKeepVault(vault, feature)) {
     return;
   }

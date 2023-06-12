@@ -5,7 +5,7 @@ import { handleAliases } from "./features/aliases/index.js";
 import { handleConfig } from "./features/config/index.js";
 import { setConfig } from "./features/config/setConfig.js";
 import { CommandError } from "./features/core/CommandError.js";
-import { checkIsInitialized } from "./features/core/checkIsInitialized.js";
+import { getIsInitialized } from "./features/core/getIsInitialized.js";
 import { showHelp } from "./help/showHelp.js";
 import { handleDailyNotes } from "./features/dailyNotes/index.js";
 import { createNote } from "./features/notes/createNote/createNote.js";
@@ -13,7 +13,7 @@ import { findNotes } from "./features/notes/findNotes/findNotes.js";
 import { removeNote } from "./features/notes/removeNote/removeNote.js";
 
 async function pet() {
-  const isInitialized = await checkIsInitialized();
+  const isInitialized = await getIsInitialized();
   if (!isInitialized) {
     await setConfig();
     return;

@@ -10,10 +10,12 @@ import { saveTransformedAliases } from "../initAliases/steps/saveTransformedAlia
 import { transformAliases } from "../initAliases/steps/transformAliases.js";
 import { parseDeleteAliasArgv } from "./steps/parseDeleteAliasArgv.js";
 import { removeAliasFromConfig } from "./steps/removeAliasFromConfig.js";
+import { aliases } from "../Aliases.js";
 
 export async function removeAlias({ argv }: ArgvOptions) {
   return (
     Promise.resolve(parseDeleteAliasArgv({ argv }))
+      .then((x) => exec(x, aliases.getMeta))
       .then((x) => exec(x, loadCoreConfigs))
       .then((x) => exec(x, loadAliasesConfig))
       .then((x) => exec(x, removeAliasFromConfig))

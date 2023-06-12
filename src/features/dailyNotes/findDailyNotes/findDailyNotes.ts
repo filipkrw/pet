@@ -1,30 +1,26 @@
+import clc from "cli-color";
 import yaml from "yaml";
 import { z } from "zod";
-import { flatten } from "../../core/flatten.js";
 import { exec, execResolve } from "../../core/exec.js";
+import { flatten } from "../../core/flatten.js";
 import { loadCoreConfigs } from "../../core/loadConfigs/loadCoreConfigs.js";
 import { ArgvOptions, Vault } from "../../core/types.js";
 import { FileWithVault, readFiles } from "../../notes/findNotes/readFiles.js";
+import { dailyNotes } from "../DailyNotes.js";
 import {
   DailyFindArgs,
   parseFindDailyNotesArgv,
 } from "./parseFindDailyNotesArgv.js";
-import clc from "cli-color";
-import { Feature } from "../../types.js";
 
 export function findDailyNotes({ argv }: ArgvOptions) {
   return Promise.resolve(parseFindDailyNotesArgv({ argv }))
-    .then((x) => exec(x, getFeatureData))
+    .then((x) => exec(x, dailyNotes.getMeta))
     .then((x) => exec(x, loadCoreConfigs))
     .then((x) => execResolve(x, readFiles))
     .then((x) => exec(x, flattenFiles))
     .then((x) => exec(x, readFilesWithFrontmatter))
     .then((x) => exec(x, filterByTag))
     .then((x) => exec(x, printResults));
-}
-
-function getFeatureData(): Feature {
-  return { name: "daily" };
 }
 
 function flattenFiles({ vault }: { vault: Vault<{ files: FileWithVault[] }> }) {

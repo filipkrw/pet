@@ -2,3 +2,4 @@ node_modules
 test
 localConfig
 lib
+.DS_Store

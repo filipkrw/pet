@@ -3,12 +3,14 @@ import { loadCoreConfigs } from "../../core/loadConfigs/loadCoreConfigs.js";
 import { type ArgvOptions } from "../../core/types.js";
 import { openEditor } from "../../notes/createNote/openEditor.js";
 import { printMessage } from "../../notes/createNote/printMessage.js";
+import { dailyNotes } from "../DailyNotes.js";
 import { createDailyFile } from "./createFileWithFronmatter.js";
 import { deleteFileIfEmpty } from "./deleteFileIfEmpty.js";
 import { parseDailyCreateArgv } from "./parseCreateDailyNoteArgv.js";
 
 export async function createDailyNote({ argv }: ArgvOptions) {
   return Promise.resolve(parseDailyCreateArgv({ argv }))
+    .then((x) => exec(x, dailyNotes.getMeta))
     .then((x) => exec(x, loadCoreConfigs))
     .then((x) => exec(x, createDailyFile))
     .then((x) => exec(x, openEditor))

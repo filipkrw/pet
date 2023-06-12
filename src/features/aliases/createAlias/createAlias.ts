@@ -2,6 +2,7 @@ import clc from "cli-color";
 import { exec } from "../../core/exec.js";
 import { loadCoreConfigs } from "../../core/loadConfigs/loadCoreConfigs.js";
 import { ArgvOptions } from "../../core/types.js";
+import { aliases } from "../Aliases.js";
 import { getUserShellData } from "../initAliases/steps/getUserShellData.js";
 import { loadAliasesConfig } from "../initAliases/steps/loadAliasesConfig.js";
 import { loadAliasesContent } from "../initAliases/steps/loadAliasesContent.js";
@@ -14,6 +15,7 @@ import { saveAliasesConfig } from "./steps/updateAliasesConfig.js";
 export async function createAlias({ argv }: ArgvOptions) {
   return (
     Promise.resolve(parseCreateAliasArgv({ argv }))
+      .then((x) => exec(x, aliases.getMeta))
       .then((x) => exec(x, loadCoreConfigs))
       .then((x) => exec(x, loadAliasesConfig))
       .then((x) => exec(x, addAliasToConfig))

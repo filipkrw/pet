@@ -9,7 +9,9 @@ const schema = z.object({
   dirRelativePath: z.string().optional(),
 });
 
-export function parseDailyCreateArgv({ argv }: ArgvOptions) {
+export function parseDailyCreateArgv({ argv }: ArgvOptions): {
+  args: DailyCreateArgs;
+} {
   const options = parseArgvOptions(
     [
       { name: "dirRelativePath", defaultOption: true },

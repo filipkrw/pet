@@ -1,9 +1,9 @@
 import clc from "cli-color";
-import { loadCoreConfigs } from "../core/loadConfigs/loadCoreConfigs.js";
+import { readLocalConfig } from "../core/loadConfigs/readLocalConfig.js";
 import { LocalConfig } from "../core/types.js";
 
 export async function getConfig() {
-  Promise.resolve(loadCoreConfigs()).then(printConfig);
+  Promise.resolve(readLocalConfig()).then(printConfig);
 }
 
 function printConfig({ localConfig }: { localConfig: LocalConfig }) {
