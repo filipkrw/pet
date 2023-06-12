@@ -1,4 +1,4 @@
-import { importConfigFile } from "../../../../util/importConfig.js";
+import { importConfigFile } from "../../../../core/config/importConfig.js";
 import { VaultWithSubVaults } from "../../../../core/types.js";
 import { aliasesConfigSchema } from "../../schemas/aliasesConfigSchema.js";
 import { getAliasesConfigPath } from "../../util/getAliasesConfigPath.js";

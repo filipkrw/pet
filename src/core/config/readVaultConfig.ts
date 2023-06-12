@@ -1,6 +1,6 @@
 import * as path from "node:path";
 import { fileExists } from "../../util/files.js";
-import { importConfigFile } from "../../util/importConfig.js";
+import { importConfigFile } from "./importConfig.js";
 import { LocalConfig, Vault, VaultWithSubVaults } from "../types.js";
 import { CommandError } from "../CommandError.js";
 import { getVaultConfigPath } from "./getVaultConfigPath.js";
