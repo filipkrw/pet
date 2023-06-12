@@ -42,7 +42,7 @@ export async function writeLocalConfig({
   const localPetConfigPath = path.resolve(getLocalConfigPath(), "petConfig.js");
   createFileIfNotExists(localPetConfigPath);
   await writeFromTemplate(
-    path.resolve(__dirname, "petConfig.template"),
+    path.resolve(__dirname, "templates/petConfig.template"),
     localPetConfigPath,
     localConfig
   );
@@ -62,7 +62,7 @@ export async function writeVaultConfig({
   console.log(`${clc.white("Info:")}\t\tNew config file created.`);
   createDirectoryIfNotExists(dotPetPath);
   await writeFromTemplate(
-    path.resolve(__dirname, "vaultConfig.template"),
+    path.resolve(__dirname, "templates/vaultConfig.template"),
     configPath
   );
 }
