@@ -2,10 +2,10 @@ import clc from "cli-color";
 import fs from "fs/promises";
 import path from "path";
 import { fileExists } from "../../../util/files.js";
-import { CommandError } from "../../core/CommandError.js";
-import { exec } from "../../core/exec.js";
-import { loadCoreConfigs } from "../../core/loadConfigs/loadCoreConfigs.js";
-import { ArgvOptions, VaultWithSubVaults } from "../../core/types.js";
+import { CommandError } from "../../../core/CommandError.js";
+import { exec } from "../../../core/exec.js";
+import { loadCoreConfigs } from "../../../core/loadConfigs/loadCoreConfigs.js";
+import { ArgvOptions, VaultWithSubVaults } from "../../../core/types.js";
 import { notes } from "../Notes.js";
 import { CreateArgs, parseCreateArgv } from "../createNote/parseCreateArgv.js";
 

@@ -1,5 +1,5 @@
 import createExportDefaultStr from "../../../../util/createExportDefaultStr.js";
-import { VaultWithSubVaults } from "../../../core/types.js";
+import { VaultWithSubVaults } from "../../../../core/types.js";
 import { Alias } from "../../schemas/aliasSchema.js";
 import { getAliasesConfigPath } from "../../util/getAliasesConfigPath.js";
 import fs from "fs/promises";

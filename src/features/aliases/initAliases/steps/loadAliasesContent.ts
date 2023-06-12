@@ -1,5 +1,5 @@
-import { loadNote } from "../../../core/loadNote.js";
-import { VaultWithSubVaults } from "../../../core/types.js";
+import { loadNote } from "../../../../core/loadNote.js";
+import { VaultWithSubVaults } from "../../../../core/types.js";
 import { Alias } from "../../schemas/aliasSchema.js";
 
 export type LoadedAlias = Alias & { content: string };

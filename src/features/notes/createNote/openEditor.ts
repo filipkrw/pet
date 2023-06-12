@@ -1,5 +1,5 @@
 import { spawn } from "child_process";
-import { VaultWithSubVaults } from "../../core/types.js";
+import { VaultWithSubVaults } from "../../../core/types.js";
 
 export async function openEditor({
   file,

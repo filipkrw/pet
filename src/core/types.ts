@@ -1,4 +1,4 @@
-import { FindArgs } from "../notes/findNotes/parseFindArgv";
+import { FindArgs } from "../features/notes/findNotes/parseFindArgv";
 
 export type Vault<T = unknown> = {
   relativePath: string;

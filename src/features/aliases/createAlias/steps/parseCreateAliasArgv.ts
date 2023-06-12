@@ -1,6 +1,6 @@
 import { z } from "zod";
 import parseArgvOptions from "../../../../cli/parseArgvOptions.js";
-import { ArgvOptions } from "../../../core/types.js";
+import { ArgvOptions } from "../../../../core/types.js";
 
 const schema = z.object({
   query: z.array(z.string()).length(2),

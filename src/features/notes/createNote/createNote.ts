@@ -1,6 +1,6 @@
-import { exec } from "../../core/exec.js";
-import { loadCoreConfigs } from "../../core/loadConfigs/loadCoreConfigs.js";
-import { ArgvOptions } from "../../core/types.js";
+import { exec } from "../../../core/exec.js";
+import { loadCoreConfigs } from "../../../core/loadConfigs/loadCoreConfigs.js";
+import { ArgvOptions } from "../../../core/types.js";
 import { notes } from "../Notes.js";
 import { openFile } from "./openFile.js";
 import { parseCreateArgv } from "./parseCreateArgv.js";

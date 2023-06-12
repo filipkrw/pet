@@ -4,8 +4,8 @@ import { handleArgvCommandsWithSubcommands } from "./cli/handleArgvCommandsWithS
 import { handleAliases } from "./features/aliases/index.js";
 import { handleConfig } from "./features/config/index.js";
 import { setConfig } from "./features/config/setConfig.js";
-import { CommandError } from "./features/core/CommandError.js";
-import { getIsInitialized } from "./features/core/getIsInitialized.js";
+import { CommandError } from "./core/CommandError.js";
+import { getIsInitialized } from "./core/getIsInitialized.js";
 import { showHelp } from "./help/showHelp.js";
 import { handleDailyNotes } from "./features/dailyNotes/index.js";
 import { createNote } from "./features/notes/createNote/createNote.js";

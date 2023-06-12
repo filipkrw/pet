@@ -1,3 +1,3 @@
-import { Feature } from "../core/Feature.js";
+import { Feature } from "../../core/Feature.js";
 
 export const dailyNotes = new Feature("dailyNotes");

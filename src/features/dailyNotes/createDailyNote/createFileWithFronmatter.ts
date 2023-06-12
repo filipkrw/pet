@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import yaml from "yaml";
 import { createFileIfNotExists } from "../../../util/files.js";
-import { VaultWithSubVaults } from "../../core/types.js";
+import { VaultWithSubVaults } from "../../../core/types.js";
 import { type DailyCreateArgs } from "./parseCreateDailyNoteArgv.js";
 
 export function createDailyFile({

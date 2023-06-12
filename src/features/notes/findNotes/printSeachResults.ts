@@ -1,5 +1,5 @@
 import clc from "cli-color";
-import { Vault } from "../../core/types";
+import { Vault } from "../../../core/types";
 import { FileWithVault } from "./readFiles";
 
 export function printSearchResults({

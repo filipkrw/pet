@@ -1,5 +1,5 @@
-import { exec } from "../../core/exec.js";
-import { loadCoreConfigs } from "../../core/loadConfigs/loadCoreConfigs.js";
+import { exec } from "../../../core/exec.js";
+import { loadCoreConfigs } from "../../../core/loadConfigs/loadCoreConfigs.js";
 import { getUserShellData } from "./steps/getUserShellData.js";
 import { loadAliasesContent } from "./steps/loadAliasesContent.js";
 import { loadAliasesConfig } from "./steps/loadAliasesConfig.js";

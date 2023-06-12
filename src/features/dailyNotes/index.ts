@@ -1,5 +1,5 @@
 import handleArgvCommands from "../../cli/handleArgvCommands.js";
-import { ArgvOptions } from "../core/types";
+import { ArgvOptions } from "../../core/types.js";
 import { createDailyNote } from "./createDailyNote/createDailyNote.js";
 import { findDailyNotes } from "./findDailyNotes/findDailyNotes.js";
 

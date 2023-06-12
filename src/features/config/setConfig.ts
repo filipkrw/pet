@@ -9,9 +9,9 @@ import {
 import getCwd from "../../util/getCwd.js";
 import promptUser from "../../util/promptUser.js";
 import { writeFromTemplate } from "../../util/writeFromTemplate.js";
-import { exec } from "../core/exec.js";
-import { getLocalConfigPath } from "../core/loadConfigs/getLocalConfigPath.js";
-import { LocalConfig } from "../core/types.js";
+import { exec } from "../../core/exec.js";
+import { getLocalConfigPath } from "../../core/loadConfigs/getLocalConfigPath.js";
+import { LocalConfig } from "../../core/types.js";
 
 export async function setConfig() {
   Promise.resolve(createLocalConfig())
