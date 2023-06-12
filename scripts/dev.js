@@ -1,8 +1,9 @@
 import esbuild from "esbuild";
 import { nodeExternalsPlugin } from "esbuild-node-externals";
 import fg from "fast-glob";
-import { copyFile } from "fs";
+import fs from "fs";
 import nodeWatch from "node-watch";
+import path from "path";
 
 watch();
 
@@ -33,7 +34,8 @@ async function copyAssets() {
   const assets = await findAssetFiles();
   assets.forEach((sourcePath) => {
     const destPath = sourcePath.replace(/^src/, "lib");
-    copyFile(sourcePath, destPath, (err) => {
+    createDirectoryIfNotExists(path.dirname(destPath));
+    fs.copyFile(sourcePath, destPath, (err) => {
       if (err) throw err;
     });
   });
@@ -47,4 +49,10 @@ async function findSourceFiles() {
 async function findAssetFiles() {
   const patterns = ["src/**/*.txt", "src/**/*.template"];
   return fg(patterns, { dot: true });
+}
+
+export function createDirectoryIfNotExists(dirPath) {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
 }
