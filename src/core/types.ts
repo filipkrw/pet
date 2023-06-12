@@ -17,12 +17,6 @@ export type VaultWithSubVaults<T = unknown> = Vault<T> & {
   vaults?: VaultWithSubVaults<T>[];
 };
 
-export type LoadedConfigs = {
-  args: FindArgs;
-  localConfig: LocalConfig;
-  vault: VaultWithSubVaults<unknown>;
-};
-
 export type VaultPlugin = {
   command: "find";
   flow(configs: LoadedConfigs): Promise<unknown>;
@@ -35,4 +29,10 @@ export type ArgvOptions = {
 
 export type LocalConfig = {
   basePath: string;
+};
+
+export type LoadedConfigs = {
+  args: FindArgs;
+  localConfig: LocalConfig;
+  vault: VaultWithSubVaults<unknown>;
 };

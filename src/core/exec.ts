@@ -1,4 +1,4 @@
-import { resolve } from "./resolve.js";
+import { resolve } from "./vault/resolve.js";
 import { type Vault, type VaultWithSubVaults } from "./types.js";
 
 export async function exec<T extends V, U, V>(

@@ -1,4 +1,4 @@
-import { type Vault, type VaultWithSubVaults } from "./types.js";
+import { type Vault, type VaultWithSubVaults } from "../types.js";
 
 export async function resolve<T, U>(
   inputVault: VaultWithSubVaults<T>,

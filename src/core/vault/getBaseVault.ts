@@ -1,4 +1,4 @@
-import { Vault, VaultWithSubVaults } from "./types.js";
+import { type Vault, type VaultWithSubVaults } from "../types.js";
 
 export function getBaseVault(vault: VaultWithSubVaults): Vault {
   return {
