@@ -25,11 +25,14 @@ export function printAliases({
 }
 
 function getAliasTitle(alias: Alias) {
-  const title = `${clc.green.bold(alias.alias)} ${clc.green(
-    `(${alias.relativePath})`
-  )}`;
-  if (alias.noVariableSubstitution) {
-    return `${title} ${clc.blue("--no-subst")}`;
+  const titleElems = [`${clc.green.bold(alias.alias)}`];
+  if (alias.source.type === "note") {
+    titleElems.push(clc.green(`(${alias.source.relativePath})`));
+  } else {
+    titleElems.push(clc.blue("--inline"));
   }
-  return title;
+  if (alias.noVariableSubstitution) {
+    titleElems.push(clc.blue("--no-subst"));
+  }
+  return titleElems.join(" ");
 }
