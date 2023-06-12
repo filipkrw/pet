@@ -6,7 +6,7 @@ import { handleConfig } from "./features/config/index.js";
 import { setConfig } from "./features/config/setConfig.js";
 import { CommandError } from "./core/CommandError.js";
 import { getIsInitialized } from "./core/config/getIsInitialized.js";
-import { showHelp } from "./help/showHelp.js";
+import { showHelp } from "./core/help/showHelp.js";
 import { handleDailyNotes } from "./features/dailyNotes/index.js";
 import { createNote } from "./features/notes/createNote/createNote.js";
 import { findNotes } from "./features/notes/findNotes/findNotes.js";
