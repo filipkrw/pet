@@ -1,4 +1,4 @@
-import { flatten } from "../../../core/flatten.js";
+import { flattenVault } from "../../../core/flattenVault.js";
 import { VaultWithSubVaults } from "../../../core/types.js";
 import { FileWithVault } from "./readFiles.js";
 import Fuse from "fuse.js";
@@ -19,7 +19,7 @@ export function searchFiles({
 }
 
 function getVaultFiles(vault: VaultWithFiles) {
-  return flatten(vault).flatMap((vault) => vault.files);
+  return flattenVault(vault).flatMap((vault) => vault.files);
 }
 
 function search(query: string, files: FileWithVault[]) {

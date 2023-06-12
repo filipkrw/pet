@@ -2,7 +2,7 @@ import clc from "cli-color";
 import yaml from "yaml";
 import { z } from "zod";
 import { exec, execResolve } from "../../../core/exec.js";
-import { flatten } from "../../../core/flatten.js";
+import { flattenVault } from "../../../core/flattenVault.js";
 import { loadCoreConfigs } from "../../../core/loadConfigs/loadCoreConfigs.js";
 import { ArgvOptions, Vault } from "../../../core/types.js";
 import { FileWithVault, readFiles } from "../../notes/findNotes/readFiles.js";
@@ -24,7 +24,7 @@ export function findDailyNotes({ argv }: ArgvOptions) {
 }
 
 function flattenFiles({ vault }: { vault: Vault<{ files: FileWithVault[] }> }) {
-  const files = flatten(vault).flatMap((vault) => vault.files);
+  const files = flattenVault(vault).flatMap((vault) => vault.files);
   return { files };
 }
 
