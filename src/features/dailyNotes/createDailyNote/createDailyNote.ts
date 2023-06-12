@@ -1,5 +1,5 @@
 import { exec } from "../../../core/exec.js";
-import { loadCoreConfigs } from "../../../core/loadConfigs/loadCoreConfigs.js";
+import { loadCoreConfigs } from "../../../core/config/loadCoreConfigs.js";
 import { type ArgvOptions } from "../../../core/types.js";
 import { openEditor } from "../../notes/createNote/openEditor.js";
 import { printMessage } from "../../notes/createNote/printMessage.js";

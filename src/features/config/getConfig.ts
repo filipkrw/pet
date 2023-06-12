@@ -1,5 +1,5 @@
 import clc from "cli-color";
-import { readLocalConfig } from "../../core/loadConfigs/readLocalConfig.js";
+import { readLocalConfig } from "../../core/config/readLocalConfig.js";
 import { LocalConfig } from "../../core/types.js";
 
 export async function getConfig() {

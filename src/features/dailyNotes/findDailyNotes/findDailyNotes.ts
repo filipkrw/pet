@@ -3,7 +3,7 @@ import yaml from "yaml";
 import { z } from "zod";
 import { exec, execResolve } from "../../../core/exec.js";
 import { flattenVault } from "../../../core/flattenVault.js";
-import { loadCoreConfigs } from "../../../core/loadConfigs/loadCoreConfigs.js";
+import { loadCoreConfigs } from "../../../core/config/loadCoreConfigs.js";
 import { ArgvOptions, Vault } from "../../../core/types.js";
 import { FileWithVault, readFiles } from "../../notes/findNotes/readFiles.js";
 import { dailyNotes } from "../DailyNotes.js";
