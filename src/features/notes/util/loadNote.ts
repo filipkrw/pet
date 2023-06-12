@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { VaultWithSubVaults } from "./types";
+import { VaultWithSubVaults } from "../../../core/types";
 
 export function loadNote({
   vault,

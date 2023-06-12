@@ -1,4 +1,4 @@
-import { loadNote } from "../../../../core/loadNote.js";
+import { loadNote } from "../../../notes/util/loadNote.js";
 import { VaultWithSubVaults } from "../../../../core/types.js";
 import { Alias } from "../../schemas/aliasSchema.js";
 

@@ -1,4 +1,4 @@
-import { readLocalConfig } from "./config/readLocalConfig.js";
+import { readLocalConfig } from "./readLocalConfig.js";
 
 export async function getIsInitialized() {
   try {
