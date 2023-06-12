@@ -1,9 +1,9 @@
 Commands:
-  [f]ind <query>                                      Fuzzy find a snippet
-  [c]reate                                            Create a new snippet (interactive)
-  [r]emove <path>                                     Remove a snippet
+  [f]ind <query>                                      Fuzzy find snippets
+  [c]reate                                            Create new snippet (interactive)
+  [r]emove <path>                                     Remove snippet
 
-  [a]lias [i]nit                                      Setup aliases on your system
+  [a]lias [i]nit                                      Set-up aliases on your system
   
   [a]lias [c]reate <name> <path>                      Create alias from note
   [a]lias [c]reate [-i, --inline] <name> <command>    Create alias from command
@@ -11,7 +11,7 @@ Commands:
                                                        (works in both modes)
 
   [a]lias [r]emove <name>                             Remove alias
-  [a]lias [l]ist [-v, --verbose]                      List aliases
+  [a]lias [l]ist                                      List aliases
 
   config [g]et                                        Print config
   config [s]et                                        Set config (interactive)
