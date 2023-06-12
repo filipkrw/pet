@@ -12,3 +12,8 @@ export type MatchedCommand = {
   callback: CommandCallback;
   subcommand?: string;
 };
+
+export type ArgvOptions = {
+  argv: string[];
+  subcommand?: string;
+};

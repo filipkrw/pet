@@ -1,7 +1,7 @@
 import clc from "cli-color";
 import { exec } from "../../../core/exec.js";
 import { loadCoreConfigs } from "../../../core/config/loadCoreConfigs.js";
-import { ArgvOptions } from "../../../core/types.js";
+import { ArgvOptions } from "../../../cli/types.js";
 import { saveAliasesConfig } from "../createAlias/steps/updateAliasesConfig.js";
 import { getUserShellData } from "../initAliases/steps/getUserShellData.js";
 import { loadAliasesConfig } from "../initAliases/steps/loadAliasesConfig.js";

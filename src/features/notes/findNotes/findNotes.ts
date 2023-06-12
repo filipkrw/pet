@@ -1,5 +1,5 @@
 import { exec, execResolve } from "../../../core/exec.js";
-import { type ArgvOptions } from "../../../core/types.js";
+import { type ArgvOptions } from "../../../cli/types.js";
 import { loadCoreConfigs } from "../../../core/config/loadCoreConfigs.js";
 import { parseFindArgv } from "./parseFindArgv.js";
 import { printSearchResults } from "./printSeachResults.js";

@@ -1,5 +1,5 @@
 import handleArgvCommands from "../../cli/handleArgvCommands.js";
-import { ArgvOptions } from "../../core/types.js";
+import { ArgvOptions } from "../../cli/types.js";
 import { createAlias } from "./createAlias/createAlias.js";
 import { initAliases } from "./initAliases/initAliases.js";
 import { listAliases } from "./listAliases/listAliases.js";

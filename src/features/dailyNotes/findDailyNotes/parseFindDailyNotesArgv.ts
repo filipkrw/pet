@@ -1,6 +1,6 @@
 import { z } from "zod";
 import parseArgvOptions from "../../../cli/parseArgvOptions.js";
-import { ArgvOptions } from "../../../core/types.js";
+import { ArgvOptions } from "../../../cli/types.js";
 
 export type DailyFindArgs = z.infer<typeof schema>;
 

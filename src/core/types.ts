@@ -22,11 +22,6 @@ export type VaultPlugin = {
   flow(configs: LoadedConfigs): Promise<unknown>;
 };
 
-export type ArgvOptions = {
-  argv: string[];
-  subcommand?: string;
-};
-
 export type LocalConfig = {
   basePath: string;
 };
