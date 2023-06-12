@@ -1,5 +1,6 @@
 import clc from "cli-color";
 import { LoadedAlias } from "../../initAliases/steps/loadAliasesContent";
+import { Alias } from "../../schemas/aliasSchema";
 
 export function printAliases({
   loadedAliases,
@@ -10,10 +11,7 @@ export function printAliases({
     a.alias.localeCompare(b.alias)
   );
   for (const alias of sortedAliases) {
-    console.log(
-      `${clc.green.bold(alias.alias)} ${clc.green(`(${alias.relativePath})`)}`
-    );
-
+    console.log(getAliasTitle(alias));
     console.log(alias.content.trim());
     console.log();
   }
@@ -24,4 +22,14 @@ export function printAliases({
       `${aliasesCount} alias${aliasesCount === 1 ? "" : "es"} found`
     )
   );
+}
+
+function getAliasTitle(alias: Alias) {
+  const title = `${clc.green.bold(alias.alias)} ${clc.green(
+    `(${alias.relativePath})`
+  )}`;
+  if (alias.noVariableSubstitution) {
+    return `${title} ${clc.blue("--no-subst")}`;
+  }
+  return title;
 }
