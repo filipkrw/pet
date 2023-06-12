@@ -1,10 +1,11 @@
 import clc from "cli-color";
 import yaml from "yaml";
 import { z } from "zod";
-import { exec, execResolve } from "../../../core/exec.js";
-import { flattenVault } from "../../../core/flattenVault.js";
+import { ArgvOptions } from "../../../cli/types.js";
 import { loadCoreConfigs } from "../../../core/config/loadCoreConfigs.js";
-import { ArgvOptions, Vault } from "../../../core/types.js";
+import { exec, execResolve } from "../../../core/exec.js";
+import { Vault } from "../../../core/types.js";
+import { flattenVault } from "../../../core/vault/flattenVault.js";
 import { FileWithVault, readFiles } from "../../notes/findNotes/readFiles.js";
 import { dailyNotes } from "../DailyNotes.js";
 import {

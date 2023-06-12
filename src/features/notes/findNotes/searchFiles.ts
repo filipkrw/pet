@@ -1,8 +1,8 @@
-import { flattenVault } from "../../../core/flattenVault.js";
-import { VaultWithSubVaults } from "../../../core/types.js";
-import { FileWithVault } from "./readFiles.js";
 import Fuse from "fuse.js";
+import { VaultWithSubVaults } from "../../../core/types.js";
+import { flattenVault } from "../../../core/vault/flattenVault.js";
 import { FindArgs } from "./parseFindArgv.js";
+import { FileWithVault } from "./readFiles.js";
 
 type VaultWithFiles = VaultWithSubVaults<{ files: FileWithVault[] }>;
 
