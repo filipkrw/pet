@@ -1,3 +1,4 @@
+import { PetError } from "../../../../core/PetError.js";
 import { Alias } from "../../schemas/aliasSchema.js";
 
 export function removeAliasFromConfig({
@@ -8,7 +9,7 @@ export function removeAliasFromConfig({
   aliases: Alias[];
 }) {
   if (!aliases.find((alias) => alias.alias === aliasToRemove)) {
-    throw new Error(`Alias "${aliasToRemove}" not found`);
+    throw new PetError(`Alias "${aliasToRemove}" not found`);
   }
   return {
     aliases: aliases.filter((alias) => alias.alias !== aliasToRemove),

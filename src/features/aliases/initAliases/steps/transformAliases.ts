@@ -1,3 +1,4 @@
+import { PetError } from "../../../../core/PetError.js";
 import { isZsh } from "../zsh/isZsh.js";
 import { transformAliasesZsh } from "../zsh/transformAliasesZsh.js";
 import { UserShellData } from "./getUserShellData.js";
@@ -18,5 +19,5 @@ export function transformAliases({
     };
   }
 
-  throw new Error(`Unsupported shell: ${name}`);
+  throw new PetError(`Unsupported shell: ${name}`);
 }

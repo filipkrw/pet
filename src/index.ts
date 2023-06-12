@@ -4,7 +4,7 @@ import { handleArgvCommandsWithSubcommands } from "./cli/handleArgvCommandsWithS
 import { handleAliases } from "./features/aliases/index.js";
 import { handleConfig } from "./features/config/index.js";
 import { setConfig } from "./features/config/setConfig.js";
-import { CommandError } from "./core/CommandError.js";
+import { PetError } from "./core/PetError.js";
 import { getIsInitialized } from "./core/config/getIsInitialized.js";
 import { showHelp } from "./core/help/showHelp.js";
 import { handleDailyNotes } from "./features/dailyNotes/index.js";
@@ -42,7 +42,7 @@ async function pet() {
       },
     ]);
   } catch (e) {
-    if (e instanceof CommandError) {
+    if (e instanceof PetError) {
       console.log(e.message);
     } else if (e instanceof UnknownCommandError) {
       showHelp();

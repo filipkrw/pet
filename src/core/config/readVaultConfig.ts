@@ -2,7 +2,7 @@ import * as path from "node:path";
 import { fileExists } from "../../util/files.js";
 import { importConfigFile } from "./importConfig.js";
 import { LocalConfig, Vault, VaultWithSubVaults } from "../types.js";
-import { CommandError } from "../CommandError.js";
+import { PetError } from "../PetError.js";
 import { getVaultConfigPath } from "./getVaultConfigPath.js";
 import { FeatureMeta } from "../Feature.js";
 
@@ -20,7 +20,7 @@ export async function readVaultConfig({
   const rootVault = await importVaultConfigWithSubVaults(rootVaultPaths);
   const filteredVaults = filterOutVaults(rootVault, feature);
   if (!filteredVaults) {
-    throw new CommandError(
+    throw new PetError(
       `No vaults found for feature "${feature.name}" in "${localConfig.basePath}"`
     );
   }
