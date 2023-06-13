@@ -7,7 +7,7 @@ import {
 } from "../../../features/config/setConfig.js";
 import { getRootPath } from "../../../util/getRootPath";
 import { exec } from "../../exec";
-import { readVaultConfig } from "../readVaultConfig.js";
+import { readVaultConfigs } from "../readVaultConfigs.js";
 
 const basePath = path.join(getRootPath(), ".tmp");
 // const subVaultPaths = [
@@ -35,7 +35,7 @@ const basePath = path.join(getRootPath(), ".tmp");
 // });
 
 test("readVaultConfig", async () => {
-  const vaults = await readVaultConfig({
+  const vaults = await readVaultConfigs({
     feature: { name: "test" },
     localConfig: { basePath: basePath },
   });

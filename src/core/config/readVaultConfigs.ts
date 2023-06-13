@@ -22,7 +22,7 @@ const vaultSchema = z.object({
 
 type Vault = z.infer<typeof vaultSchema>;
 
-export async function readVaultConfig({
+export async function readVaultConfigs({
   localConfig,
   feature,
 }: {
