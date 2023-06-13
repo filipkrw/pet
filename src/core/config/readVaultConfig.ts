@@ -7,6 +7,7 @@ import { importConfigFile } from "./importConfig";
 const vaultSchema = z.object({
   relativePath: z.string(),
   absolutePath: z.string(),
+  subVaultsRelativePaths: z.array(z.string()),
   config: z.object({
     includePatterns: z.array(z.string()).optional(),
     excludePatterns: z.array(z.string()).optional(),
@@ -36,23 +37,41 @@ export async function readVaultConfig({
   for (const configFilePath of configFilePaths) {
     const config = await importConfigFile(configFilePath);
 
-    const relativePath = configFilePath
-      .replace(localConfig.basePath, "")
-      .replace("/.pet/config.mjs", "")
-      .replace(/^\//, "");
+    const absolutePath = configFilePath.replace("/.pet/config.mjs", "");
+
+    const relativePath = getVaultRelativePath(
+      configFilePath,
+      localConfig.basePath
+    );
 
     const vault = vaultSchema.safeParse({
       relativePath,
-      absolutePath: configFilePath,
+      absolutePath,
+      subVaultsRelativePaths: [],
       config,
     });
 
-    if (!vault.success || !isFeatureAllowed(vault.data, feature)) {
+    if (!vault.success) {
       console.log(`Invalid config file: ${relativePath}`);
       continue;
     }
 
+    if (!isFeatureAllowed(vault.data, feature)) {
+      continue;
+    }
+
     vaults.push(vault.data);
+  }
+
+  for (const vault of vaults) {
+    const subVaultsRelativePaths = vaults
+      .filter(
+        (v) =>
+          vault.absolutePath !== v.absolutePath &&
+          v.absolutePath.startsWith(vault.absolutePath)
+      )
+      .map((v) => v.relativePath);
+    vault["subVaultsRelativePaths"] = subVaultsRelativePaths;
   }
 
   return vaults;
@@ -73,4 +92,16 @@ function isFeatureAllowed(vault: Vault, feature: FeatureMeta) {
   ) {
     return false;
   }
+
+  return true;
+}
+
+function getVaultRelativePath(
+  vaultConfigAbsolutePath: string,
+  basePath: string
+) {
+  return vaultConfigAbsolutePath
+    .replace(basePath, "")
+    .replace("/.pet/config.mjs", "")
+    .replace(/^\//, "");
 }
