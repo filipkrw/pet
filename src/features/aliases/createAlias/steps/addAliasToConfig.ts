@@ -16,8 +16,11 @@ export async function addAliasToConfig({
   if (aliases.find((x) => x.alias === newAlias.alias)) {
     throw new PetError(`Alias "${newAlias.alias}" already exists`);
   }
-  if (!fileExists(path.join(vault.absolutePath, newAlias.relativePath))) {
-    throw new PetError(`Note "${newAlias.relativePath}" does not exist`);
+  if (
+    newAlias.source.type === "note" &&
+    !fileExists(path.join(vault.absolutePath, newAlias.source.relativePath))
+  ) {
+    throw new PetError(`Note "${newAlias.source.relativePath}" does not exist`);
   }
   return { aliases: [...aliases, newAlias] };
 }

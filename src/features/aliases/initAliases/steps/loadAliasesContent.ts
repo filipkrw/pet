@@ -18,15 +18,25 @@ export function loadAliasesContent({
   const loadedAliases: LoadedAlias[] = [];
 
   for (const alias of aliases) {
+    if (alias.source.type === "inline") {
+      loadedAliases.push({
+        ...alias,
+        content: alias.source.content,
+      });
+      continue;
+    }
+
     try {
-      const { relativePath } = alias;
+      const { relativePath } = alias.source;
       const content = loadNote({ vault, relativePath });
       loadedAliases.push({
         ...alias,
         content,
       });
     } catch (e) {
-      console.log(`Error loading note "${alias.relativePath}", skipping...`);
+      console.log(
+        `Error loading note "${alias.source.relativePath}" for alias "${alias.alias}", skipping...`
+      );
       continue;
     }
   }
