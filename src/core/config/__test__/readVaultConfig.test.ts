@@ -7,8 +7,9 @@ import {
 } from "../../../features/config/setConfig.js";
 import { getRootPath } from "../../../util/getRootPath";
 import { exec } from "../../exec";
+import { readVaultConfig } from "../readVaultConfig.js";
 
-const testBasePath = path.join(getRootPath(), "test-vault");
+const testBasePath = path.join(getRootPath(), ".tmp");
 
 beforeEach(async () => {
   await Promise.resolve({
@@ -22,6 +23,14 @@ afterEach(async () => {
   await fs.rm(testBasePath, { recursive: true });
 });
 
-test("toUpperCase", () => {
-  expect("xd").toBe("xd");
+test("readVaultConfig", async () => {
+  const vaults = await readVaultConfig({
+    feature: {
+      name: "notes",
+    },
+    localConfig: {
+      basePath: testBasePath,
+    },
+  });
+  console.log(vaults);
 });

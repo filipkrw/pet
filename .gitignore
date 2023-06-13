@@ -3,3 +3,4 @@ test-vault
 localConfig
 lib
 .DS_Store
+.tmp
