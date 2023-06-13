@@ -1,11 +1,11 @@
 import path from "path";
-import { expect, test } from "vitest";
-import { getRootPath } from "../../../util/getRootPath.js";
+import { expect, it } from "vitest";
+import { getTestVaultPath } from "../../../testing/utils/getTestVaultPath.js";
 import { readVaultConfigs } from "../readVaultConfigs.js";
 
-const basePath = path.join(getRootPath(), ".tmp");
+const basePath = getTestVaultPath("1");
 
-test("don't load vault that disabled test feature", async () => {
+it("doesn't include the vault that disabled test feature", async () => {
   const vaults = await readVaultConfigs({
     feature: { name: "test" },
     localConfig: { basePath: basePath },
@@ -14,20 +14,19 @@ test("don't load vault that disabled test feature", async () => {
   expect(vaults).toEqual([
     {
       relativePath: "",
-      absolutePath: "/Users/filip/Documents/Dev/pet/.tmp",
+      absolutePath: path.join(basePath),
       subVaultsRelativePaths: ["another-subvault", "subvault/nested-subvault"],
       config: {},
     },
     {
       relativePath: "another-subvault",
-      absolutePath: "/Users/filip/Documents/Dev/pet/.tmp/another-subvault",
+      absolutePath: path.join(basePath, "another-subvault"),
       subVaultsRelativePaths: [],
       config: {},
     },
     {
       relativePath: "subvault/nested-subvault",
-      absolutePath:
-        "/Users/filip/Documents/Dev/pet/.tmp/subvault/nested-subvault",
+      absolutePath: path.join(basePath, "subvault/nested-subvault"),
       subVaultsRelativePaths: [],
       config: {
         features: {
