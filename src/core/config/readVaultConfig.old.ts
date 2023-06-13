@@ -1,5 +1,5 @@
 import * as path from "node:path";
-import { fileExists } from "../../util/files.js";
+import { fileExists } from "../../utils/files.js";
 import { importConfigFile } from "./importConfig.js";
 import { LocalConfig, Vault, VaultWithSubVaults } from "../types.js";
 import { PetError } from "../PetError.js";

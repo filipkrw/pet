@@ -5,10 +5,10 @@ import {
   createDirectoryIfNotExists,
   createFileIfNotExists,
   fileExists,
-} from "../../util/files.js";
-import getCwd from "../../util/getCwd.js";
-import promptUser from "../../util/promptUser.js";
-import { writeFromTemplate } from "../../util/writeFromTemplate.js";
+} from "../../utils/files.js";
+import getCwd from "../../utils/getCwd.js";
+import promptUser from "../../utils/promptUser.js";
+import { writeFromTemplate } from "../../utils/writeFromTemplate.js";
 import { exec } from "../../core/exec.js";
 import { getLocalConfigPath } from "../../core/config/getLocalConfigPath.js";
 import { LocalConfig } from "../../core/types.js";

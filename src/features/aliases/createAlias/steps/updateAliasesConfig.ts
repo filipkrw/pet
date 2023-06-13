@@ -1,4 +1,4 @@
-import createExportDefaultStr from "../../../../util/createExportDefaultStr.js";
+import createExportDefaultStr from "../../../../utils/createExportDefaultStr.js";
 import { VaultWithSubVaults } from "../../../../core/types.js";
 import { Alias } from "../../schemas/aliasSchema.js";
 import { getAliasesConfigPath } from "../../util/getAliasesConfigPath.js";

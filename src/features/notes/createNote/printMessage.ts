@@ -1,5 +1,5 @@
 import clc from "cli-color";
-import { fileExists } from "../../../util/files.js";
+import { fileExists } from "../../../utils/files.js";
 
 export function printMessage({
   file,

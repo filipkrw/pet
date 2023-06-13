@@ -1,4 +1,4 @@
-import { fileExists } from "../../../../util/files.js";
+import { fileExists } from "../../../../utils/files.js";
 import { VaultWithSubVaults } from "../../../../core/types.js";
 import { Alias } from "../../schemas/aliasSchema.js";
 import path from "path";

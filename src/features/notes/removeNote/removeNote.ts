@@ -6,7 +6,7 @@ import { PetError } from "../../../core/PetError.js";
 import { loadCoreConfigs } from "../../../core/config/loadCoreConfigs.js";
 import { exec } from "../../../core/exec.js";
 import { VaultWithSubVaults } from "../../../core/types.js";
-import { fileExists } from "../../../util/files.js";
+import { fileExists } from "../../../utils/files.js";
 import { notes } from "../Notes.js";
 import { CreateArgs, parseCreateArgv } from "../createNote/parseCreateArgv.js";
 

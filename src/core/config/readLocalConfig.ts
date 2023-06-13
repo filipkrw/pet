@@ -1,6 +1,6 @@
 import * as path from "node:path";
 import { z } from "zod";
-import { getRootPath } from "../../util/getRootPath.js";
+import { getRootPath } from "../../utils/getRootPath.js";
 import { importConfigFile } from "./importConfig.js";
 import { LocalConfig } from "../types.js";
 

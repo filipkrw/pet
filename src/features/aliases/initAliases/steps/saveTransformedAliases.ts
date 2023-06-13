@@ -1,6 +1,6 @@
 import { UserShellData } from "./getUserShellData.js";
 import fs from "fs";
-import { createFileIfNotExists } from "../../../../util/files.js";
+import { createFileIfNotExists } from "../../../../utils/files.js";
 
 export function saveTransformedAliases({
   shell,
