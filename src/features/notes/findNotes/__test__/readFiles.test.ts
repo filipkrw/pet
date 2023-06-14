@@ -3,7 +3,7 @@ import { getTestVaultPath } from "../../../../testing/utils/getTestVaultPath";
 import { readFiles } from "../readFiles";
 import { readVaultConfigs } from "../../../../core/config/readVaultConfigs";
 
-it("correctly loads files", async () => {
+it("correctly reads files", async () => {
   const vaultPath = getTestVaultPath("1");
 
   const { vaults } = await readVaultConfigs({
