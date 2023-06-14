@@ -1,5 +1,4 @@
 import clc from "cli-color";
-import { Vault } from "../../../core/types";
 import { FileWithVault } from "./readFiles";
 
 export function printSearchResults({
@@ -20,7 +19,10 @@ export function printSearchResults({
   );
 }
 
-function getSourcePrefix(vault: Vault) {
+function getSourcePrefix(vault: {
+  relativePath: string;
+  absolutePath: string;
+}) {
   if (!vault.relativePath) {
     return "";
   }
