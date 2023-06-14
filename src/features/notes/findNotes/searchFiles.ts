@@ -1,25 +1,24 @@
 import Fuse from "fuse.js";
 import { VaultWithSubVaults } from "../../../core/types.js";
-import { flattenVault } from "../../../core/vault/flattenVault.js";
 import { FindArgs } from "./parseFindArgv.js";
 import { FileWithVault } from "./readFiles.js";
 
 type VaultWithFiles = VaultWithSubVaults<{ files: FileWithVault[] }>;
 
 export function searchFiles({
-  vault,
+  vaults,
   args,
 }: {
-  vault: VaultWithFiles;
+  vaults: VaultWithFiles[];
   args: FindArgs;
 }) {
-  const files = getVaultFiles(vault);
+  const files = getVaultFiles(vaults);
   const searchResults = search(args.query, files);
   return { searchResults };
 }
 
-function getVaultFiles(vault: VaultWithFiles) {
-  return flattenVault(vault).flatMap((vault) => vault.files);
+function getVaultFiles(vaults: VaultWithFiles[]) {
+  return vaults.flatMap((vault) => vault.files);
 }
 
 function search(query: string, files: FileWithVault[]) {

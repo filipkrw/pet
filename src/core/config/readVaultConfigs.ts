@@ -1,10 +1,10 @@
 import fg from "fast-glob";
 import { z } from "zod";
 import { FeatureMeta } from "../Feature";
-import { LocalConfig } from "../types";
-import { importConfigFile } from "./importConfig";
+import { LocalConfig, Vault } from "../types";
+import { importConfigFile } from "./importConfig.js";
 
-const vaultSchema = z.object({
+export const vaultSchema = z.object({
   relativePath: z.string(),
   absolutePath: z.string(),
   subVaultsRelativePaths: z.array(z.string()),
@@ -20,15 +20,13 @@ const vaultSchema = z.object({
   }),
 });
 
-type Vault = z.infer<typeof vaultSchema>;
-
 export async function readVaultConfigs({
   localConfig,
   feature,
 }: {
   localConfig: LocalConfig;
   feature: FeatureMeta;
-}): Promise<Vault[]> {
+}): Promise<{ vaults: Vault[] }> {
   const configFilePaths = await fg([
     `${localConfig.basePath}/**/.pet/config.mjs`,
   ]);
@@ -80,12 +78,16 @@ export async function readVaultConfigs({
           vault.absolutePath !== v.absolutePath &&
           v.absolutePath.startsWith(vault.absolutePath)
       )
-      .map((v) => v.relativePath)
+      .map((v) =>
+        v.absolutePath.replace(vault.absolutePath, "").replace(/^\//, "")
+      )
       .sort();
     vault["subVaultsRelativePaths"] = subVaultsRelativePaths;
   }
 
-  return vaults.sort((a, b) => a.absolutePath.localeCompare(b.absolutePath));
+  return {
+    vaults: vaults.sort((a, b) => a.absolutePath.localeCompare(b.absolutePath)),
+  };
 }
 
 function isFeatureAllowed(vault: Vault, feature: FeatureMeta) {

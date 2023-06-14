@@ -6,7 +6,7 @@ import { readVaultConfigs } from "../readVaultConfigs.js";
 it("correctly reads vaults", async () => {
   const vaultPath = getTestVaultPath("1");
 
-  const vaults = await readVaultConfigs({
+  const { vaults } = await readVaultConfigs({
     feature: { name: "aliases" },
     localConfig: { basePath: vaultPath },
   });
@@ -31,7 +31,7 @@ it("correctly reads vaults", async () => {
     {
       relativePath: "subvault",
       absolutePath: path.join(vaultPath, "subvault"),
-      subVaultsRelativePaths: ["subvault/nested-subvault"],
+      subVaultsRelativePaths: ["nested-subvault"],
       config: {
         features: {
           disable: ["notes"],
@@ -50,7 +50,7 @@ it("correctly reads vaults", async () => {
 it("doesn't include the vault that disabled test feature", async () => {
   const vaultPath = getTestVaultPath("1");
 
-  const vaults = await readVaultConfigs({
+  const { vaults } = await readVaultConfigs({
     feature: { name: "notes" },
     localConfig: { basePath: vaultPath },
   });
