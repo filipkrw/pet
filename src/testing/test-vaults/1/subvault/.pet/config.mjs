@@ -1,5 +1,5 @@
 export default {
   features: {
-    disable: ["test"],
+    disable: ["notes"],
   },
 };

@@ -1,5 +1,1 @@
-export default {
-  features: {
-    disable: ["notes"],
-  },
-};
+export default {};

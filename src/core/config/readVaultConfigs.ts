@@ -33,6 +33,7 @@ export async function readVaultConfigs({
     `${localConfig.basePath}/**/.pet/config.mjs`,
   ]);
   const vaults: Vault[] = [];
+  const ignoredVaults: Vault[] = [];
 
   for (const configFilePath of configFilePaths) {
     const config = await importConfigFile(configFilePath);
@@ -56,7 +57,16 @@ export async function readVaultConfigs({
       continue;
     }
 
+    if (
+      ignoredVaults.find((iv) =>
+        vault.data.absolutePath.startsWith(iv.absolutePath)
+      )
+    ) {
+      continue;
+    }
+
     if (!isFeatureAllowed(vault.data, feature)) {
+      ignoredVaults.push(vault.data);
       continue;
     }
 
@@ -70,11 +80,12 @@ export async function readVaultConfigs({
           vault.absolutePath !== v.absolutePath &&
           v.absolutePath.startsWith(vault.absolutePath)
       )
-      .map((v) => v.relativePath);
+      .map((v) => v.relativePath)
+      .sort();
     vault["subVaultsRelativePaths"] = subVaultsRelativePaths;
   }
 
-  return vaults;
+  return vaults.sort((a, b) => a.absolutePath.localeCompare(b.absolutePath));
 }
 
 function isFeatureAllowed(vault: Vault, feature: FeatureMeta) {
