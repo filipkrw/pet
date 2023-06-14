@@ -5,7 +5,7 @@ import { ArgvOptions } from "../../../cli/types.js";
 import { PetError } from "../../../core/PetError.js";
 import { loadCoreConfigs } from "../../../core/config/loadCoreConfigs.js";
 import { exec } from "../../../core/exec.js";
-import { VaultWithSubVaults } from "../../../core/types.js";
+import { LocalConfig, VaultWithSubVaults } from "../../../core/types.js";
 import { fileExists } from "../../../utils/files.js";
 import { notes } from "../Notes.js";
 import { CreateArgs, parseCreateArgv } from "../createNote/parseCreateArgv.js";
@@ -20,12 +20,15 @@ export async function removeNote({ argv }: ArgvOptions) {
 
 async function deleteNoteFile({
   args,
-  vault,
+  vaults,
+  localConfig,
 }: {
   args: CreateArgs;
-  vault: VaultWithSubVaults;
+  vaults: VaultWithSubVaults[];
+  localConfig: LocalConfig;
 }) {
-  const fileAbsoutePath = path.join(vault.absolutePath, args.relativePath);
+  const fileAbsoutePath = path.join(localConfig.basePath, args.relativePath);
+  // TODO: handle ignored vault case
   if (!fileExists(fileAbsoutePath)) {
     throw new PetError(`Note "${args.relativePath}" doesn't exist`);
   }
