@@ -15,6 +15,8 @@ it("correctly loads files", async () => {
     vaults,
   });
 
+  expect(vaultsWithFiles.length).toBe(2);
+
   expect(vaultsWithFiles[0].files).toEqual([
     {
       name: "note1",
