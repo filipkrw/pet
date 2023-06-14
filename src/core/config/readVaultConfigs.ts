@@ -17,6 +17,7 @@ export const vaultSchema = z.object({
         disable: z.array(z.string()).optional(),
       })
       .optional(),
+    textEditor: z.string().optional(),
   }),
 });
 

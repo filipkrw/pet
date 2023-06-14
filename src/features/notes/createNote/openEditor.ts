@@ -8,7 +8,7 @@ export async function openEditor({
   file: { absolutePath: string };
   vault: VaultWithSubVaults;
 }): Promise<Record<string, never>> {
-  const textEditor = vault.textEditor || "nano";
+  const textEditor = vault.config.textEditor || "nano";
   const process = spawn(textEditor, [file.absolutePath], {
     shell: true,
     stdio: "inherit",
