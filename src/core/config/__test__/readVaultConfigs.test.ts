@@ -59,7 +59,7 @@ it("doesn't include the vault that disabled test feature", async () => {
     {
       relativePath: "",
       absolutePath: vaultPath,
-      subVaultsRelativePaths: ["another-subvault"],
+      subVaultsRelativePaths: ["another-subvault", "subvault"],
       config: {},
     },
     {

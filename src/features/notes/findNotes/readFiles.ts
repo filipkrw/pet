@@ -10,7 +10,10 @@ export type FileWithVault = {
   relativePath: string;
   absolutePath: string;
   content: string;
-  vault: Vault;
+  vault: {
+    relativePath: string;
+    absolutePath: string;
+  };
 };
 
 export async function readFiles({ vaults }: { vaults: Vault[] }): Promise<{
@@ -27,7 +30,7 @@ export async function readFiles({ vaults }: { vaults: Vault[] }): Promise<{
   }>[] = [];
 
   for (const vault of vaults) {
-    const excludePatterns = getVaultExcludePatterns(vault, vaults);
+    const excludePatterns = getVaultExcludePatterns(vault);
     const includePatterns = getVaultIncludePatterns(vault);
     const files = await readFilesContent(
       vault,
