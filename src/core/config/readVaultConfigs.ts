@@ -72,7 +72,7 @@ export async function readVaultConfigs({
   }
 
   for (const vault of vaults) {
-    const subVaultsRelativePaths = vaults
+    const subVaultsRelativePaths = [...vaults, ...ignoredVaults]
       .filter(
         (v) =>
           vault.absolutePath !== v.absolutePath &&
