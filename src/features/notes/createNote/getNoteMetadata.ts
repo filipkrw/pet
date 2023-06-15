@@ -1,12 +1,16 @@
 import path from "path";
-import { LocalConfig, Vault } from "../../../core/types.js";
-import { createDirectoryIfNotExists } from "../../../utils/files.js";
-import { openEditor } from "./openEditor.js";
-import { CreateArgs } from "./parseCreateArgv.js";
-import { PetError } from "../../../core/PetError.js";
-import { findParentVault } from "../../../core/vault/findParentVault.js";
+import { LocalConfig, Vault } from "../../../core/types";
+import { CreateArgs } from "./parseCreateArgv";
+import { findParentVault } from "../../../core/vault/findParentVault";
+import { PetError } from "../../../core/PetError";
 
-export async function openFile({
+export type NoteMetadata = {
+  absolutePath: string;
+  relativePath: string;
+  parentVault: Vault;
+};
+
+export function getNoteMetadata({
   args,
   vaults,
   localConfig,
@@ -16,7 +20,7 @@ export async function openFile({
   localConfig: LocalConfig;
   vaults: Vault[];
   disabledVaults: Vault[];
-}) {
+}): { note: NoteMetadata } {
   const absolutePath = path.resolve(localConfig.basePath, args.relativePath);
 
   const disabledParentVault = findParentVault(absolutePath, disabledVaults);
@@ -32,9 +36,11 @@ export async function openFile({
     throw new Error(`Vault not found for path: ${absolutePath}`);
   }
 
-  createDirectoryIfNotExists(path.dirname(absolutePath));
-  await openEditor({ file: { absolutePath }, vault: parentVault });
   return {
-    file: { relativePath: args.relativePath, absolutePath },
+    note: {
+      absolutePath,
+      relativePath: args.relativePath,
+      parentVault,
+    },
   };
 }
