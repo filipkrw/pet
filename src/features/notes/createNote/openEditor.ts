@@ -4,7 +4,7 @@ import { NoteMetadata } from "./getNoteMetadata.js";
 export async function openEditor({
   note,
 }: {
-  note: NoteMetadata & { datetime: string };
+  note: NoteMetadata;
 }): Promise<Record<string, never>> {
   const textEditor = note.parentVault.config.textEditor || "nano";
   const process = spawn(textEditor, [note.absolutePath], {

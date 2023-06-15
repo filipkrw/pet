@@ -1,8 +1,8 @@
 import path from "path";
-import { LocalConfig, Vault } from "../../../core/types";
-import { NoteMetadata } from "../../notes/createNote/getNoteMetadata";
-import { findNoteParentVault } from "../../notes/util/findNoteParentVault";
-import { DailyCreateArgs } from "./parseCreateDailyNoteArgv";
+import { LocalConfig, Vault } from "../../../core/types.js";
+import { NoteMetadata } from "../../notes/createNote/getNoteMetadata.js";
+import { findNoteParentVault } from "../../notes/util/findNoteParentVault.js";
+import { DailyCreateArgs } from "./parseCreateDailyNoteArgv.js";
 
 export function getDailyNoteMetadata({
   args,

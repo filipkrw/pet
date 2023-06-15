@@ -1,8 +1,8 @@
 import path from "path";
-import { LocalConfig, Vault } from "../../../core/types";
-import { CreateArgs } from "./parseCreateArgv";
-import { findParentVault } from "../../../core/vault/findParentVault";
-import { PetError } from "../../../core/PetError";
+import { LocalConfig, Vault } from "../../../core/types.js";
+import { CreateArgs } from "./parseCreateArgv.js";
+import { findParentVault } from "../../../core/vault/findParentVault.js";
+import { PetError } from "../../../core/PetError.js";
 
 export type NoteMetadata = {
   absolutePath: string;

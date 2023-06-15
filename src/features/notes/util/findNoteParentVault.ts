@@ -1,6 +1,6 @@
-import { PetError } from "../../../core/PetError";
-import { Vault } from "../../../core/types";
-import { findParentVault } from "../../../core/vault/findParentVault";
+import { PetError } from "../../../core/PetError.js";
+import { Vault } from "../../../core/types.js";
+import { findParentVault } from "../../../core/vault/findParentVault.js";
 
 export function findNoteParentVault(
   absolutePath: string,
