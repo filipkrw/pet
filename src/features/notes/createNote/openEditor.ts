@@ -1,15 +1,13 @@
 import { spawn } from "child_process";
-import { VaultWithSubVaults } from "../../../core/types.js";
+import { NoteMetadata } from "./getNoteMetadata.js";
 
 export async function openEditor({
-  file,
-  vault,
+  note,
 }: {
-  file: { absolutePath: string };
-  vault: VaultWithSubVaults;
+  note: NoteMetadata & { datetime: string };
 }): Promise<Record<string, never>> {
-  const textEditor = vault.config.textEditor || "nano";
-  const process = spawn(textEditor, [file.absolutePath], {
+  const textEditor = note.parentVault.config.textEditor || "nano";
+  const process = spawn(textEditor, [note.absolutePath], {
     shell: true,
     stdio: "inherit",
   });

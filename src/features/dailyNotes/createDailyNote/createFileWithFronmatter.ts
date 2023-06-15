@@ -1,31 +1,24 @@
 import fs from "fs";
-import path from "path";
 import yaml from "yaml";
 import { createFileIfNotExists } from "../../../utils/files.js";
-import { VaultWithSubVaults } from "../../../core/types.js";
+import { NoteMetadata } from "../../notes/createNote/getNoteMetadata.js";
 import { type DailyCreateArgs } from "./parseCreateDailyNoteArgv.js";
 
 export function createDailyFile({
   args,
-  vault,
+  note,
 }: {
   args: DailyCreateArgs;
-  vault: VaultWithSubVaults;
+  note: NoteMetadata & { datetime: string };
 }) {
-  const now = new Date();
-  const relativePath = getDailyNoteRelativePath(now);
-  const absolutePath = path.join(
-    vault.absolutePath,
-    args.dirRelativePath || "",
-    relativePath
-  );
-
-  createFileWithFronmatter(absolutePath, {
-    datetime: now.toISOString(),
+  createFileWithFronmatter(note.absolutePath, {
+    datetime: note.datetime,
     tags: args.tags,
   });
 
-  return { file: { absolutePath } };
+  return {
+    file: { absolutePath: note.absolutePath },
+  };
 }
 
 async function createFileWithFronmatter(
@@ -40,14 +33,4 @@ async function createFileWithFronmatter(
 function createFrontmatter(input: Record<string | number, unknown>) {
   const content = yaml.stringify(input);
   return `---\n${content}---\n\n\n`;
-}
-
-function getDailyNoteRelativePath(date: Date) {
-  const dateISOString = date.toISOString();
-
-  const dateElements = dateISOString.split("T");
-  const dirPath = dateElements[0].replace(/-/g, "/");
-  const fileName = dateElements[1].split(".")[0];
-
-  return path.join(dirPath, fileName + ".md");
 }
