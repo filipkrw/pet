@@ -16,18 +16,16 @@ export type FileWithVault = {
   };
 };
 
+export type VaultWithFiles = Vault<{
+  includePatterns: string[];
+  excludePatterns: string[];
+  files: FileWithVault[];
+}>;
+
 export async function readFiles({ vaults }: { vaults: Vault[] }): Promise<{
-  vaults: Vault<{
-    includePatterns: string[];
-    excludePatterns: string[];
-    files: FileWithVault[];
-  }>[];
+  vaults: VaultWithFiles[];
 }> {
-  const vaultsWithFiles: Vault<{
-    includePatterns: string[];
-    excludePatterns: string[];
-    files: FileWithVault[];
-  }>[] = [];
+  const vaultsWithFiles: VaultWithFiles[] = [];
 
   for (const vault of vaults) {
     const excludePatterns = getVaultExcludePatterns(vault);

@@ -3,10 +3,12 @@ import yaml from "yaml";
 import { z } from "zod";
 import { ArgvOptions } from "../../../cli/types.js";
 import { loadCoreConfigs } from "../../../core/config/loadCoreConfigs.js";
-import { exec, execResolve } from "../../../core/exec.js";
-import { Vault } from "../../../core/types.js";
-import { flattenVault } from "../../../core/vault/flattenVault.js";
-import { FileWithVault, readFiles } from "../../notes/findNotes/readFiles.js";
+import { exec } from "../../../core/exec.js";
+import {
+  FileWithVault,
+  VaultWithFiles,
+  readFiles,
+} from "../../notes/findNotes/readFiles.js";
 import { dailyNotes } from "../DailyNotes.js";
 import {
   DailyFindArgs,
@@ -17,23 +19,19 @@ export function findDailyNotes({ argv }: ArgvOptions) {
   return Promise.resolve({ ...dailyNotes.getMeta(), argv })
     .then((x) => exec(x, parseFindDailyNotesArgv))
     .then((x) => exec(x, loadCoreConfigs))
-    .then((x) => execResolve(x, readFiles))
-    .then((x) => exec(x, flattenFiles))
+    .then((x) => exec(x, readFiles))
     .then((x) => exec(x, readFilesWithFrontmatter))
     .then((x) => exec(x, filterByTag))
     .then((x) => exec(x, printResults));
 }
 
-function flattenFiles({ vault }: { vault: Vault<{ files: FileWithVault[] }> }) {
-  const files = flattenVault(vault).flatMap((vault) => vault.files);
-  return { files };
-}
-
-function readFilesWithFrontmatter({ files }: { files: FileWithVault[] }) {
-  const filesWithFrontmatter = files.map((file) => {
-    const { content, frontmatter } = parseFrontmatter(file.content);
-    return { ...file, content, frontmatter };
-  });
+function readFilesWithFrontmatter({ vaults }: { vaults: VaultWithFiles[] }) {
+  const filesWithFrontmatter = vaults
+    .flatMap((vault) => vault.files)
+    .map((file) => {
+      const { content, frontmatter } = parseFrontmatter(file.content);
+      return { ...file, content, frontmatter };
+    });
   return { files: filesWithFrontmatter };
 }
 
