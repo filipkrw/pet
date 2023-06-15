@@ -27,12 +27,12 @@ export async function readVaultConfigs({
 }: {
   localConfig: LocalConfig;
   feature: FeatureMeta;
-}): Promise<{ vaults: Vault[] }> {
+}): Promise<{ vaults: Vault[]; disabledVaults: Vault[] }> {
   const configFilePaths = await fg([
     `${localConfig.basePath}/**/.pet/config.mjs`,
   ]);
   const vaults: Vault[] = [];
-  const ignoredVaults: Vault[] = [];
+  const disabledVaults: Vault[] = [];
 
   for (const configFilePath of configFilePaths) {
     const config = await importConfigFile(configFilePath);
@@ -57,7 +57,7 @@ export async function readVaultConfigs({
     }
 
     if (
-      ignoredVaults.find((iv) =>
+      disabledVaults.find((iv) =>
         vault.data.absolutePath.startsWith(iv.absolutePath)
       )
     ) {
@@ -65,7 +65,7 @@ export async function readVaultConfigs({
     }
 
     if (!isFeatureAllowed(vault.data, feature)) {
-      ignoredVaults.push(vault.data);
+      disabledVaults.push(vault.data);
       continue;
     }
 
@@ -73,7 +73,7 @@ export async function readVaultConfigs({
   }
 
   for (const vault of vaults) {
-    const subVaultsRelativePaths = [...vaults, ...ignoredVaults]
+    const subVaultsRelativePaths = [...vaults, ...disabledVaults]
       .filter(
         (v) =>
           vault.absolutePath !== v.absolutePath &&
@@ -88,6 +88,9 @@ export async function readVaultConfigs({
 
   return {
     vaults: vaults.sort((a, b) => a.absolutePath.localeCompare(b.absolutePath)),
+    disabledVaults: disabledVaults.sort((a, b) =>
+      a.absolutePath.localeCompare(b.absolutePath)
+    ),
   };
 }
 
