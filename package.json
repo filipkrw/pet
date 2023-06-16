@@ -1,50 +1,8 @@
 {
-  "name": "pet",
+  "name": "pet-workspace",
   "version": "1.0.0",
   "description": "",
-  "main": "./lib/index.js",
-  "bin": "./lib/index.js",
-  "type": "module",
   "keywords": [],
-  "author": "filipkrw",
-  "license": "ISC",
-  "scripts": {
-    "dev": "node scripts/dev.js",
-    "build": "tsc && npm run format:lib",
-    "typecheck": "tsc --noEmit",
-    "format:lib": "eslint --config .eslintrc.lib.cjs --fix lib && prettier --write lib --loglevel warn",
-    "test": "vitest"
-  },
-  "dependencies": {
-    "@types/cli-color": "^2.0.2",
-    "cli-color": "2.0.1",
-    "command-line-args": "5.2.1",
-    "fast-glob": "3.2.12",
-    "fs-extra": "^11.1.1",
-    "fuse.js": "^6.6.2",
-    "json5": "2.2.1",
-    "tree-flatten": "1.0.0",
-    "yaml": "^2.2.1",
-    "zod": "^3.20.2"
-  },
-  "devDependencies": {
-    "@types/command-line-args": "^5.2.0",
-    "@types/fs-extra": "^11.0.1",
-    "@types/node": "^18.11.7",
-    "@typescript-eslint/eslint-plugin": "^5.40.1",
-    "@typescript-eslint/parser": "^5.40.1",
-    "esbuild": "^0.15.12",
-    "esbuild-node-externals": "^1.5.0",
-    "eslint": "^8.0.1",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-config-standard-with-typescript": "^23.0.0",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-n": "^15.0.0",
-    "eslint-plugin-promise": "^6.0.0",
-    "nanoid": "^4.0.2",
-    "node-watch": "^0.7.3",
-    "prettier": "2.6.2",
-    "typescript": "4.9.4",
-    "vitest": "^0.32.0"
-  }
+  "author": "",
+  "license": "ISC"
 }
