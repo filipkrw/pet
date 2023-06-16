@@ -34,6 +34,7 @@ export async function loadAliasesConfig({
         ...parsedAliasesConfig.data,
       });
     } catch (e) {
+      vaultsWithAliases.push(vault);
       continue;
     }
   }

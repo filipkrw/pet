@@ -2,13 +2,22 @@ import path from "path";
 import { getTestVaultPath } from "./getTestVaultPath";
 import { getRootPath } from "../../utils/getRootPath";
 import fse from "fs-extra";
+import { nanoid } from "nanoid";
 
-export function cloneTestVault(name: string) {
+export async function cloneTestVault(name: string) {
   const vaultPath = getTestVaultPath(name);
-  const clonePath = path.join(getRootPath(), ".tmp", "test-vaults", name);
-  fse.copySync(vaultPath, clonePath);
+  const clonePath = path.join(
+    getRootPath(),
+    ".tmp",
+    "test-vaults",
+    nanoid(),
+    name
+  );
+
+  await fse.copy(vaultPath, clonePath);
+
   return {
     vaultPath: clonePath,
-    removeVault: () => fse.removeSync(clonePath),
+    removeTestVault: () => fse.remove(clonePath),
   };
 }

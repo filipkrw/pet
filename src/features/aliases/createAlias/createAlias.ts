@@ -11,12 +11,26 @@ import { transformAliases } from "../initAliases/steps/transformAliases.js";
 import { addAliasToConfig } from "./steps/addAliasToConfig.js";
 import { parseCreateAliasArgv } from "./steps/parseCreateAliasArgv.js";
 import { saveAliasesConfig } from "./steps/updateAliasesConfig.js";
+import { Alias } from "../schemas/aliasSchema.js";
+import { FeatureMeta } from "../../../core/Feature.js";
+import { LocalConfig, Vault } from "../../../core/types.js";
 
 export async function createAlias({ argv }: ArgvOptions) {
+  return Promise.resolve({ ...aliases.getMeta(), argv })
+    .then((x) => exec(x, parseCreateAliasArgv))
+    .then((x) => exec(x, loadCoreConfigs))
+    .then((x) => exec(x, execCreateAlias));
+}
+
+export async function execCreateAlias(data: {
+  feature: FeatureMeta;
+  newAlias: Alias;
+  localConfig: LocalConfig;
+  vaults: Vault[];
+  disabledVaults: Vault[];
+}) {
   return (
-    Promise.resolve({ ...aliases.getMeta(), argv })
-      .then((x) => exec(x, parseCreateAliasArgv))
-      .then((x) => exec(x, loadCoreConfigs))
+    Promise.resolve(data)
       .then((x) => exec(x, loadAliasesConfig))
       .then((x) => exec(x, addAliasToConfig))
       .then((x) => exec(x, saveAliasesConfig))
@@ -26,6 +40,9 @@ export async function createAlias({ argv }: ArgvOptions) {
       .then((x) => exec(x, getUserShellData))
       .then((x) => exec(x, transformAliases))
       .then((x) => exec(x, saveTransformedAliases))
-      .then(() => console.log(clc.bold.green("Done!")))
+      .then((x) => {
+        console.log(clc.bold.green("Done!"));
+        return x;
+      })
   );
 }
