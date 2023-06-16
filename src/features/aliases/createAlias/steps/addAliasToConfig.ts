@@ -38,10 +38,23 @@ export async function addAliasToConfig({
         `Note "${newAlias.source.relativePath}" does not exist`
       );
     }
+    const newAliasRelativePath = newAlias.source.relativePath.replace(
+      new RegExp(`^${note.parentVault.relativePath}/`),
+      ""
+    );
     return {
       updatedVault: {
         ...note.parentVault,
-        aliases: [...(note.parentVault.aliases || []), newAlias],
+        aliases: [
+          ...(note.parentVault.aliases || []),
+          {
+            ...newAlias,
+            source: {
+              ...newAlias.source,
+              relativePath: newAliasRelativePath,
+            },
+          },
+        ],
       },
     };
   }
