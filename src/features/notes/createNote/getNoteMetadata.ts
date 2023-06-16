@@ -4,7 +4,7 @@ import { CreateArgs } from "./parseCreateArgv.js";
 import { findParentVault } from "../../../core/vault/findParentVault.js";
 import { PetError } from "../../../core/PetError.js";
 
-export type NoteMetadata<T> = {
+export type NoteMetadata<T = unknown> = {
   absolutePath: string;
   relativePath: string;
   parentVault: Vault<T>;
