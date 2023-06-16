@@ -1,17 +1,16 @@
-import createExportDefaultStr from "../../../../utils/createExportDefaultStr.js";
-import { VaultWithSubVaults } from "../../../../core/types.js";
-import { Alias } from "../../schemas/aliasSchema.js";
-import { getAliasesConfigPath } from "../../util/getAliasesConfigPath.js";
 import fs from "fs/promises";
+import createExportDefaultStr from "../../../../utils/createExportDefaultStr.js";
+import { VaultWithAliases } from "../../initAliases/steps/loadAliasesConfig.js";
+import { getAliasesConfigPath } from "../../util/getAliasesConfigPath.js";
 
 export async function saveAliasesConfig({
-  vault,
-  aliases,
+  updatedVault,
 }: {
-  vault: VaultWithSubVaults;
-  aliases: Alias[];
+  updatedVault: VaultWithAliases;
 }) {
-  const aliasesConfigPath = getAliasesConfigPath(vault.absolutePath);
-  const aliasesConfigStr = createExportDefaultStr({ aliases });
+  const aliasesConfigPath = getAliasesConfigPath(updatedVault.absolutePath);
+  const aliasesConfigStr = createExportDefaultStr({
+    aliases: updatedVault.aliases || [],
+  });
   await fs.writeFile(aliasesConfigPath, aliasesConfigStr);
 }

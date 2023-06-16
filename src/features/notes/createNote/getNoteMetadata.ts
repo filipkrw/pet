@@ -4,13 +4,13 @@ import { CreateArgs } from "./parseCreateArgv.js";
 import { findParentVault } from "../../../core/vault/findParentVault.js";
 import { PetError } from "../../../core/PetError.js";
 
-export type NoteMetadata = {
+export type NoteMetadata<T> = {
   absolutePath: string;
   relativePath: string;
-  parentVault: Vault;
+  parentVault: Vault<T>;
 };
 
-export function getNoteMetadata({
+export function getNoteMetadata<T = unknown>({
   args,
   vaults,
   localConfig,
@@ -18,9 +18,9 @@ export function getNoteMetadata({
 }: {
   args: CreateArgs;
   localConfig: LocalConfig;
-  vaults: Vault[];
+  vaults: Vault<T>[];
   disabledVaults: Vault[];
-}): { note: NoteMetadata } {
+}): { note: NoteMetadata<T> } {
   const absolutePath = path.resolve(localConfig.basePath, args.relativePath);
 
   const disabledParentVault = findParentVault(absolutePath, disabledVaults);

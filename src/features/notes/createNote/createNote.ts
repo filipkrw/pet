@@ -11,7 +11,7 @@ export async function createNote({ argv }: ArgvOptions) {
   return Promise.resolve({ ...notes.getMeta(), argv })
     .then((x) => exec(x, parseCreateArgv))
     .then((x) => exec(x, loadCoreConfigs))
-    .then((x) => exec(x, getNoteMetadata))
+    .then((x) => exec(x, getNoteMetadata<unknown>))
     .then((x) => exec(x, openNoteInTextEditor))
     .then((x) => printMessage(x));
 }
