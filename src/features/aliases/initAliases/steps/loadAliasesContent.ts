@@ -37,7 +37,5 @@ export function loadAliasesContent({ vaults }: { vaults: VaultWithAliases[] }) {
     }
   }
 
-  console.log(loadedAliases);
-
   return { loadedAliases };
 }

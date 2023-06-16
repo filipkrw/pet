@@ -21,6 +21,7 @@ export async function removeAlias({ argv }: ArgvOptions) {
       .then((x) => exec(x, removeAliasFromConfig))
       .then((x) => exec(x, saveAliasesConfig))
       //
+      .then((x) => exec(x, loadAliasesConfig))
       .then((x) => exec(x, loadAliasesContent))
       .then((x) => exec(x, getUserShellData))
       .then((x) => exec(x, transformAliases))

@@ -21,6 +21,7 @@ export async function createAlias({ argv }: ArgvOptions) {
       .then((x) => exec(x, addAliasToConfig))
       .then((x) => exec(x, saveAliasesConfig))
       //
+      .then((x) => exec(x, loadAliasesConfig))
       .then((x) => exec(x, loadAliasesContent))
       .then((x) => exec(x, getUserShellData))
       .then((x) => exec(x, transformAliases))

@@ -1,17 +1,28 @@
 import { PetError } from "../../../../core/PetError.js";
-import { Alias } from "../../schemas/aliasSchema.js";
+import { VaultWithAliases } from "../../initAliases/steps/loadAliasesConfig.js";
 
 export function removeAliasFromConfig({
   aliasToRemove,
-  aliases,
+  vaults,
 }: {
   aliasToRemove: string;
-  aliases: Alias[];
+  vaults: VaultWithAliases[];
 }) {
-  if (!aliases.find((alias) => alias.alias === aliasToRemove)) {
+  const parentVault = vaults.find((vault) =>
+    vault.aliases?.find((alias) => alias.alias === aliasToRemove)
+  );
+
+  if (!parentVault) {
     throw new PetError(`Alias "${aliasToRemove}" not found`);
   }
+
   return {
-    aliases: aliases.filter((alias) => alias.alias !== aliasToRemove),
+    updatedVault: {
+      ...parentVault,
+      // Do some type inference magic here so `aliases` is not possibly undefined
+      aliases: (parentVault.aliases || []).filter(
+        (alias) => alias.alias !== aliasToRemove
+      ),
+    },
   };
 }
