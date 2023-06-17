@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "pet",
+  "name": "Pet",
   "version": "1.0.0",
   "action": { "default_popup": "index.html" },
   "permissions": ["tabs"],
