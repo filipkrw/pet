@@ -23,6 +23,7 @@
     "fs-extra": "^11.1.1",
     "fuse.js": "^6.6.2",
     "json5": "2.2.1",
+    "node-save-page-we": "workspace:*",
     "sanitize-filename": "^1.6.3",
     "tree-flatten": "1.0.0",
     "yaml": "^2.2.1",
