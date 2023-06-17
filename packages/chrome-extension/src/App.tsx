@@ -1,17 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
-import { trpc } from "./trpc";
-import { Ping } from "./Ping";
 import { BookmarkForm } from "./BookmarkForm";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./components/ui/card";
+import { Card, CardContent } from "./components/ui/card";
+import { trpc } from "./trpc";
 
 export const App: React.FC = () => {
   const [queryClient] = useState(() => new QueryClient());
@@ -25,12 +17,8 @@ export const App: React.FC = () => {
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <div className="w-full h-full flex justify-center items-center">
-          <Card className="w-[484px]">
-            <CardHeader>
-              <CardTitle>Card Title</CardTitle>
-              <CardDescription>Card Description</CardDescription>
-            </CardHeader>
-            <CardContent>
+          <Card className="w-96 rounded-none border-none shadow-none">
+            <CardContent className="px-5 pb-5 pt-4">
               <BookmarkForm />
             </CardContent>
           </Card>
