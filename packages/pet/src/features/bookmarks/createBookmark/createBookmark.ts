@@ -2,7 +2,6 @@ import { z } from "zod";
 import { loadCoreConfigs } from "../../../core/config/loadCoreConfigs.js";
 import { exec } from "../../../core/exec.js";
 import { bookmarks } from "../Bookmarks.js";
-import { createBookmarkFrontmatter } from "./createBookmarkFrontmatter.js";
 import { getBookmarkMetadata } from "./getBookmarkMetadata.js";
 import { saveBookmarkFile } from "./saveBookmarkFile.js";
 
@@ -20,6 +19,5 @@ export async function createBookmark(input: CreateBookmarkInput) {
   return Promise.resolve({ input, ...bookmarks.getMeta() })
     .then((x) => exec(x, loadCoreConfigs))
     .then((x) => exec(x, getBookmarkMetadata))
-    .then((x) => exec(x, createBookmarkFrontmatter))
     .then((x) => exec(x, saveBookmarkFile));
 }
