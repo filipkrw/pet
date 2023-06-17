@@ -5,6 +5,7 @@ import { findNoteParentVault } from "../../notes/util/findNoteParentVault.js";
 import { CreateBookmarkInput } from "./createBookmark.js";
 import { fileExists } from "../../../utils/files.js";
 import { PetError } from "../../../core/PetError.js";
+import sanitizeFilename from "sanitize-filename";
 
 export function getBookmarkMetadata({
   input,
@@ -21,7 +22,7 @@ export function getBookmarkMetadata({
 } {
   const relativePath = path.join(
     input.vaultRelativePath || "",
-    encodeURIComponent(input.title)
+    `${sanitizeFilename(input.title)}.md`
   );
   const absolutePath = path.join(localConfig.basePath, relativePath);
 

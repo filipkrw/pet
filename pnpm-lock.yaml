@@ -99,6 +99,7 @@ importers:
       nanoid: ^4.0.2
       node-watch: ^0.7.3
       prettier: 2.6.2
+      sanitize-filename: ^1.6.3
       tree-flatten: 1.0.0
       typescript: 4.9.4
       vitest: ^0.32.0
@@ -112,6 +113,7 @@ importers:
       fs-extra: 11.1.1
       fuse.js: 6.6.2
       json5: 2.2.1
+      sanitize-filename: 1.6.3
       tree-flatten: 1.0.0
       yaml: 2.3.1
       zod: 3.21.4
@@ -3667,6 +3669,12 @@ packages:
       is-regex: 1.1.4
     dev: true
 
+  /sanitize-filename/1.6.3:
+    resolution: {integrity: sha512-y/52Mcy7aw3gRm7IrcGDFx/bCk4AhRh2eI9luHOQM86nZsqwiRkkq2GekHXBBD+SmPidc8i2PqtYZl+pWJ8Oeg==}
+    dependencies:
+      truncate-utf8-bytes: 1.0.2
+    dev: false
+
   /scheduler/0.23.0:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
     dependencies:
@@ -3915,6 +3923,12 @@ packages:
     resolution: {integrity: sha512-ijHLEyEQIh+MmZdLquBaj3heAyFoY3x+/fbXXdujTtOfcSZC1tOGtFLosRMASf32cuoC1SxIoT73wQwbJZw2bQ==}
     dev: false
 
+  /truncate-utf8-bytes/1.0.2:
+    resolution: {integrity: sha512-95Pu1QXQvruGEhv62XCMO3Mm90GscOCClvrIUwCM0PYOXK3kaF3l3sIHxx71ThJfcbM2O5Au6SO3AWCSEfW4mQ==}
+    dependencies:
+      utf8-byte-length: 1.0.4
+    dev: false
+
   /ts-interface-checker/0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
@@ -4079,6 +4093,10 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /utf8-byte-length/1.0.4:
+    resolution: {integrity: sha512-4+wkEYLBbWxqTahEsWrhxepcoVOJ+1z5PGIjPZxRkytcdSUaNjIjBM7Xn8E+pdSuV7SzvWovBFA54FO0JSoqhA==}
     dev: false
 
   /util-deprecate/1.0.2:
