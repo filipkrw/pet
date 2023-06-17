@@ -13,6 +13,6 @@ export async function saveBookmarkFile({
   note: NoteMetadata & { datetime: string };
 }) {
   createFileIfNotExists(note.absolutePath);
-  const noteContent = `${frontmatter}${input.note}`;
-  await fs.writeFile(note.absolutePath, noteContent);
+  const noteContent = `${frontmatter}${input.note?.trim() || ""}`;
+  await fs.writeFile(note.absolutePath, noteContent.trim() + "\n");
 }
