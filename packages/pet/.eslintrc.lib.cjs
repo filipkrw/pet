@@ -3,6 +3,7 @@ const defaultEslintrc = require("./.eslintrc.cjs");
 module.exports = {
   ...defaultEslintrc,
   rules: {
+    ...defaultEslintrc.rules,
     indent: ["error", 2],
     semi: ["error", "always"],
     "lines-between-class-members": ["error", "always"],

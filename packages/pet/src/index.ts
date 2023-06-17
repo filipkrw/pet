@@ -53,3 +53,5 @@ async function pet() {
 }
 
 pet();
+
+export * from "./exports.js";

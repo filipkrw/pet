@@ -112,6 +112,7 @@ importers:
       '@types/cors': ^2.8.13
       '@types/node': ^18.11.7
       cors: ^2.8.5
+      pet: workspace:*
       ts-node: ^10.9.1
       typescript: 4.9.4
       zod: ^3.20.2
@@ -119,6 +120,7 @@ importers:
       '@trpc/client': 10.30.0_@trpc+server@10.30.0
       '@trpc/server': 10.30.0
       cors: 2.8.5
+      pet: link:../pet
       zod: 3.21.4
     devDependencies:
       '@types/cors': 2.8.13

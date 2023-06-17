@@ -20,7 +20,6 @@ export async function removeNote({ argv }: ArgvOptions) {
 
 async function deleteNoteFile({
   args,
-  vaults,
   localConfig,
 }: {
   args: CreateArgs;

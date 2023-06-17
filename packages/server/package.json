@@ -4,9 +4,9 @@
   "description": "",
   "main": "src/main.ts",
   "scripts": {
-    "dev": "ts-node src/main.ts",
-    "client": "ts-node src/client.ts"
+    "dev": "ts-node-esm src/main.ts"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "@trpc/client": "^10.30.0",
     "@trpc/server": "^10.30.0",
     "cors": "^2.8.5",
+    "pet": "workspace:*",
     "zod": "^3.20.2"
   }
 }
