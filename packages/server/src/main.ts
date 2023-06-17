@@ -1,5 +1,6 @@
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import { publicProcedure, router } from "./trpc";
+import cors from "cors";
 
 const appRouter = router({
   ping: publicProcedure.query(async () => {
@@ -10,6 +11,7 @@ const appRouter = router({
 export type AppRouter = typeof appRouter;
 
 const server = createHTTPServer({
+  middleware: cors(),
   router: appRouter,
 });
 
