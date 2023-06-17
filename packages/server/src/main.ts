@@ -4,9 +4,6 @@ import cors from "cors";
 import { createBookmark, createBookmarkInputSchema } from "pet";
 
 const appRouter = router({
-  ping: publicProcedure.query(async () => {
-    return "pong";
-  }),
   createBookmark: publicProcedure
     .input(createBookmarkInputSchema)
     .mutation(({ input }) => createBookmark(input)),
