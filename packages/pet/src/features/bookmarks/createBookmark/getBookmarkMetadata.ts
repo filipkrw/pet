@@ -21,7 +21,7 @@ export function getBookmarkMetadata({
 } {
   const relativePath = path.join(
     input.vaultRelativePath || "",
-    `${input.title} (${encodeURIComponent(input.url)}).md`
+    `${encodeURIComponent(input.title)} (${encodeURIComponent(input.url)}).md`
   );
   const absolutePath = path.join(localConfig.basePath, relativePath);
 
