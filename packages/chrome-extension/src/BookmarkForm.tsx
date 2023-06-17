@@ -65,12 +65,12 @@ export function BookmarkForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="note"
+          name="tags"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Note</FormLabel>
+              <FormLabel>Tags</FormLabel>
               <FormControl>
-                <Textarea autoFocus placeholder="Note..." {...field} />
+                <Input autoFocus placeholder="tag,another tag" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -78,17 +78,18 @@ export function BookmarkForm() {
         />
         <FormField
           control={form.control}
-          name="tags"
+          name="note"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Tags</FormLabel>
+              <FormLabel>Note</FormLabel>
               <FormControl>
-                <Input placeholder="tag,another tag" {...field} />
+                <Textarea rows={2} className="min-h-0" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <Button type="submit" className="w-full" disabled={isLoading}>
           {isLoading ? "Creating..." : "Create bookmark"}
         </Button>
