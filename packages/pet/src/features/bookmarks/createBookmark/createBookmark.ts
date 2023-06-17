@@ -10,6 +10,7 @@ export type CreateBookmarkInput = z.infer<typeof createBookmarkInputSchema>;
 
 export const createBookmarkInputSchema = z.object({
   vaultRelativePath: z.string().optional(),
+  title: z.string(),
   url: z.string().url(),
   tags: z.array(z.string()).optional(),
   note: z.string().optional(),

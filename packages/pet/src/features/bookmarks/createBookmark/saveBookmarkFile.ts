@@ -10,9 +10,9 @@ export async function saveBookmarkFile({
 }: {
   input: CreateBookmarkInput;
   frontmatter: string;
-  note: NoteMetadata & { datetime: string };
+  note: NoteMetadata;
 }) {
   createFileIfNotExists(note.absolutePath);
   const noteContent = `${frontmatter}${input.note?.trim() || ""}`;
-  await fs.writeFile(note.absolutePath, noteContent.trim() + "\n");
+  await fs.writeFile(note.absolutePath, noteContent.trim());
 }

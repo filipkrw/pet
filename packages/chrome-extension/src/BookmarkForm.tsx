@@ -28,6 +28,7 @@ export function BookmarkForm() {
     mutate: createBookmark,
     isLoading,
     isSuccess,
+    error,
   } = trpc.createBookmark.useMutation({
     onSuccess: () => {
       form.reset({
@@ -43,10 +44,11 @@ export function BookmarkForm() {
       windowId: chrome.windows.WINDOW_ID_CURRENT,
     });
     const activeTab = tabs[0];
-    if (!activeTab || !activeTab.url) {
+    if (!activeTab || !activeTab.url || !activeTab.title) {
       throw new Error("No active tab");
     }
     createBookmark({
+      title: activeTab.title,
       url: activeTab.url,
       vaultRelativePath: "bookmarks",
       note: values.note,
@@ -90,6 +92,7 @@ export function BookmarkForm() {
         <Button type="submit" className="w-full" disabled={isLoading}>
           {isLoading ? "Creating..." : "Create bookmark"}
         </Button>
+        {error?.message}
       </form>
     </Form>
   );

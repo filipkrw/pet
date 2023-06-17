@@ -3,6 +3,8 @@ import { LocalConfig, Vault } from "../../../core/types.js";
 import { NoteMetadata } from "../../notes/createNote/getNoteMetadata.js";
 import { findNoteParentVault } from "../../notes/util/findNoteParentVault.js";
 import { CreateBookmarkInput } from "./createBookmark.js";
+import { fileExists } from "../../../utils/files.js";
+import { PetError } from "../../../core/PetError.js";
 
 export function getBookmarkMetadata({
   input,
@@ -15,15 +17,17 @@ export function getBookmarkMetadata({
   vaults: Vault[];
   disabledVaults: Vault[];
 }): {
-  note: NoteMetadata & { datetime: string };
+  note: NoteMetadata;
 } {
-  const { relativePath, datetime } = getDailyNoteRelativePath();
-
-  const absolutePath = path.join(
-    localConfig.basePath,
+  const relativePath = path.join(
     input.vaultRelativePath || "",
-    relativePath
+    `${input.title} (${encodeURIComponent(input.url)}).md`
   );
+  const absolutePath = path.join(localConfig.basePath, relativePath);
+
+  if (fileExists(absolutePath)) {
+    throw new PetError(`Bookmark already exists: ${absolutePath}`);
+  }
 
   const parentVault = findNoteParentVault(absolutePath, vaults, disabledVaults);
 
@@ -32,19 +36,6 @@ export function getBookmarkMetadata({
       absolutePath,
       relativePath,
       parentVault,
-      datetime,
     },
   };
-}
-
-function getDailyNoteRelativePath() {
-  const datetime = new Date().toISOString();
-
-  const dateElements = datetime.split("T");
-  const dirPath = dateElements[0].replace(/-/g, "/");
-  const fileName = dateElements[1].split(".")[0];
-
-  const relativePath = path.join(dirPath, fileName + ".md");
-
-  return { relativePath, datetime };
 }
