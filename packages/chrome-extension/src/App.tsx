@@ -18,7 +18,7 @@ export const App: React.FC = () => {
       <QueryClientProvider client={queryClient}>
         <div className="w-full h-full flex justify-center items-center">
           <Card className="w-96 rounded-none border-none shadow-none">
-            <CardContent className="px-5 pb-5 pt-4">
+            <CardContent className="px-5 py-4">
               <BookmarkForm />
             </CardContent>
           </Card>

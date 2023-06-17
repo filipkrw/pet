@@ -30,7 +30,10 @@ export function BookmarkForm() {
     isSuccess,
   } = trpc.createBookmark.useMutation({
     onSuccess: () => {
-      form.reset();
+      form.reset({
+        note: "",
+        tags: "",
+      });
     },
   });
 
@@ -47,8 +50,12 @@ export function BookmarkForm() {
       url: activeTab.url,
       vaultRelativePath: "bookmarks",
       note: values.note,
-      tags: values.tags ? values.tags.split(",").map((tag) => tag.trim()) : [],
+      tags: values.tags?.split(",").map((tag) => tag.trim()),
     });
+  }
+
+  if (isSuccess) {
+    return <div className="text-sm text-center">Bookmark created</div>;
   }
 
   return (
@@ -80,12 +87,8 @@ export function BookmarkForm() {
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isLoading || isSuccess}
-        >
-          {isSuccess ? "Saved" : "Save page"}
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading ? "Creating..." : "Create bookmark"}
         </Button>
       </form>
     </Form>
