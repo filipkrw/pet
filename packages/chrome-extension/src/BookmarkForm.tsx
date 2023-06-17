@@ -13,15 +13,23 @@ import {
 import { Input } from "./components/ui/input";
 import { Textarea } from "./components/ui/textarea";
 import { trpc } from "./trpc";
+import { Checkbox } from "./components/ui/checkbox";
+import { Label } from "./components/ui/label";
 
 const formSchema = z.object({
   note: z.string().optional(),
   tags: z.string().optional(),
+  scrape: z.boolean().optional(),
 });
 
 export function BookmarkForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      scrape: true,
+      note: "",
+      tags: "",
+    },
   });
 
   const {
@@ -29,14 +37,7 @@ export function BookmarkForm() {
     isLoading,
     isSuccess,
     error,
-  } = trpc.createBookmark.useMutation({
-    onSuccess: () => {
-      form.reset({
-        note: "",
-        tags: "",
-      });
-    },
-  });
+  } = trpc.createBookmark.useMutation();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const tabs = await chrome.tabs.query({
@@ -52,12 +53,15 @@ export function BookmarkForm() {
       url: activeTab.url,
       vaultRelativePath: "bookmarks",
       note: values.note,
-      tags: values.tags?.split(",").map((tag) => tag.trim()),
+      tags: values.tags?.length
+        ? values.tags.split(",").map((tag) => tag.trim())
+        : undefined,
+      scrape: values.scrape,
     });
   }
 
   if (isSuccess) {
-    return <div className="text-sm text-center">Bookmark created</div>;
+    return <div className="text-sm text-center">Bookmark added</div>;
   }
 
   return (
@@ -89,9 +93,27 @@ export function BookmarkForm() {
             </FormItem>
           )}
         />
-
+        <FormField
+          control={form.control}
+          name="scrape"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-center space-x-2">
+                <FormControl>
+                  <Checkbox
+                    id="scrape"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <Label htmlFor="scrape">Scrape page content</Label>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Creating..." : "Create bookmark"}
+          {isLoading ? "Adding..." : "Add bookmark"}
         </Button>
         {error?.message}
       </form>

@@ -14,6 +14,7 @@ export const createBookmarkInputSchema = z.object({
   url: z.string().url(),
   tags: z.array(z.string()).optional(),
   note: z.string().optional(),
+  scrape: z.boolean().optional(),
 });
 
 export async function createBookmark(input: CreateBookmarkInput) {

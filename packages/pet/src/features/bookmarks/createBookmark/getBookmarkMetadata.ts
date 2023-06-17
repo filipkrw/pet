@@ -25,7 +25,7 @@ export function getBookmarkMetadata({
   const sanitizedTitle = sanitizeFilename(input.title);
   const directoryRelativePath = path.join(
     input.vaultRelativePath || "",
-    sanitizedTitle
+    input.scrape ? sanitizedTitle : ""
   );
 
   const relativePath = path.join(directoryRelativePath, `${sanitizedTitle}.md`);

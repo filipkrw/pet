@@ -12,6 +12,10 @@ export async function scrapeBookmarkedPage({
     pageHtmlAbsolutePath: string;
   };
 }) {
+  if (!input.scrape) {
+    return;
+  }
+
   try {
     const pageHtml = await scrape({ url: input.url });
     await fs.writeFile(note.pageHtmlAbsolutePath, pageHtml);
