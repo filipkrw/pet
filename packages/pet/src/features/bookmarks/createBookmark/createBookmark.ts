@@ -4,6 +4,7 @@ import { exec } from "../../../core/exec.js";
 import { bookmarks } from "../Bookmarks.js";
 import { getBookmarkMetadata } from "./getBookmarkMetadata.js";
 import { saveBookmarkFile } from "./saveBookmarkFile.js";
+import { scrapeBookmarkedPage } from "./scrapeBookmarkedPage.js";
 
 export type CreateBookmarkInput = z.infer<typeof createBookmarkInputSchema>;
 
@@ -19,5 +20,6 @@ export async function createBookmark(input: CreateBookmarkInput) {
   return Promise.resolve({ input, ...bookmarks.getMeta() })
     .then((x) => exec(x, loadCoreConfigs))
     .then((x) => exec(x, getBookmarkMetadata))
-    .then((x) => exec(x, saveBookmarkFile));
+    .then((x) => exec(x, saveBookmarkFile))
+    .then((x) => exec(x, scrapeBookmarkedPage));
 }

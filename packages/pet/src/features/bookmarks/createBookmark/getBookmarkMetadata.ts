@@ -18,13 +18,24 @@ export function getBookmarkMetadata({
   vaults: Vault[];
   disabledVaults: Vault[];
 }): {
-  note: NoteMetadata;
+  note: NoteMetadata & {
+    pageHtmlAbsolutePath: string;
+  };
 } {
-  const relativePath = path.join(
+  const sanitizedTitle = sanitizeFilename(input.title);
+  const directoryRelativePath = path.join(
     input.vaultRelativePath || "",
-    `${sanitizeFilename(input.title)}.md`
+    sanitizedTitle
   );
+
+  const relativePath = path.join(directoryRelativePath, `${sanitizedTitle}.md`);
   const absolutePath = path.join(localConfig.basePath, relativePath);
+
+  const pageHtmlAbsolutePath = path.join(
+    localConfig.basePath,
+    directoryRelativePath,
+    `${sanitizedTitle}.html`
+  );
 
   if (fileExists(absolutePath)) {
     throw new PetError(`Bookmark already exists: ${absolutePath}`);
@@ -37,6 +48,7 @@ export function getBookmarkMetadata({
       absolutePath,
       relativePath,
       parentVault,
+      pageHtmlAbsolutePath,
     },
   };
 }
