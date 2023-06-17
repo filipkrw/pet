@@ -26,9 +26,9 @@ export function BookmarkForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      scrape: true,
-      note: "",
       tags: "",
+      note: "",
+      scrape: false,
     },
   });
 
