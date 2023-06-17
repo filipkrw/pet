@@ -23,14 +23,14 @@ export function createDailyFile({
 
 async function createFileWithFronmatter(
   filePath: string,
-  frontmatterObject: Record<string | number, unknown>
+  frontmatterObject: Record<string, unknown>
 ) {
   const frontmatter = createFrontmatter(frontmatterObject);
   createFileIfNotExists(filePath);
   fs.writeFileSync(filePath, frontmatter);
 }
 
-function createFrontmatter(input: Record<string | number, unknown>) {
+export function createFrontmatter(input: Record<string | number, unknown>) {
   const content = yaml.stringify(input);
-  return `---\n${content}---\n\n\n`;
+  return `---\n${content}---\n\n`;
 }

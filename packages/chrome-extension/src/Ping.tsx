@@ -19,7 +19,12 @@ export const Ping: React.FC = () => {
       setError("Active tab has no URL");
       return;
     }
-    createBookmark({ url: activeTab.url });
+    createBookmark({
+      url: activeTab.url,
+      vaultRelativePath: "bookmarks",
+      note: "Test note about bookmark",
+      tags: ["test", "another-bookmark"],
+    });
   }
 
   return (
