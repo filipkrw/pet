@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { trpc } from "./trpc";
+import { Button } from "./components/ui/button";
 
 export const Ping: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +30,7 @@ export const Ping: React.FC = () => {
 
   return (
     <>
-      <button onClick={handleClick}>Create bookmark</button>
+      <Button onClick={handleClick}>Create bookmark</Button>
       {error && <p>{error}</p>}
     </>
   );
