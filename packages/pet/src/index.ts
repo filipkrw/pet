@@ -14,6 +14,7 @@ import { removeNote } from "./features/notes/removeNote/removeNote.js";
 
 async function pet() {
   const isInitialized = await getIsInitialized();
+
   if (!isInitialized) {
     await setConfig();
     return;
@@ -53,5 +54,3 @@ async function pet() {
 }
 
 pet();
-
-export * from "./exports.js";
