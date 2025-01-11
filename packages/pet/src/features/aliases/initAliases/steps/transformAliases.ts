@@ -10,6 +10,8 @@ export function transformAliases({
   shell: UserShellData;
   loadedAliases: LoadedAlias[];
 }) {
+  console.log(transformAliasesZsh({ loadedAliases }));
+
   if (shell.name === "zsh") {
     return {
       transformedAliases: transformAliasesZsh({ loadedAliases }),
