@@ -1,5 +1,4 @@
 import { PetError } from "../../../../core/PetError.js";
-import { isZsh } from "../zsh/isZsh.js";
 import { transformAliasesZsh } from "../zsh/transformAliasesZsh.js";
 import { UserShellData } from "./getUserShellData.js";
 import { LoadedAlias } from "./loadAliasesContent";
@@ -11,13 +10,13 @@ export function transformAliases({
   shell: UserShellData;
   loadedAliases: LoadedAlias[];
 }) {
-  const { name } = shell;
-
-  if (isZsh(name)) {
+  if (shell.name === "zsh") {
     return {
       transformedAliases: transformAliasesZsh({ loadedAliases }),
     };
   }
 
-  throw new PetError(`Unsupported shell: ${name}`);
+  throw new PetError(
+    `Alias transformation not supported for shell: ${shell.name}`
+  );
 }

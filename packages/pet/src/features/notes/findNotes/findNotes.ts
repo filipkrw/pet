@@ -13,5 +13,5 @@ export async function findNotes({ argv }: ArgvOptions) {
     .then((x) => exec(x, loadCoreConfigs))
     .then((x) => exec(x, readFiles))
     .then((x) => exec(x, searchFiles))
-    .then((x) => exec(x, printSearchResults));
+    .then((x) => printSearchResults(x));
 }

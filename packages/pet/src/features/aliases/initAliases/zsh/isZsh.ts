@@ -1,3 +1,3 @@
-export function isZsh(shell: string) {
-  return shell.indexOf("zsh") > -1;
+export function isZsh() {
+  return process.env.SHELL && process.env.SHELL.indexOf("zsh") > -1;
 }
